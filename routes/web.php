@@ -42,7 +42,7 @@ Route::middleware('auth')->group(function(){
             Route::resource('blog-category',BlogCategoryController::class);
             Route::post('blog-category/delete',[BlogCategoryController::class,'massDeleteCategories'])->name('blog.category.mass-delete');
             Route::post('blog-category/update-status',[BlogCategoryController::class,'updateStatus'])->name('blog.category.update-status');
-            Route::get('blog-category/search',[BlogCategoryController::class,'serachCategories'])->name('blog.category.search');
+            Route::get('blog-category/searchhh',[BlogCategoryController::class,'serachCategories'])->name('blog.category.search');
         });
         Route::post('save-theme-preference',[ProfileController::class,'saveTheme'])->name('theme.save');
     });
