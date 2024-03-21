@@ -242,14 +242,10 @@
                     <p class="mb-1">Only Active Categories</p>
                     <form action="#">
                         <!-- Visibility Section -->
-
                         {{-- <div class="col-lg-4"> --}}
                         <select class="js-example-basic-multiple mt-2" name="states[]" multiple="multiple"
                             data-placeholder="Select Categories...">
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
-
+                            <option value="category->id">$category->name</option>
                         </select>
                         <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#categoryFields"
                             aria-expanded="false" aria-controls="categoryFields">Add New Category</a>
@@ -262,9 +258,8 @@
                                 <input type="text" class="form-control mt-2" placeholder="Enter Category">
                                 <select name="" class="form-control mt-2" id="">
                                     <option value="" selected disabled>Select Parent Category</option>
-                                    @foreach ($parentCategories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
+
+                                    <option value="$category->id">$category->name</option>
                                     <option value="">3</option>
                                 </select>
                                 <button class="btn btn-primary mt-2">Add</button>
@@ -336,57 +331,6 @@
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: '',
-                tabsize: 5,
-                height: 320,
-                theme: 'bs4-dark'
-            });
-
-
-
-            $('.js-example-basic-multiple').select2();
-            $("#datepicker").flatpickr();
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            // Function to update the visibility value
-            function updateVisibility(value) {
-                $('.visibility-input').text(value);
-
-                if (value === 'Password Protected') {
-                    $('.additional-option-password').show();
-                    $('.additional-option-public').hide();
-                } else if (value === 'Public') {
-                    $('.additional-option-public').show();
-                    $('.additional-option-password').hide();
-                } else if (value === 'Private') {
-                    $('.additional-option-password').hide();
-                    $('.additional-option-public').hide();
-                } else {
-                    $('.additional-option').hide();
-                }
-            }
-
-
-            $('.visibility-radio').change(function() {
-                var selectedValue = $(this).val();
-                updateVisibility(selectedValue);
-            });
-
-            var initialValue = $('input[name="visibilityOption"]:checked').val();
-            updateVisibility(initialValue);
-        });
-    </script>
-
-
-
-
-
 
 
 @endsection

@@ -1,19 +1,16 @@
 @extends('layouts.app')
 
-@section('page-title', 'Blog')
-@section('sub-page-title', 'Add New Blog')
+@section('page-title', 'Page-create')
+@section('sub-page-title', 'Add New Page')
 @section('content')
-
-
     <div class="row">
         <div class="col-xl-8">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">Add Blog</h4>
+                    <h4 class="card-title mb-0">Create Page</h4>
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
                     <form action="#">
-
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="pills-gen-info" role="tabpanel"
                                 aria-labelledby="pills-gen-info-tab">
@@ -21,7 +18,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-email-input">Name <span
+                                                <label class="form-label" for="gen-info-email-input">Page Title<span
                                                         class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" id="gen-info-email-input"
                                                     placeholder="Enter Name">
@@ -29,16 +26,16 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-username-input">Short
-                                                    Description</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea5" rows="3" placeholder="Enter Short Description"></textarea>
+                                                <label class="form-label" for="gen-info-password-input">Page
+                                                    Description<span class="text-danger">*</span> </label>
+                                                <textarea class="form-control" id="description" rows="3" placeholder="Enter Short Description"></textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="gen-info-password-input">Content <span
                                                         class="text-danger">*</span> </label>
-                                                <textarea class="form-control" id="summernote" rows="3" placeholder="Enter Short Description"></textarea>
+                                                <textarea class="form-control" id="content" rows="3" placeholder="Enter Short Description"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -57,7 +54,6 @@
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
                     <form action="#">
-
                         <div class="tab-content">
                             <div class="tab-pane fade show active" id="pills-gen-info" role="tabpanel"
                                 aria-labelledby="pills-gen-info-tab">
@@ -103,7 +99,6 @@
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
                     <form action="#">
-
                         <!-- Buttons -->
                         <div class="row mt-3 ">
                             <div class="col-lg-4">
@@ -116,7 +111,6 @@
                                 <button type="button" class="btn btn-info rounded-pill ">Preview</button>
                             </div>
                         </div>
-
                         <!-- Visibility Section -->
                         <div class="row mt-3">
                             <div class="col-lg-6">
@@ -189,6 +183,20 @@
                                         data-date-format="d.m.y H:i" placeholder="Select date and time">
                                 </div>
                             </div>
+                            {{-- toggle --}}
+                            <div class="row my-2 mx-1">
+                                <i class="icofont-building icofont-1x mt-2"></i>
+                                <span class="font-14 black ml-1 mt-2">Make with Builder
+                                    :</span>
+                                <label class="switch success ml-3">
+                                    <input type="checkbox" name="page_type_builder" id="page_type_builder"
+                                        value="builder">
+                                    <span class="control" id="page_type_builder_switch">
+                                        <span class="switch-off">Disable</span>
+                                        <span class="switch-on">Enable</span>
+                                    </span>
+                                </label>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -201,7 +209,6 @@
                 <div class="card-body form-steps">
                     <form action="#">
                         <!-- Visibility Section -->
-
                         <div class="form-check mb-2">
                             <input checked class="form-check-input" type="radio" name="visibilityOption"
                                 id="format-standard" value="Public">
@@ -237,41 +244,32 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title mb-0">Categories</h4>
-                </div><!-- end card header -->
+                </div>
                 <div class="card-body form-steps">
                     <p class="mb-1">Only Active Categories</p>
                     <form action="#">
-                        <!-- Visibility Section -->
-
-                        {{-- <div class="col-lg-4"> --}}
                         <select class="js-example-basic-multiple mt-2" name="states[]" multiple="multiple"
                             data-placeholder="Select Categories...">
-                            @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                            @endforeach
+
+                            <option value="$category->id">$category->name</option>
+
 
                         </select>
                         <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#categoryFields"
                             aria-expanded="false" aria-controls="categoryFields">Add New Category</a>
-                        {{-- </div> --}}
-
-                        {{-- <div class="row"> --}}
-                        {{-- <div class="col-lg-12"> --}}
                         <div class="collapse mt-2" id="categoryFields">
                             <div class="form-check mb-1">
                                 <input type="text" class="form-control mt-2" placeholder="Enter Category">
                                 <select name="" class="form-control mt-2" id="">
                                     <option value="" selected disabled>Select Parent Category</option>
-                                    @foreach ($parentCategories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                    @endforeach
+
+                                    <option value="$category->id">$category->name</option>
+
                                     <option value="">3</option>
                                 </select>
                                 <button class="btn btn-primary mt-2">Add</button>
                             </div>
                         </div>
-                        {{-- </div> --}}
-                        {{-- </div> --}}
 
                     </form>
                 </div>
@@ -282,9 +280,6 @@
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
                     <form action="#">
-                        <!-- Visibility Section -->
-
-                        {{-- <div class="col-lg-4"> --}}
                         <select class="js-example-basic-multiple" name="states[]" multiple="multiple"
                             data-placeholder="Select Tags...">
                             <optgroup label="UK">
@@ -311,19 +306,12 @@
 
                         <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#tagFields"
                             aria-expanded="false" aria-controls="categoryFields">Add New Tag</a>
-                        {{-- </div> --}}
-
-                        {{-- <div class="row"> --}}
-                        {{-- <div class="col-lg-12"> --}}
                         <div class="collapse mt-2" id="tagFields">
                             <div class="form-check mb-1">
                                 <input type="text" class="form-control mt-2" placeholder="Enter Tag">
                                 <button class="btn btn-primary mt-2">Add</button>
                             </div>
                         </div>
-                        {{-- </div> --}}
-                        {{-- </div> --}}
-                        {{-- </div> --}}
 
                     </form>
                 </div>
@@ -338,55 +326,40 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            $('#summernote').summernote({
+            // toggle
+            // Build with builder switch make content and image field show/hide
+            $(document).on('click', '#page_type_builder', function() {
+                if ($(this).is(':checked')) {
+                    $('#page_content').parents(':eq(2)').addClass('d-none');
+                    $('.page_image').addClass('d-none');
+                    $('.page-visibility').addClass('d-none');
+                } else {
+                    $('#page_content').parents(':eq(2)').removeClass('d-none');
+                    $('.page_image').removeClass('d-none');
+                    $('.page-visibility').removeClass('d-none');
+                }
+            });
+            // end toggle
+            // description
+            $('#description').summernote({
                 placeholder: '',
                 tabsize: 5,
                 height: 320,
                 theme: 'bs4-dark'
             });
-
-
-
+            $('.js-example-basic-multiple').select2();
+            $("#datepicker").flatpickr();
+        });
+        // content
+        $(document).ready(function() {
+            $('#content').summernote({
+                placeholder: '',
+                tabsize: 5,
+                height: 320,
+                theme: 'bs4-dark'
+            });
             $('.js-example-basic-multiple').select2();
             $("#datepicker").flatpickr();
         });
     </script>
-
-    <script>
-        $(document).ready(function() {
-            // Function to update the visibility value
-            function updateVisibility(value) {
-                $('.visibility-input').text(value);
-
-                if (value === 'Password Protected') {
-                    $('.additional-option-password').show();
-                    $('.additional-option-public').hide();
-                } else if (value === 'Public') {
-                    $('.additional-option-public').show();
-                    $('.additional-option-password').hide();
-                } else if (value === 'Private') {
-                    $('.additional-option-password').hide();
-                    $('.additional-option-public').hide();
-                } else {
-                    $('.additional-option').hide();
-                }
-            }
-
-
-            $('.visibility-radio').change(function() {
-                var selectedValue = $(this).val();
-                updateVisibility(selectedValue);
-            });
-
-            var initialValue = $('input[name="visibilityOption"]:checked').val();
-            updateVisibility(initialValue);
-        });
-    </script>
-
-
-
-
-
-
-
 @endsection

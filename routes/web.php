@@ -7,7 +7,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\BlogCategoryController;
+use App\Http\Controllers\{BlogCategoryController,PagesController};
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +49,5 @@ Route::middleware('auth')->group(function(){
 
 Auth::routes(['register' => false]);
 
+Route::resource('pages',PagesController::class);
+Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
