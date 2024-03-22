@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BlogCategoryController;
+
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
@@ -51,4 +51,4 @@ Auth::routes(['register' => false]);
 
 Route::resource('pages',PagesController::class);
 Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
-
+Route::post('upload',[PagesController::class,'update_status'])->name('img.upload');

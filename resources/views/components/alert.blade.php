@@ -1,5 +1,6 @@
 <div>
-    @if(Session::has('alert'))
+    @if (Session::has('alert'))
+        @dd('session')
         <script>
             var messageType = "{{ session('alert')['type'] ?? 'success' }}";
             var messageText = "{{ session('alert')['message'] }}";
@@ -8,7 +9,7 @@
                 messageText,
                 '',
                 messageType
-                )
+            )
         </script>
     @endif
 </div>
