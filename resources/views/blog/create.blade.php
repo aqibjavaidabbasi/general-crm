@@ -382,11 +382,4 @@
             updateVisibility(initialValue);
         });
     </script>
-
-
-
-
-
-
-
 @endsection
