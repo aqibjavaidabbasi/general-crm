@@ -7,6 +7,8 @@ use App\Http\Controllers\MediaController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\{BlogCategoryController,PagesController};
 
 /*
 |--------------------------------------------------------------------------
@@ -45,3 +47,8 @@ Route::middleware('auth')->group(function () {
 });
 
 Auth::routes(['register' => false]);
+
+
+Route::resource('pages',PagesController::class);
+Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
+
