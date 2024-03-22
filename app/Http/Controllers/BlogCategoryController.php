@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreBlogCategoryRequest;
-
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class BlogCategoryController extends Controller
 {
@@ -17,9 +14,9 @@ class BlogCategoryController extends Controller
     public function index()
     {
         $categories = BlogCategory::with('parentCategory:id,name')
-        ->get(['id', 'name', 'status', 'featured', 'parent_id']);
-        // dd($categories);
-        return view('blog.category.index',['categories' => $categories]);
+            ->get(['id', 'name', 'status', 'featured', 'parent_id']);
+
+        return view('blog.category.index', ['categories' => $categories]);
     }
 
     /**
@@ -27,8 +24,8 @@ class BlogCategoryController extends Controller
      */
     public function create()
     {
-        $categories = BlogCategory::where('position',0)->get(['id','name']);
-        return view('blog.category.create',['categories' => $categories]);
+        $categories = BlogCategory::where('position', 0)->get(['id', 'name']);
+        return view('blog.category.create', ['categories' => $categories]);
     }
 
     /**
@@ -39,8 +36,9 @@ class BlogCategoryController extends Controller
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
-        if(BlogCategory::create($validatedData)){
-            return redirect()->back();
+        if (BlogCategory::create($validatedData)) {
+            session()->flash('alert', ['message' => 'Post successfully created', 'type' => 'success']);
+            return to_route('blog-category.index');
         }
     }
 
@@ -55,17 +53,20 @@ class BlogCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(BlogCategory $blogCategory)
     {
-        //
+        if (!is_null($blogCategory)) {
+            $categories = BlogCategory::where('position', 0)->get(['id', 'name']);
+            return view('blog.category.create', compact('blogCategory', 'categories'));
+        }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, BlogCategory $blogCategory)
     {
-        //
+
     }
 
     /**
@@ -73,12 +74,12 @@ class BlogCategoryController extends Controller
      */
     public function destroy(BlogCategory $blog_category)
     {
-        if($blog_category){
+        if ($blog_category) {
             $blog_category->delete();
-            return response()->json(['message' => "Blog Category Delteed"],200);
+            return response()->json(['message' => "Blog Category Delteed"], 200);
         }
 
-        return response()->json(['message' => "Blog Category Not Found"],404);
+        return response()->json(['message' => "Blog Category Not Found"], 404);
     }
 
     public function massDeleteCategories(Request $request)
@@ -86,7 +87,7 @@ class BlogCategoryController extends Controller
         $ids = $request->ids;
         $categories = BlogCategory::findOrfail($ids);
 
-        foreach($categories as $category){
+        foreach ($categories as $category) {
             $category->delete();
         }
         return response()->json(['message' => "Deleted Successfully"]);
@@ -97,15 +98,30 @@ class BlogCategoryController extends Controller
         $categoryId = $request->id;
         $category = BlogCategory::findOrFail($categoryId);
 
-        if(!is_null($category)){
-            if($request->status ){
-                $category->update(['status' => $request->status]);
-            } else if($request->toggleStatus){
-                $category->update(['featured' => $request->toggleStatus]);
+        if (!is_null($category)) {
+            if ($request->has('status')) {
+                $category->update(['status' => $request->boolean('status')]);
+            } else if ($request->has('toggleStatus')) {
+                $category->update(['featured' => $request->boolean('toggleStatus')]);
             }
 
-            return response()->json(['message' => 'Status Updated Successfully'],200);
+            return response()->json(['message' => 'Status Updated Successfully'], 200);
         }
 
     }
+
+    public function searchBlogCategories(Request $request)
+    {
+        $searchText = $request->input('searchText');
+        $query = BlogCategory::query();
+        if (empty($searchText)) {
+            $query->with('parentCategory')->get();
+        } else {
+            $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
+        }
+        $categories = $query->get();
+
+        return view('blog.category.filtered-blog_categories')->with(['categories' => $categories]);
+    }
+
 }

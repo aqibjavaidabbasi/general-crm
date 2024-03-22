@@ -185,7 +185,8 @@
                                     <label class="form-label mb-0">
                                         <i class=" ri-calendar-line" for="publish-date"></i>
                                         Publish</label>
-                                        <input type="text" id="datepicker" class="form-control" data-enable-time="true" data-date-format="d.m.y H:i" placeholder="Select date and time">
+                                    <input type="text" id="datepicker" class="form-control" data-enable-time="true"
+                                        data-date-format="d.m.y H:i" placeholder="Select date and time">
                                 </div>
                             </div>
                         </div>
@@ -230,7 +231,7 @@
                             </label>
                         </div>
                 </div>
-            </form>
+                </form>
             </div>
             <!-- end card body -->
             <div class="card">
@@ -243,32 +244,33 @@
                         <!-- Visibility Section -->
 
                         {{-- <div class="col-lg-4"> --}}
-                            <select class="js-example-basic-multiple mt-2" name="states[]" multiple="multiple" data-placeholder="Select Categories...">
-                                @foreach ($categories as $category)
-                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
+                        <select class="js-example-basic-multiple mt-2" name="states[]" multiple="multiple"
+                            data-placeholder="Select Categories...">
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
 
-                            </select>
-                            <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#categoryFields"
+                        </select>
+                        <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#categoryFields"
                             aria-expanded="false" aria-controls="categoryFields">Add New Category</a>
                         {{-- </div> --}}
 
                         {{-- <div class="row"> --}}
-                            {{-- <div class="col-lg-12"> --}}
-                                <div class="collapse mt-2" id="categoryFields">
-                                        <div class="form-check mb-1">
-                                            <input type="text" class="form-control mt-2" placeholder="Enter Category">
-                                            <select name="" class="form-control mt-2" id="">
-                                                <option value="" selected disabled>Select Parent Category</option>
-                                                @foreach ($parentCategories as $category)
-                                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                                @endforeach
-                                                <option value="">3</option>
-                                            </select>
-                                            <button class="btn btn-primary mt-2">Add</button>
-                                        </div>
-                                </div>
-                            {{-- </div> --}}
+                        {{-- <div class="col-lg-12"> --}}
+                        <div class="collapse mt-2" id="categoryFields">
+                            <div class="form-check mb-1">
+                                <input type="text" class="form-control mt-2" placeholder="Enter Category">
+                                <select name="" class="form-control mt-2" id="">
+                                    <option value="" selected disabled>Select Parent Category</option>
+                                    @foreach ($parentCategories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                    @endforeach
+                                    <option value="">3</option>
+                                </select>
+                                <button class="btn btn-primary mt-2">Add</button>
+                            </div>
+                        </div>
+                        {{-- </div> --}}
                         {{-- </div> --}}
 
                     </form>
@@ -283,42 +285,43 @@
                         <!-- Visibility Section -->
 
                         {{-- <div class="col-lg-4"> --}}
-                            <select class="js-example-basic-multiple" name="states[]" multiple="multiple" data-placeholder="Select Tags...">
-                                <optgroup label="UK">
-                                    <option value="London">London</option>
-                                    <option value="Manchester" >Manchester</option>
-                                    <option value="Liverpool">Liverpool</option>
-                                </optgroup>
-                                <optgroup label="FR">
-                                    <option value="Paris">Paris</option>
-                                    <option value="Lyon">Lyon</option>
-                                    <option value="Marseille">Marseille</option>
-                                </optgroup>
-                                <optgroup label="SP">
-                                    <option value="Madrid" >Madrid</option>
-                                    <option value="Barcelona">Barcelona</option>
-                                    <option value="Malaga">Malaga</option>
-                                </optgroup>
-                                <optgroup label="CA">
-                                    <option value="Montreal">Montreal</option>
-                                    <option value="Toronto">Toronto</option>
-                                    <option value="Vancouver">Vancouver</option>
-                                </optgroup>
-                            </select>
+                        <select class="js-example-basic-multiple" name="states[]" multiple="multiple"
+                            data-placeholder="Select Tags...">
+                            <optgroup label="UK">
+                                <option value="London">London</option>
+                                <option value="Manchester">Manchester</option>
+                                <option value="Liverpool">Liverpool</option>
+                            </optgroup>
+                            <optgroup label="FR">
+                                <option value="Paris">Paris</option>
+                                <option value="Lyon">Lyon</option>
+                                <option value="Marseille">Marseille</option>
+                            </optgroup>
+                            <optgroup label="SP">
+                                <option value="Madrid">Madrid</option>
+                                <option value="Barcelona">Barcelona</option>
+                                <option value="Malaga">Malaga</option>
+                            </optgroup>
+                            <optgroup label="CA">
+                                <option value="Montreal">Montreal</option>
+                                <option value="Toronto">Toronto</option>
+                                <option value="Vancouver">Vancouver</option>
+                            </optgroup>
+                        </select>
 
-                            <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#tagFields"
+                        <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#tagFields"
                             aria-expanded="false" aria-controls="categoryFields">Add New Tag</a>
                         {{-- </div> --}}
 
                         {{-- <div class="row"> --}}
-                            {{-- <div class="col-lg-12"> --}}
-                                <div class="collapse mt-2" id="tagFields">
-                                        <div class="form-check mb-1">
-                                            <input type="text" class="form-control mt-2" placeholder="Enter Tag">
-                                            <button class="btn btn-primary mt-2">Add</button>
-                                        </div>
-                                </div>
-                            {{-- </div> --}}
+                        {{-- <div class="col-lg-12"> --}}
+                        <div class="collapse mt-2" id="tagFields">
+                            <div class="form-check mb-1">
+                                <input type="text" class="form-control mt-2" placeholder="Enter Tag">
+                                <button class="btn btn-primary mt-2">Add</button>
+                            </div>
+                        </div>
+                        {{-- </div> --}}
                         {{-- </div> --}}
                         {{-- </div> --}}
 
@@ -379,11 +382,4 @@
             updateVisibility(initialValue);
         });
     </script>
-
-
-
-
-
-
-
 @endsection

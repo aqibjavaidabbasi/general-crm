@@ -92,7 +92,7 @@
         </div>
     @endforeach
 @else
-    <p>No files found.</p>
+    <p>No File Found.</p>
 @endif
 
 </div>
