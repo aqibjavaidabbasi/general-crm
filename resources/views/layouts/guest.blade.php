@@ -1,5 +1,6 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1" data-preloader="disable">
 
 <head>
 
@@ -28,40 +29,43 @@
     <!-- custom Css-->
     <link rel="stylesheet" href="{{ asset('galaxy-theme/assets/css/custom.min.css') }}">
 
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </head>
 
 <body>
 
 
     <!-- Begin page -->
-<div id="layout-wrapper">
+    <div id="layout-wrapper">
 
-    @yield('content')
+        @yield('content')
 
 
-    <!-- JAVASCRIPT -->
-    <script src="{{ asset('galaxy-theme/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/libs/simplebar/simplebar.min.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/libs/node-waves/waves.min.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/libs/feather-icons/feather.min.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/js/plugins.js') }}"></script>
+        <!-- JAVASCRIPT -->
+        <script src="{{ asset('galaxy-theme/assets/libs/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/libs/simplebar/simplebar.min.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/libs/node-waves/waves.min.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/libs/feather-icons/feather.min.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/js/pages/plugins/lord-icon-2.1.0.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/js/plugins.js') }}"></script>
 
-    <!-- apexcharts -->
-    <script src="{{ asset('galaxy-theme/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
+        <!-- apexcharts -->
+        <script src="{{ asset('galaxy-theme/assets/libs/apexcharts/apexcharts.min.js') }}"></script>
 
-    <!-- Vector map-->
-    <script src="{{ asset('galaxy-theme/assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
-    <script src="{{ asset('galaxy-theme/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
+        <!-- Vector map-->
+        <script src="{{ asset('galaxy-theme/assets/libs/jsvectormap/js/jsvectormap.min.js') }}"></script>
+        <script src="{{ asset('galaxy-theme/assets/libs/jsvectormap/maps/world-merc.js') }}"></script>
 
-    <!--Swiper slider js-->
-    <script src="{{ asset('galaxy-theme/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
+        <!--Swiper slider js-->
+        <script src="{{ asset('galaxy-theme/assets/libs/swiper/swiper-bundle.min.js') }}"></script>
 
-    <!-- Dashboard init -->
-    <script src="{{ asset('galaxy-theme/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
+        <!-- Dashboard init -->
+        <script src="{{ asset('galaxy-theme/assets/js/pages/dashboard-ecommerce.init.js') }}"></script>
 
-    <!-- App js -->
-    <script src="{{ asset('galaxy-theme/assets/js/app.js') }}"></script>
+        <!-- App js -->
+        <script src="{{ asset('galaxy-theme/assets/js/app.js') }}"></script>
+        @yield('scripts')
 </body>
 
 </html>

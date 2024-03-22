@@ -15,7 +15,7 @@ class PageSeeder extends Seeder
         //
         $pageData = [
                 'category_id'=>1,
-                'user_id'=>1,
+                // 'user_id'=>1,
                 // 'parent_page',
                 'page_title'=>'About',
                 'page_description'=>'this page is about About us',

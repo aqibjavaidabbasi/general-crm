@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
             $table->string('category_id')->nullable();
-            $table->string('parent_page')->nullable();
             $table->string('user_id')->nullable();
+            $table->string('parent_page')->nullable();
             $table->string('page_title')->nullable();
             $table->longText('page_description')->nullable();
             $table->longText('content')->nullable();
