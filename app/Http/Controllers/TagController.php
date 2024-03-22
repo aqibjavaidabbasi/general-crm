@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 
-class BlogController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +19,7 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = BlogCategory::get(['id','name']);
-        $parentCategories = BlogCategory::where('position',0)->get(['id','name']);
-        return view('blog.create',compact('categories','parentCategories'));
+        //
     }
 
     /**
@@ -63,10 +60,5 @@ class BlogController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-
-    public function getBlogByCategory($slug)
-    {
-        dd("Have To Design Page For User");
     }
 }

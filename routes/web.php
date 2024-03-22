@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\BlogCategoryController;
+
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
@@ -8,7 +8,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\{BlogCategoryController,PagesController};
+use App\Http\Controllers\{BlogCategoryController,PagesController, TagController};
 
 /*
 |--------------------------------------------------------------------------
@@ -41,8 +41,13 @@ Route::middleware('auth')->group(function () {
             Route::post('blog-category/delete', [BlogCategoryController::class, 'massDeleteCategories'])->name('blog.category.mass-delete');
             Route::post('blog-category/update-status', [BlogCategoryController::class, 'updateStatus'])->name('blog.category.update-status');
             Route::post('blog-category/search-blog-categories', [BlogCategoryController::class, 'searchBlogCategories'])->name('blog.category.search-blog-categories');
+
+            // Tags Routes
+
+            Route::resource('tags',TagController::class);
         });
         Route::post('save-theme-preference', [ProfileController::class, 'saveTheme'])->name('theme.save');
+        Route::get('blog/category/{slug}',[BlogController::class,'getBlogByCategory'])->name('blog-by-category');
     });
 });
 

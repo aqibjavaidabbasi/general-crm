@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlogCategoryRequest;
+use App\Http\Requests\UpdateBlogCategoryRequest;
 
 class BlogCategoryController extends Controller
 {
@@ -64,9 +65,15 @@ class BlogCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BlogCategory $blogCategory)
+    public function update(UpdateBlogCategoryRequest $request, BlogCategory $blogCategory)
     {
+        $validatedData = $request->validated();
+        $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
+        if ($blogCategory->update($validatedData)) {
+            session()->flash('alert', ['message' => 'Post successfully created', 'type' => 'success']);
+            return to_route('blog-category.index');
+        }
     }
 
     /**

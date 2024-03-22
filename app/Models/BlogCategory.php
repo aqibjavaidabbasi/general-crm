@@ -9,7 +9,7 @@ class BlogCategory extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'parent_id', 'description', 'meta_title', 'meta_description', 'meta_media_id', 'position', 'status', 'featured'];
+    protected $fillable = ['name', 'parent_id', 'description', 'meta_title', 'meta_description', 'meta_media_id', 'position', 'status', 'featured', 'slug'];
 
     public function parentCategory()
 {

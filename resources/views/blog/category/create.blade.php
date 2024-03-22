@@ -32,6 +32,35 @@
                                                     value="{{ isset($blogCategory) ? $blogCategory->name : '' }}">
                                             </div>
                                         </div>
+                                        <div class="col-lg-12" id="permalink-section" style="display: none;">
+                                            <div class="mb-3">
+                                                <label class="form-label" for="permalink">Permalink <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" id="permalink" name="slug"
+                                                        readonly>
+                                                    <button class="btn btn-outline-secondary" type="button"
+                                                        data-bs-toggle="collapse" data-bs-target="#editSlugCollapse"
+                                                        aria-expanded="false" aria-controls="editSlugCollapse">Edit</button>
+                                                </div>
+                                                <div class="collapse" id="editSlugCollapse">
+                                                    <div class="mt-2">
+                                                        <input type="text" class="form-control" id="slug"
+                                                            name="slug"
+                                                            value="{{ isset($blogCategory) ? $blogCategory->slug : '' }}">
+                                                        <div class="mt-2">
+                                                            <button class="btn btn-secondary" type="button"
+                                                                data-bs-toggle="collapse" data-bs-target="#editSlugCollapse"
+                                                                aria-expanded="false"
+                                                                aria-controls="editSlugCollapse">Cancel</button>
+                                                            <button class="btn btn-primary" type="button"
+                                                                id="saveSlug">Save</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="parent">Parent</label>
@@ -79,7 +108,9 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">
+                            {{ isset($blogCategory) ? 'Update' : 'Save' }}
+                        </button>
                     </form>
                 </div>
                 <!-- end card body -->
@@ -88,5 +119,33 @@
         </div>
         <!-- end col -->
     </div>
+
+    <script>
+        var baseURL = '{{ url('blog/category/') }}';
+        document.getElementById('gen-info-email-input').addEventListener('input', function() {
+            var name = this.value.trim();
+            var permalinkSection = document.getElementById('permalink-section');
+            var permalinkInput = document.getElementById('permalink');
+            var slugInput = document.getElementById('slug');
+
+            if (name !== '') {
+                permalinkSection.style.display = 'block';
+                var slug = name.toLowerCase().replace(/\s+/g, '-');
+                var fullURL = baseURL + '/' + slug;
+                permalinkInput.value = fullURL;
+                slugInput.value = slug;
+            } else {
+                permalinkSection.style.display = 'none';
+            }
+        });
+
+        document.getElementById('saveSlug').addEventListener('click', function() {
+            var permalinkInput = document.getElementById('permalink');
+            var slugInput = document.getElementById('slug');
+
+            permalinkInput.value = baseURL + '/' + slugInput.value;
+            document.getElementById('editSlugCollapse').classList.remove('show');
+        });
+    </script>
 
 @endsection
