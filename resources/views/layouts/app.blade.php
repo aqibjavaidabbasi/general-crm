@@ -49,6 +49,10 @@
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4-dark.css" rel="stylesheet"> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
+
+
 
     @stack('styles')
 
@@ -59,7 +63,6 @@
 
     <!-- Begin page -->
     <div id="layout-wrapper">
-        <x-alert />
         @include('layouts.header')
         <!-- ========== App Menu ========== -->
         <div class="app-menu navbar-menu border-end">
@@ -72,7 +75,7 @@
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('galaxy-theme/assets/images/logo-dark.png') }}" alt=""
-                            height="17">
+                        height="17">
                     </span>
                 </a>
                 <!-- Light Logo-->
@@ -86,8 +89,8 @@
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-                    id="vertical-hover">
-                    <i class="ri-record-circle-line"></i>
+                id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
                 </button>
             </div>
 
@@ -110,6 +113,8 @@
                     @include('layouts.main-content-nav')
 
                     @yield('content')
+                    {{-- @yield('alert') --}}
+                    <x-alert />
                 </div>
             </div>
 
@@ -187,6 +192,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 
 

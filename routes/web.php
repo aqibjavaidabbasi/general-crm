@@ -44,10 +44,15 @@ Route::middleware('auth')->group(function () {
 
             // Tags Routes
 
-            Route::resource('tags',TagController::class);
+            Route::resource('tag',TagController::class);
+            Route::post('tag/search-tags', [TagController::class, 'searchTags'])->name('blog.tag.search-tags');
+            Route::post('tag/delete', [TagController::class, 'massDeleteTags'])->name('blog.tag.mass-delete');
+            Route::post('tag/update-status', [TagController::class, 'updateStatus'])->name('blog.tag.update-status');
+
         });
         Route::post('save-theme-preference', [ProfileController::class, 'saveTheme'])->name('theme.save');
         Route::get('blog/category/{slug}',[BlogController::class,'getBlogByCategory'])->name('blog-by-category');
+        Route::get('blog/tag/{slug}',[BlogController::class,'getBlogByCategory'])->name('blog-by-tag');
     });
 });
 
