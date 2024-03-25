@@ -1,6 +1,7 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
-    data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1" data-preloader="disable">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" data-layout="vertical" data-topbar="light" data-sidebar="dark"
+    data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1"
+    data-preloader="disable">
 
 <head>
 
@@ -49,11 +50,6 @@
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4-dark.css" rel="stylesheet"> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
 
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
-
-
-
     @stack('styles')
 
 </head>
@@ -63,6 +59,7 @@
 
     <!-- Begin page -->
     <div id="layout-wrapper">
+
         @include('layouts.header')
         <!-- ========== App Menu ========== -->
         <div class="app-menu navbar-menu border-end">
@@ -111,7 +108,7 @@
             <div class="page-content">
                 <div class="container-fluid">
                     @include('layouts.main-content-nav')
-
+                    @include('sweetalert::alert')
                     @yield('content')
                     {{-- @yield('alert') --}}
                     <x-alert />
@@ -189,7 +186,8 @@
     <script src="{{ asset('galaxy-theme/assets/js/app.js') }}"></script>
     <script src="{{ asset('galaxy-theme/assets/libs/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ asset('galaxy-theme/assets/js/pages/form-editor.init.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
@@ -204,15 +202,16 @@
                 });
             }, 3000);
         });
-        </script>
+    </script>
 
 
 
-{{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
-{{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script> --}}
+    {{-- <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.js"></script>
     <script src="{{ asset('js/script.js') }}"></script>
+
     @stack('scripts')
 </body>
 

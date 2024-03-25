@@ -78,7 +78,7 @@
                     data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="pages">
                     <i class="ri-bold"></i> <span data-key="t-apps">All Pages</span>
                 </a>
-                <div class="collapse menu-dropdown {{ request()->is('*/pages/*') ? 'show' : '' }}" id="pages">
+                <div class="collapse menu-dropdown {{ request()->is('*/pages/*') ? 'pages' : '' }}" id="pages">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
                             <a href="{{ route('pages.index') }}" class="nav-link" data-key="t-calendar"> All Pages </a>
