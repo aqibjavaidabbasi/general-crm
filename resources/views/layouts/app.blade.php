@@ -72,7 +72,7 @@
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('galaxy-theme/assets/images/logo-dark.png') }}" alt=""
-                            height="17">
+                        height="17">
                     </span>
                 </a>
                 <!-- Light Logo-->
@@ -86,8 +86,8 @@
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-                    id="vertical-hover">
-                    <i class="ri-record-circle-line"></i>
+                id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
                 </button>
             </div>
 
@@ -110,6 +110,8 @@
                     @include('layouts.main-content-nav')
                     @include('sweetalert::alert')
                     @yield('content')
+                    {{-- @yield('alert') --}}
+                    <x-alert />
                 </div>
             </div>
 
@@ -188,6 +190,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 
 
 

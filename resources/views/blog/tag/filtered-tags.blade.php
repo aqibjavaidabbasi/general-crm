@@ -1,36 +1,29 @@
-@if ($categories->isNotEmpty())
-    @foreach ($categories as $category)
+@if ($tags->isNotEmpty())
+    @foreach ($tags as $tag)
         <tr>
             <th scope="row">
                 <div class="form-check">
                     <input class="form-check-input mass-action-checkbox" type="checkbox" name="chk_child"
-                        value="{{ $category->id }}">
+                        value="{{ $tag->id }}">
                 </div>
             </th>
-            <td data-sort="{{ $category->name }}">{{ $category->name }}</td>
-            <td data-sort="{{ $category->name }}">{{ $category->parentCategory->name ?? '-' }}</td>
+            <td data-sort="{{ $tag->name }}">{{ $tag->name }}</td>
             <td>
                 <div class="form-check form-switch">
-                    <input class="form-check-input feature-toggle" type="checkbox"
-                        {{ $category->featured ? 'checked' : '' }} data-category-id="{{ $category->id }}">
-                </div>
-            </td>
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input status-toggle" type="checkbox"
-                        {{ $category->status ? 'checked' : '' }} data-category-id="{{ $category->id }}">
+                    <input class="form-check-input publish-toggle" type="checkbox"
+                        {{ $tag->published ? 'checked' : '' }} data-tag-id="{{ $tag->id }}">
                 </div>
             </td>
 
             <td>
                 <div class="d-flex gap-2">
                     <div class="edit">
-                        <a href="{{ route('blog-category.edit', $category->id) }}"
+                        <a href="{{ route('tag.edit', $tag->id) }}"
                             class="btn btn-sm btn-primary edit-item-btn">Edit</a>
                     </div>
                     <div class="remove">
                         <button class="btn btn-sm btn-danger remove-item-btn"
-                            onclick="deleteCategory('{{ route('blog-category.destroy', $category->id) }}')">Remove</button>
+                            onclick="deleteCategory('{{ route('tag.destroy', $tag->id) }}')">Remove</button>
                     </div>
                 </div>
             </td>
@@ -49,53 +42,19 @@
         checkedIds = [];
         $('.mass-action-checkbox:checked').each(function() {
             checkedIds.push($(this).val());
-            console.log(checkedIds);
         });
     }
 
-    $('.status-toggle').change(function() {
-        var categoryId = $(this).data('category-id');
-        var newStatus = $(this).prop('checked') ? 1 : 0;
-        console.log(newStatus, categoryId)
-
-        $.ajax({
-            url: '{{ route('blog.category.update-status') }}',
-            method: 'POST',
-            data: {
-                id: categoryId,
-                status: newStatus
-            },
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                console.log('Status updated successfully');
-                Swal.fire(
-                    'Updated!',
-                    'Status has been updated.',
-                    'success'
-                );
-            },
-            error: function(xhr, status, error) {
-                Swal.fire(
-                    'Error!',
-                    'Failed to update status. Please try again later.',
-                    'error'
-                );
-            }
-        });
-    });
-
-    $('.feature-toggle').change(function() {
-        var categoryId = $(this).data('category-id');
+    $('.publish-toggle').change(function() {
+        var tagId = $(this).data('tag-id');
         var newToggleStatus = $(this).prop('checked') ? 1 : 0;
-        console.log(newToggleStatus, categoryId)
+        console.log(newToggleStatus, tagId)
 
         $.ajax({
-            url: '{{ route('blog.category.update-status') }}',
+            url: '{{ route('blog.tag.update-status') }}',
             method: 'POST',
             data: {
-                id: categoryId,
+                id: tagId,
                 toggleStatus: newToggleStatus
             },
             headers: {
@@ -104,14 +63,14 @@
             success: function(response) {
                 Swal.fire(
                     'Updated!',
-                    'Featured Status has been updated.',
+                    'Publish Status has been updated.',
                     'success'
                 );
             },
             error: function(xhr, status, error) {
                 Swal.fire(
                     'Error!',
-                    'Failed to update featured status. Please try again later.',
+                    'Failed to update published status. Please try again later.',
                     'error'
                 );
             }
@@ -151,7 +110,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('blog.category.mass-delete') }}',
+                    url: '{{ route('blog.tag.mass-delete') }}',
                     method: 'POST',
                     data: {
                         ids: checkedIds

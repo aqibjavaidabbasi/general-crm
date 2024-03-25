@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title', 'Blog')
-@section('sub-page-title', 'Blog Categories')
+@section('sub-page-title', 'Tags')
 @section('content')
 
 
@@ -12,8 +12,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
-                            <a class="btn btn-primary add-btn" href="{{ route('blog-category.create') }}">Add Blog
-                                Category</a>
+                            <a class="btn btn-primary add-btn" href="{{ route('tag.create') }}">Add Tag</a>
                         </div>
                         <div class="app-search d-none d-md-block mr-2">
                             <div class="position-relative">
@@ -50,13 +49,11 @@
                                             </div>
                                         </th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Parent</th>
-                                        <th scope="col">Featured</th>
-                                        <th scope="col">Status</th>
+                                        <th scope="col">Published</th>
                                         <th scope="col">Action</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all" id="filteredCategoriesContent">
+                                <tbody class="list form-check-all" id="filteredTagsContent">
 
 
                                 </tbody>
@@ -89,13 +86,13 @@
             function fetchData(searchText) {
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('blog.category.search-blog-categories') }}",
+                    url: "{{ route('blog.tag.search-tags') }}",
                     data: {
                         searchText: searchText,
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
                     success: function(response) {
-                        $('#filteredCategoriesContent').html(response);
+                        $('#filteredTagsContent').html(response);
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);
@@ -144,7 +141,5 @@
             });
         });
     </script>
-   
-
 
 @endsection

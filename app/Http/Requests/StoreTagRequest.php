@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreBlogCategoryRequest extends FormRequest
+class StoreTagRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,6 @@ class StoreBlogCategoryRequest extends FormRequest
         return [
             'name' => 'required',
             'slug' => 'required',
-            'parent_id' => 'sometimes',
-            'description' => 'sometimes',
             'meta_title' => 'sometimes',
             'meta_description' => 'sometimes',
             'meta_media_id' => 'sometimes',

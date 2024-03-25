@@ -64,4 +64,9 @@ class BlogController extends Controller
     {
         //
     }
+
+    public function getBlogByCategory($slug)
+    {
+        dd("Have To Design Page For User");
+    }
 }
