@@ -18,6 +18,9 @@ return new class extends Migration
             $table->foreign('parent_id')->references('id')->on('blog_categories')->onDelete('cascade');
             $table->integer('position')->default(0);
             $table->longText('description')->nullable();
+            $table->boolean('featured')->default(false);
+            $table->boolean('status')->default(true);
+            $table->string('slug')->nullable();
             $table->string('meta_title')->nullable();;
             $table->longText('meta_description')->nullable();
             $table->unsignedBigInteger('meta_media_id')->nullable();

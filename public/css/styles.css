@@ -46,3 +46,8 @@
 .note-editor.note-frame .note-editing-area .note-editable{
     background-color: #CCCCCC !important;
 }
+
+#blog-status{
+    display: flex;
+    justify-content: space-around;
+}
