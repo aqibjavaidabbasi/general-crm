@@ -8,10 +8,10 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title mb-0">Scroll - Horizontal</h5>
+                    <h5 class="card-title mb-0">All Pages</h5>
                 </div>
                 <div class="card-body">
-                    <table id="scroll-horizontal" class="table nowrap align-middle" style="width:100%">
+                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
                         <thead>
                             <tr>
                                 <th scope="col" style="width: 10px;">
@@ -38,7 +38,7 @@
                                                     value="option1">
                                             </div>
                                         </th>
-                                        <td>{{ $key }}</td>
+                                        <td>{{ $page->id }}</td>
                                         <td>{{ $page->page_title }}—, {{ $page->visibility }}</td>
                                         <td>{{ $page->parent_page }}</td>
                                         <td>{{ $page->user_id }} :
@@ -64,8 +64,9 @@
                                                     <i class="ri-more-fill align-middle"></i>
                                                 </button>
                                                 <ul class="dropdown-menu dropdown-menu-end">
-                                                    <li><a href="#!" class="dropdown-item">
-                                                            Edit</a></li>
+                                                    <li><a href="{{ route('pages.edit', $page->id) }}"
+                                                            class="dropdown-item">
+                                                            Edit {{ $page->id }}</a></li>
                                                     <li><a class="dropdown-item edit-item-btn">
                                                             Trash</a>
                                                     </li>
