@@ -3,8 +3,8 @@
 @section('sub-page-title', 'Add New Page')
 
 @section('content')
-    <form action="{{ route('pages.store') }}" method="post" enctype="multipart/form-data">
-        @method('POST')
+    <form action="{{ route('pages.update', $data->id) }}" method="post" enctype="multipart/form-data">
+        @method('PUT')
         @csrf
         <div class="row">
             <div class="col-xl-8">
@@ -22,7 +22,7 @@
                                             <label class="form-label" for="gen-info-email-input">Page Title<span
                                                     class="text-danger">*</span> </label>
                                             <input type="text" class="form-control" id="gen-info-email-input"
-                                                placeholder="Enter Name">
+                                                value="{{ $data->page_title }}" name="page_title">
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
@@ -30,14 +30,14 @@
                                             <label class="form-label" for="gen-info-password-input">Page
                                                 Description<span class="text-danger">*</span> </label>
                                             <textarea class="form-control" id="page_description" name="page_description" rows="3"
-                                                placeholder="Enter Short Description"></textarea>
+                                                placeholder="Enter Short Description">{!! $data->page_description !!}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-lg-12">
                                         <div class="mb-3">
                                             <label class="form-label" for="gen-info-password-input">Content <span
                                                     class="text-danger">*</span> </label>
-                                            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Enter Short Description"></textarea>
+                                            <textarea class="form-control" id="content" name="content" rows="3" placeholder="Enter Short Description">{!! $data->content !!}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -60,7 +60,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="gen-info-email-input">Meta Title </label>
                                                 <input type="text" class="form-control" name="meta_title"
-                                                    id="gen-info-email-input" placeholder="Enter Name">
+                                                    id="gen-info-email-input" value="{{ $data->meta_title }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -68,7 +68,7 @@
                                                 <label class="form-label" for="gen-info-username-input">Meta
                                                     Description</label>
                                                 <textarea class="form-control" name="meta_description" id="exampleFormControlTextarea5" rows="3"
-                                                    placeholder="Enter Short Description"></textarea>
+                                                    placeholder="Enter Short Description">{{ $data->meta_description }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -87,17 +87,26 @@
                 {{-- Category sec --}}
                 <div class="card">
                     <div class="card card-body mt-5 mt-md-5 col-12">
-                        <h4 class="font-16 mb-2">Publish</h4>
+                        {{-- <h4 class="font-16 mb-2">Publish</h4> --}}
                         <div class="form-group row my-2">
                             <label for="page_parent" class="col-sm-4 font-14 bold black">Visibility
                             </label>
                             <div class="py-6">
                                 <label>
-                                    <input type="radio" name="visibility" value="public" checked>
+                                    @if ($data->visibility == 'public')
+                                        <input type="radio" name="visibility" value="public" checked>
+                                    @else
+                                        <input type="radio" name="visibility" value="public">
+                                    @endif
                                     Public
                                 </label>
                                 <label>
-                                    <input type="radio" name="visibility" value="private">
+                                    @if ($data->visibility == 'private')
+                                        <input type="radio" name="visibility" value="private" checked>
+                                    @else
+                                        <input type="radio" name="visibility" value="private">
+                                    @endif
+
                                     Private
                                 </label>
                             </div>
@@ -197,6 +206,8 @@
                 </div>
             </div>
         </div>
+
+
     </form>
 
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
