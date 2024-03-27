@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('page-title', 'Blog')
-@section('sub-page-title', 'Blog Categories')
+@section('sub-page-title', 'All Blogs')
 @section('content')
 
 
@@ -12,8 +12,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center flex-wrap gap-2">
                         <div class="flex-grow-1">
-                            <a class="btn btn-primary add-btn" href="{{ route('blog-category.create') }}">Add Blog
-                                Category</a>
+                            <a class="btn btn-primary add-btn" href="{{ route('add-blog.create') }}">Add Blog</a>
                         </div>
                         <div class="app-search d-none d-md-block mr-2">
                             <div class="position-relative">
@@ -32,8 +31,10 @@
                         </div>
                     </div>
                     <div class="btn-group mt-2" role="group" aria-label="Record Filter">
-                        <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All ({{$stats['all_count']}})</button>
-                        <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn" value="featured">Featured ({{$stats['featured_count']}})</button>
+                        {{-- <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All ({{$stats['all_count']}})</button> --}}
+                        <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All (2)</button>
+                        {{-- <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn" value="featured">Featured ({{$stats['featured_count']}})</button> --}}
+                        <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn" value="featured">Featured (2)</button>
                     </div>
                 </div>
             </div>
@@ -53,14 +54,17 @@
                                                     value="option">
                                             </div>
                                         </th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Name</th>
-                                        <th scope="col">Parent</th>
+                                        <th scope="col">Author</th>
+                                        <th scope="col">Category</th>
                                         <th scope="col">Featured</th>
+                                        <th scope="col">Comment</th>
                                         <th scope="col">Status</th>
-                                        <th scope="col">Action</th>
+                                        <th scope="col">Actions</th>
                                     </tr>
                                 </thead>
-                                <tbody class="list form-check-all" id="filteredCategoriesContent">
+                                <tbody class="list form-check-all" id="filteredBlogsContent">
 
 
 
@@ -100,14 +104,14 @@
             function fetchData(searchText, filter) {
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('blog.category.search-blog-categories') }}",
+                    url: "{{ route('blog.search-blog') }}",
                     data: {
                         searchText: searchText,
                         filter: filter,
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
                     success: function(response) {
-                        $('#filteredCategoriesContent').html(response);
+                        $('#filteredBlogsContent').html(response);
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);

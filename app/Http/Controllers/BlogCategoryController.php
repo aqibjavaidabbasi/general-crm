@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreBlogCategoryRequest;
+use App\Http\Requests\UpdateBlogCategoryRequest;
 
 class BlogCategoryController extends Controller
 {
@@ -16,7 +17,16 @@ class BlogCategoryController extends Controller
         $categories = BlogCategory::with('parentCategory:id,name')
             ->get(['id', 'name', 'status', 'featured', 'parent_id']);
 
-        return view('blog.category.index', ['categories' => $categories]);
+
+        $allCount = BlogCategory::count();
+        $featuredCount = BlogCategory::where('featured', 1)->count();
+        $stats = [
+            'all_count' => $allCount,
+            'featured_count' => $featuredCount,
+        ];
+        // dd($stats);
+
+        return view('blog.category.index', ['categories' => $categories,'stats' => $stats]);
     }
 
     /**
@@ -37,7 +47,10 @@ class BlogCategoryController extends Controller
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
         if (BlogCategory::create($validatedData)) {
-            session()->flash('alert', ['message' => 'Post successfully created', 'type' => 'success']);
+            session()->flash('alert', ['message' => 'Blog Category Created Successfully!','type' => 'success']);
+            return to_route('blog-category.index');
+        } else{
+            session()->flash('alert', ['message' => 'Error Occured While Creating Blog Category!','type' => 'error']);
             return to_route('blog-category.index');
         }
     }
@@ -64,9 +77,18 @@ class BlogCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, BlogCategory $blogCategory)
+    public function update(UpdateBlogCategoryRequest $request, BlogCategory $blogCategory)
     {
+        $validatedData = $request->validated();
+        $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
+        if ($blogCategory->update($validatedData)) {
+            session()->flash('alert', ['message' => 'Blog Category Updated Successfully!','type' => 'success']);
+            return to_route('blog-category.index');
+        } else{
+            session()->flash('alert', ['message' => 'Error Occured While Updating Blog Category!','type' => 'error']);
+            return to_route('blog-category.index');
+        }
     }
 
     /**
@@ -76,7 +98,7 @@ class BlogCategoryController extends Controller
     {
         if ($blog_category) {
             $blog_category->delete();
-            return response()->json(['message' => "Blog Category Delteed"], 200);
+            return response()->json(['message' => "Blog Category Deleted"], 200);
         }
 
         return response()->json(['message' => "Blog Category Not Found"], 404);
@@ -112,13 +134,20 @@ class BlogCategoryController extends Controller
 
     public function searchBlogCategories(Request $request)
     {
+        // dd($request->all());
         $searchText = $request->input('searchText');
+        $filter = $request->input('filter');
         $query = BlogCategory::query();
         if (empty($searchText)) {
             $query->with('parentCategory')->get();
         } else {
             $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
         }
+
+        if (!empty($filter)) {
+            if ($filter === 'featured') {
+                $query->where('featured', true);
+        }}
         $categories = $query->get();
 
         return view('blog.category.filtered-blog_categories')->with(['categories' => $categories]);

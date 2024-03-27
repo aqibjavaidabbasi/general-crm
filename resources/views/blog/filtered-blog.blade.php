@@ -1,43 +1,44 @@
-@if ($categories->isNotEmpty())
-    @foreach ($categories as $category)
+@if ($blogs->isNotEmpty())
+    @foreach ($blogs as $blog)
         <tr>
             <th scope="row">
                 <div class="form-check">
                     <input class="form-check-input mass-action-checkbox" type="checkbox" name="chk_child"
-                        value="{{ $category->id }}">
+                        value="{{ $blog->id }}">
                 </div>
             </th>
-            <td data-sort="{{ $category->name }}">{{ $category->name }}</td>
-            <td data-sort="{{ $category->name }}">{{ $category->parentCategory->name ?? '-' }}</td>
+            <td>Pending</td>
+            <td data-sort="{{ $blog->name }}">{{ $blog->name }}</td>
+            <td data-sort="{{ $blog->name }}">{{ $blog->author->name ?? '-' }}</td>
             <td>
                 <div class="form-check form-switch">
                     <input class="form-check-input feature-toggle" type="checkbox"
-                        {{ $category->featured ? 'checked' : '' }} data-category-id="{{ $category->id }}">
+                        {{ $blog->featured ? 'checked' : '' }} data-category-id="{{ $blog->id }}">
                 </div>
             </td>
             <td>
                 <div class="form-check form-switch">
                     <input class="form-check-input status-toggle" type="checkbox"
-                        {{ $category->status ? 'checked' : '' }} data-category-id="{{ $category->id }}">
+                        {{ $blog->status ? 'checked' : '' }} data-category-id="{{ $blog->id }}">
                 </div>
             </td>
 
             <td>
                 <div class="d-flex gap-2">
                     <div class="edit">
-                        <a href="{{ route('blog-category.edit', $category->id) }}"
+                        <a href="{{ route('blog-category.edit', $blog->id) }}"
                             class="btn btn-sm btn-primary edit-item-btn">Edit</a>
                     </div>
                     <div class="remove">
                         <button class="btn btn-sm btn-danger remove-item-btn"
-                            onclick="deleteCategory('{{ route('blog-category.destroy', $category->id) }}')">Remove</button>
+                            onclick="deleteCategory('{{ route('blog-category.destroy', $blog->id) }}')">Remove</button>
                     </div>
                 </div>
             </td>
         </tr>
     @endforeach
     {{-- <tr>
-        <td colspan="6">{{ $categories->links() }}</td>
+        <td colspan="6">{{ $blogs->links() }}</td>
     </tr> --}}
 
 @else

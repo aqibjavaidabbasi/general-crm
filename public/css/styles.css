@@ -39,10 +39,32 @@
 .clickable-image:hover {
     opacity: 0.7;
 }
+
 /* .select-box{
     background-color: #061F3B !important;
 } */
 
-.note-editor.note-frame .note-editing-area .note-editable{
+.note-editor.note-frame .note-editing-area .note-editable {
     background-color: #CCCCCC !important;
+}
+
+#blog-status {
+    display: flex;
+    justify-content: space-around;
+}
+
+.btn-link:hover {
+    color: blue;
+}
+
+.preview-image-wrapper {
+    position: relative;
+}
+
+.remove-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    font-size: 25px;
+    color: red;
 }

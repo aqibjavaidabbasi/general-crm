@@ -1,15 +1,21 @@
 <div>
-    @if (Session::has('alert'))
-        @dd('session')
+    @if (Session::has('alerttt'))
         <script>
-            var messageType = "{{ session('alert')['type'] ?? 'success' }}";
-            var messageText = "{{ session('alert')['message'] }}";
+            $(document).ready(function() {
+                var messageType = "{{ session('alerttt')['type'] ?? 'success' }}";
+                var messageText = "{{ session('alerttt')['message'] }}";
 
-            Swal.fire(
-                messageText,
-                '',
-                messageType
-            )
+                console.log(messageType, messageText);
+                Swal.fire(
+                    messageText,
+                    '',
+                    messageType
+                );
+            });
         </script>
+        {{-- @dd(session()->all()) --}}
+        @php
+            Log::info(session()->all());
+        @endphp
     @endif
 </div>

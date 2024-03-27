@@ -35,7 +35,7 @@
 
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
-    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    {{-- <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'> --}}
 
     {{-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"> --}}
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -55,6 +55,11 @@
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote-lite.min.css" rel="stylesheet">
     {{-- <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-bs4-dark.css" rel="stylesheet"> --}}
     {{-- <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet"> --}}
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
 
     @stack('styles')
 
@@ -78,7 +83,7 @@
                     </span>
                     <span class="logo-lg">
                         <img src="{{ asset('galaxy-theme/assets/images/logo-dark.png') }}" alt=""
-                            height="17">
+                        height="17">
                     </span>
                 </a>
                 <!-- Light Logo-->
@@ -92,8 +97,8 @@
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover"
-                    id="vertical-hover">
-                    <i class="ri-record-circle-line"></i>
+                id="vertical-hover">
+                <i class="ri-record-circle-line"></i>
                 </button>
             </div>
 
@@ -113,8 +118,8 @@
             <!-- End Page-content -->
             <div class="page-content">
                 <div class="container-fluid">
+                    <x-alert />
                     @include('layouts.main-content-nav')
-                    @include('sweetalert::alert')
                     @yield('content')
                 </div>
             </div>
@@ -153,10 +158,10 @@
     <script src="{{ asset('galaxy-theme/assets/js/app.js') }}"></script>
     <script src="{{ asset('galaxy-theme/assets/libs/dropzone/dropzone-min.js') }}"></script>
     <script src="{{ asset('galaxy-theme/assets/js/pages/form-editor.init.js') }}"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 
     <script src="{{ asset('galaxy-theme/assets/js/pages/datatables.init.js') }}"></script>
 

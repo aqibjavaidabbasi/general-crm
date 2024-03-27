@@ -11,16 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('blog_categories', function (Blueprint $table) {
+        Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('parent_id')->nullable();
-            $table->foreign('parent_id')->references('id')->on('blog_categories')->onDelete('cascade');
-            $table->integer('position')->default(0);
-            $table->longText('description')->nullable();
-            $table->boolean('featured')->default(false);
-            $table->boolean('status')->default(true);
-            $table->string('slug')->nullable();
+            $table->string('slug');
+            $table->boolean('published')->default(true);
             $table->string('meta_title')->nullable();;
             $table->longText('meta_description')->nullable();
             $table->unsignedBigInteger('meta_media_id')->nullable();
@@ -34,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('blog_categories');
+        Schema::dropIfExists('tags');
     }
 };
