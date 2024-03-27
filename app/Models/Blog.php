@@ -22,10 +22,19 @@ class Blog extends Model
         'category_ids',
         'tag_ids',
         'featured',
+        'status',
+        'protection_password',
+        'front_page_blog',
+        'user_id'
     ];
 
     protected $casts = [
         'category_ids' => 'json',
         'tag_ids' => 'json'
     ];
+
+    public function author()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

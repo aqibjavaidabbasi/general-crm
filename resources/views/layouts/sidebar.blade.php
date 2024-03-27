@@ -29,7 +29,7 @@
                 <div class="collapse menu-dropdown {{ request()->is('*/blog/*') ? 'show' : '' }}" id="sidebarApps">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
-                            <a href="" class="nav-link" data-key="t-calendar"> All Blogs </a>
+                            <a href="{{ route('add-blog.index') }}" class="nav-link {{ Request::is('*/add-blog') ? 'active' : ''}}" data-key="t-calendar"> All Blogs </a>
                         </li>
                         <li class="nav-item">
                             <a href="{{ route('add-blog.create') }}"

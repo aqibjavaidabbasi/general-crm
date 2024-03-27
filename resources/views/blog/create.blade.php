@@ -7,7 +7,7 @@
 
     <div class="row">
         <div class="col-xl-8">
-            <form action="{{ route('add-blog.store') }}" method="POST">
+            <form action="{{ route('add-blog.store') }}" method="POST" id="blogForm">
                 @csrf
                 <div class="card">
                     <div class="card-header">
@@ -25,7 +25,7 @@
                                                 <label class="form-label" for="name">Name <span
                                                         class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" name="name"
-                                                    placeholder="Enter Name" id="name">
+                                                    placeholder="Enter Name" id="name" required>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -110,16 +110,13 @@
                     <div class="row mt-3">
                         <div class="col-lg-12">
                             <div class="btn-group" id="blog-status" role="group">
-                                <input type="checkbox" id="draftCheckbox" name="status" value="draft" class="btn-check"
-                                    autocomplete="off">
+                                <input type="checkbox" id="draftCheckbox" name="status" value="draft" class="btn-check" autocomplete="off">
                                 <label class="btn btn-primary rounded-pill" for="draftCheckbox">Draft</label>
 
-                                <input type="checkbox" id="pendingCheckbox" name="status" value="pending"
-                                    class="btn-check" autocomplete="off">
+                                <input type="checkbox" id="pendingCheckbox" name="status" value="pending" class="btn-check" autocomplete="off">
                                 <label class="btn btn-warning rounded-pill" for="pendingCheckbox">Pending</label>
 
-                                <input type="checkbox" id="previewCheckbox" name="status" value="preview"
-                                    class="btn-check" autocomplete="off">
+                                <input type="checkbox" id="previewCheckbox" value="preview" class="btn-check" autocomplete="off">
                                 <label class="btn btn-info rounded-pill" for="previewCheckbox">Preview</label>
                             </div>
                         </div>
@@ -147,12 +144,12 @@
                                     <div class="card card-body">
                                         <div class="form-check mb-1">
                                             <input checked class="form-check-input visibility-radio" type="radio"
-                                                name="visibilityOption" id="visibilityOptionPublic" value="public">
+                                                name="visibility" id="visibilityOptionPublic" value="Public">
                                             <label class="form-check-label" for="visibilityOptionPublic">
                                                 Public
                                             </label>
                                             <div class="additional-option-public form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" id="stickToBlogList">
+                                                <input class="form-check-input" type="checkbox" name="front-page-blog" id="stickToBlogList">
                                                 <label class="form-check-label" for="stickToBlogList">
                                                     Stick this post to the front of blog list page
                                                 </label>
@@ -160,14 +157,14 @@
                                         </div>
                                         <div class="form-check mb-1">
                                             <input class="form-check-input visibility-radio" type="radio"
-                                                name="visibilityOption" id="visibilityOptionPasswordProtected"
-                                                value="password-protected">
+                                                name="visibility" id="visibilityOptionPasswordProtected"
+                                                value="Password Protected">
                                             <label class="form-check-label" for="visibilityOptionPasswordProtected">
                                                 Password Protected
                                             </label>
                                             <div class="additional-option-password" style="display: none;">
                                                 <div class="input-group mt-2">
-                                                    <input type="password" class="form-control" name="password"
+                                                    <input type="password" class="form-control" name="protection-password"
                                                         id="passwordField" placeholder="Enter Password">
                                                 </div>
                                                 <div class="mt-2">
@@ -178,7 +175,7 @@
                                         </div>
                                         <div class="form-check mb-1">
                                             <input class="form-check-input visibility-radio" type="radio"
-                                                name="visibilityOption" id="visibilityOptionPrivate" value="private">
+                                                name="visibility" id="visibilityOptionPrivate" value="Private">
                                             <label class="form-check-label" for="visibilityOptionPrivate">
                                                 Private
                                             </label>
@@ -200,7 +197,7 @@
                         </div>
                     </div>
                     <div class="col-lg-6 mt-3">
-                        <button type="submit" class="btn btn-primary rounded-pill">Publish</button>
+                        <button id="publishBtn" class="btn btn-primary rounded-pill" name="status" value="publish">Publish</button>
                     </div>
 
                 </div>
@@ -346,7 +343,6 @@
 
     <script>
         $(document).ready(function() {
-            // Function to update the visibility value
             function updateVisibility(value) {
                 $('.visibility-input').text(value);
 
@@ -376,8 +372,49 @@
                 updateVisibility(selectedValue);
             });
 
-            var initialValue = $('input[name="visibilityOption"]:checked').val();
+            var initialValue = $('input[name="visibility"]:checked').val();
             updateVisibility(initialValue);
+
+            function sendFormData(formData, successMessage, errorMessage) {
+                $.ajax({
+                    url: '{{ route('add-blog.store') }}',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: formData,
+                    success: function(response) {
+                        Swal.fire(
+                            'Success!',
+                            successMessage,
+                            'success'
+                        ).then(() => {
+                            location.reload();
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            errorMessage,
+                            'error'
+                        );
+                    }
+                });
+            }
+
+            $('.btn-check').click(function() {
+                var formData = $('#blogForm').serializeArray();
+                var status = $(this).val();
+                formData.push({ name: 'status', value: status });
+
+                sendFormData(formData, 'Your Blog Post Has Been Added.', 'An error occurred while adding the blog post.');
+            });
+
+            $('#publishBtn').click(function() {
+                event.preventDefault();
+                var formData = $('#blogForm').serializeArray();
+                formData.push({ name: 'status', value: 'published' });
+
+                sendFormData(formData, 'Your Blog Post Has Been Published.', 'An error occurred while publishing the blog post.');
+            });
         });
     </script>
 @endsection

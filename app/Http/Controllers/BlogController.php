@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBlogRequest;
+use App\Models\Tag;
 use App\Models\Blog;
 use App\Models\BlogCategory;
-use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use App\Http\Requests\StoreBlogRequest;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -17,6 +18,7 @@ class BlogController extends Controller
     public function index()
     {
         $blogs = Blog::all();
+        // return view('blog.index', ['blogs' => $blogs]);
         return view('blog.detail', ['blogs' => $blogs]);
     }
 
@@ -70,16 +72,40 @@ class BlogController extends Controller
                         $img->removeAttribute('src');
                         $img->setAttribute('src', "/storage/{$currentYear}/{$currentMonth}/blog-images/{$blogName}/{$image_name}");
                     }
-
                 }
             }
-
             $validatedData['content'] = $dom->saveHTML();
         }
-        if (Blog::create($validatedData)) {
-            session()->flash('alert', ['message' => 'Blog Created Successfully!', 'type' => 'success']);
-            return to_route('add-blog.create');
+
+        if(is_null($validatedData['published_date_time'])){
+            $validatedData['published_date_time'] = now();
         }
+
+        if(is_null($validatedData['protection-password'])) {
+            if($validatedData['visibility'] == 'Public') {
+                if(isset($validatedData['front-page-blog']) && $validatedData['front-page-blog'] == 'on'){
+                    $validatedData['front_page_blog'] = true;
+                }
+                $validatedData['visibility'] = 'public';
+            } else if($validatedData['visibility'] == 'Private'){
+                $validatedData['visibility'] = 'private';
+            }
+        } else if($validatedData['visibility'] == 'Password Protected' && !is_null($validatedData['protection-password']) ){
+            $validatedData['visibility'] = 'password-protected';
+            $validatedData['protection_password'] = bcrypt($validatedData['protection-password']);
+        }
+
+        // if(is_null($validatedData['status'])){
+        //     $validatedData['status'] = 'published';
+        // }
+            // dd($validatedData);
+        $validatedData['user_id'] = Auth::user()->id;
+        if (Blog::create($validatedData)) {
+            return response()->json(['message' => 'Blog Created Successfully!'], 200);
+        }
+
+        return response()->json(['message' => 'Error Occurred While Creating Blog!'], 500);
+
 
     }
 
@@ -118,5 +144,32 @@ class BlogController extends Controller
     public function getBlogByCategory($slug)
     {
         dd("Have To Design Page For User");
+    }
+
+    public function searchBlogs(Request $request)
+    {
+        // dd($request->all());
+        $searchText = $request->input('searchText');
+        $filter = $request->input('filter');
+        $query = Blog::query();
+        // if (empty($searchText)) {
+        //     $query->with('parentCategory')->get();
+        // } else {
+        //     $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
+        // }
+        // if (empty($searchText)) {
+        //     $query->with('parentCategory')->get();
+        // } else {
+        //     $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
+        // }
+
+        if (!empty($filter)) {
+            if ($filter === 'featured') {
+                $query->where('featured', true);
+        }}
+        $blogs = $query->with('author')->get();
+        dd($blogs);
+
+        return view('blog.filtered-blog')->with(['blogs' => $blogs]);
     }
 }

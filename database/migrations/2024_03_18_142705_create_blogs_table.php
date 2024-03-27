@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('blogs', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->longText('description')->nullable();
             $table->longText('content')->nullable();
             $table->string('meta_title')->nullable();;
@@ -26,6 +27,8 @@ return new class extends Migration
             $table->string('status')->nullable()->comment("draft/pending/preview");
             $table->string('visibility')->nullable();
             $table->string('published_date_time')->nullable()->comment("sheduling the page / when it live/access");
+            $table->string('protection_password')->nullable();
+            $table->boolean('front_page_blog')->default(false);
             $table->boolean('featured')->default(false);
             $table->timestamps();
         });

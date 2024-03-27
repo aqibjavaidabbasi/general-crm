@@ -53,6 +53,8 @@
     <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/sweetalert2@10.10.1/dist/sweetalert2.min.css'>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.0.3/css/dataTables.dataTables.css" />
+
     @stack('styles')
 
 </head>
@@ -110,9 +112,9 @@
             <!-- End Page-content -->
             <div class="page-content">
                 <div class="container-fluid">
+                    <x-alert />
                     @include('layouts.main-content-nav')
                     @yield('content')
-                    <x-alert />
                 </div>
             </div>
 
@@ -191,7 +193,7 @@
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10.16.6/dist/sweetalert2.all.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-
+    <script src="https://cdn.datatables.net/2.0.3/js/dataTables.js"></script>
 
 
 

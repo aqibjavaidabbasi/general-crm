@@ -1,9 +1,9 @@
 <div>
-    @if (Session::has('alert'))
+    @if (Session::has('alerttt'))
         <script>
             $(document).ready(function() {
-                var messageType = "{{ session('alert')['type'] ?? 'success' }}";
-                var messageText = "{{ session('alert')['message'] }}";
+                var messageType = "{{ session('alerttt')['type'] ?? 'success' }}";
+                var messageText = "{{ session('alerttt')['message'] }}";
 
                 console.log(messageType, messageText);
                 Swal.fire(
@@ -13,6 +13,7 @@
                 );
             });
         </script>
+        {{-- @dd(session()->all()) --}}
         @php
             Log::info(session()->all());
         @endphp
