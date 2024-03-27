@@ -26,6 +26,7 @@ class StoreBlogRequest extends FormRequest
             'description' => 'sometimes',
             'content' => 'sometimes',
             'visibility' => 'sometimes',
+            'page_image' => 'sometimes',
             'protection-password' => 'sometimes',
             'status' => 'sometimes',
             'front-page-blog' => 'sometimes',

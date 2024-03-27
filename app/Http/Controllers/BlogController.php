@@ -40,6 +40,7 @@ class BlogController extends Controller
     public function store(StoreBlogRequest $request)
     {
         $validatedData = $request->validated();
+        dd($validatedData);
         $content = $validatedData['content'];
 
         if (!is_null($content)) {
