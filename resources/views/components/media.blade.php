@@ -12,7 +12,7 @@
     {{-- @props(['files']) --}}
 
 
-    <div class="row">
+    <div class="row mx-1 my-4">
         <div class="col-lg-12">
             <a class="btn btn-primary mb-2" data-bs-toggle="collapse" href="#collapseDropzone" role="button"
                 aria-expanded="false" aria-controls="dropzone">Upload File</a>
@@ -69,9 +69,8 @@
                                 </div>
                                 <form class="app-search d-none d-md-block">
                                     <div class="position-relative">
-                                        <input type="text" class="form-control  select-box"
-                                            placeholder="Search..." autocomplete="off" id="search-options"
-                                            value="">
+                                        <input type="text" class="form-control  select-box" placeholder="Search..."
+                                            autocomplete="off" id="search-options" value="">
                                         <span class="mdi mdi-magnify search-widget-icon"></span>
                                         <span
                                             class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none"
@@ -86,10 +85,6 @@
                             <div class="row" id="galleryContent">
                             </div>
                         </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <button class="btn btn-danger" id="deleteSelectedFilesBtn" disabled>Delete Selected
-                            Files</button>
                     </div>
                 </div>
             </div>
@@ -246,9 +241,9 @@
                     let selectedFiles = [];
 
                     function toggleSelection(event, fileId) {
-                        const isCtrlPressed = event.ctrlKey || event.metaKey;
+                        const isCtrlPressed = false;
                         const fileThumbnail = document.querySelector(`.file-thumbnail[data-file-id="${fileId}"]`);
-                        const tickIcon = document.getElementById('tick' + fileId);
+                        // const tickIcon = document.getElementById('tick' + fileId);
                         const isSelected = fileThumbnail.classList.contains('selected');
 
                         if (isSelected || isCtrlPressed) {
@@ -372,7 +367,7 @@
                             var searchText = $('#search-options').val();
                             $.ajax({
                                 type: "GET",
-                                url: "{{ route('admin.filter-file') }}",
+                                url: "{{ route('admin.filter-modal-file') }}",
                                 data: {
                                     fileType: selectedFileType,
                                     date: selectedDate,

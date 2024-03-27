@@ -28,7 +28,6 @@ class MediaController extends Controller
     public function create()
     {
         $files = Media::with('user:id,name')->get();
-
         $fileTypes = $files->pluck('extension')->unique();
         $dates = Media::orderBy('created_at')->pluck('created_at')->unique()->map(function ($date) {
             return \Carbon\Carbon::parse($date)->format('F - Y');
@@ -172,6 +171,29 @@ class MediaController extends Controller
         $files = $query->get();
 
         return view('media.filtered-files')->with('files', $files);
+    }
+
+    public function filterModalFiles(Request $request)
+    {
+        $query = Media::query();
+
+        if ($request->fileType !== 'all') {
+            $query->where('extension', $request->fileType);
+        }
+
+        if ($request->date && $request->date !== 'all') {
+            $selectedDate = \Carbon\Carbon::createFromFormat('F - Y', $request->date);
+            $query->whereMonth('created_at', $selectedDate->month)
+                ->whereYear('created_at', $selectedDate->year);
+        }
+
+        if ($request->searchText && $request->searchText !== '') {
+            $query->whereAny(['name', 'type', 'size', 'extension', 'title', 'alt', 'caption', 'description'], 'LIKE', '%' . $request->searchText . '%');
+        }
+
+        $files = $query->get();
+
+        return view('components.filtered-files')->with('files', $files);
     }
 
     public function deleteMediaFiles(Request $request)

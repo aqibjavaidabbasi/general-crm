@@ -80,12 +80,6 @@
                                                     placeholder="Enter Short Description"></textarea>
                                             </div>
                                         </div>
-                                        <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="formFile" class="form-label">Upload Image</label>
-                                                <input class="form-control" type="file" id="formFile">
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -110,13 +104,16 @@
                     <div class="row mt-3">
                         <div class="col-lg-12">
                             <div class="btn-group" id="blog-status" role="group">
-                                <input type="checkbox" id="draftCheckbox" name="status" value="draft" class="btn-check" autocomplete="off">
+                                <input type="checkbox" id="draftCheckbox" name="status" value="draft" class="btn-check"
+                                    autocomplete="off">
                                 <label class="btn btn-primary rounded-pill" for="draftCheckbox">Draft</label>
 
-                                <input type="checkbox" id="pendingCheckbox" name="status" value="pending" class="btn-check" autocomplete="off">
+                                <input type="checkbox" id="pendingCheckbox" name="status" value="pending" class="btn-check"
+                                    autocomplete="off">
                                 <label class="btn btn-warning rounded-pill" for="pendingCheckbox">Pending</label>
 
-                                <input type="checkbox" id="previewCheckbox" value="preview" class="btn-check" autocomplete="off">
+                                <input type="checkbox" id="previewCheckbox" value="preview" class="btn-check"
+                                    autocomplete="off">
                                 <label class="btn btn-info rounded-pill" for="previewCheckbox">Preview</label>
                             </div>
                         </div>
@@ -149,7 +146,8 @@
                                                 Public
                                             </label>
                                             <div class="additional-option-public form-check mt-2">
-                                                <input class="form-check-input" type="checkbox" name="front-page-blog" id="stickToBlogList">
+                                                <input class="form-check-input" type="checkbox" name="front-page-blog"
+                                                    id="stickToBlogList">
                                                 <label class="form-check-label" for="stickToBlogList">
                                                     Stick this post to the front of blog list page
                                                 </label>
@@ -164,8 +162,9 @@
                                             </label>
                                             <div class="additional-option-password" style="display: none;">
                                                 <div class="input-group mt-2">
-                                                    <input type="password" class="form-control" name="protection-password"
-                                                        id="passwordField" placeholder="Enter Password">
+                                                    <input type="password" class="form-control"
+                                                        name="protection-password" id="passwordField"
+                                                        placeholder="Enter Password">
                                                 </div>
                                                 <div class="mt-2">
                                                     <span class="text-danger">If password field remain empty then
@@ -197,7 +196,8 @@
                         </div>
                     </div>
                     <div class="col-lg-6 mt-3">
-                        <button id="publishBtn" class="btn btn-primary rounded-pill" name="status" value="publish">Publish</button>
+                        <button id="publishBtn" class="btn btn-primary rounded-pill" name="status"
+                            value="publish">Publish</button>
                     </div>
 
                 </div>
@@ -279,29 +279,54 @@
                     <h4 class="card-title mb-0">Tags</h4>
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
-
-
                     <select class="js-example-basic-multiple mt-2" name="tag_ids[]" multiple="multiple"
                         data-placeholder="Select Tags...">
                         @foreach ($tags as $tag)
                             <option value="{{ $tag->id }}">{{ $tag->name }}</option>
                         @endforeach
-
                     </select>
                     <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#addTag"
                         aria-expanded="false" aria-controls="categoryFields">Add New Tag</a>
-
                     <div class="collapse mt-2" id="addTag">
                         <div class="form-check mb-1">
                             <input type="text" class="form-control mt-2" placeholder="Enter Category">
                             <button class="btn btn-primary mt-2">Add</button>
                         </div>
                     </div>
-
-
                 </div>
-
             </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title mb-0">Blog Image</h4>
+                </div><!-- end card header -->
+                <div class="form-group row justify-content-center align-items-center mt-4">
+                    <div class="col-sm-4">
+                        <input type="hidden" name="page_image" id="page_image_id" value="">
+                        <div class="image-box">
+                            <div class="d-flex flex-wrap gap-10 mb-3">
+                                <div class="preview-image-wrapper">
+                                    <a type="button" title="Remove image" class="remove-btn style--three black d-none"
+                                        id="page_image_remove" onclick="removeSelection('#page_image_preview')">
+                                        <i class="ri-close-circle-fill"></i>
+                                    </a>
+                                    <img src="https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg"
+                                        alt="page_image" width="150" class="preview_image" id="page_image_preview">
+                                </div>
+                            </div>
+                            <div class="image-box-actions mb-3">
+                                <a type="button" class="btn-link" id="chooseFileBtn">
+                                    Choose File
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
             <div class="card card-body mt-5 mt-md-5 col-12">
                 <h4 class="font-16 mb-2">Blog Status</h4>
                 <div class="form-group row my-2">
@@ -324,7 +349,24 @@
 
     </div>
 
+    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <x-media :modalOpenedFlag=true />
+            </div>
+        </div>
+    </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        function removeSelection(selector) {
+            $(selector).attr('src', 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg');
+            $('#page_image_remove').addClass('d-none');
+            $('#page_image_id').val('');
+        }
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#summernote').summernote({
@@ -333,8 +375,6 @@
                 height: 320,
                 theme: 'bs4-dark'
             });
-
-
 
             $('.js-example-basic-multiple').select2();
             $("#datepicker").flatpickr();
@@ -365,7 +405,6 @@
                     document.querySelector('.visibility-input-field').value = this.value;
                 });
             });
-
 
             $('.visibility-radio').change(function() {
                 var selectedValue = $(this).val();
@@ -403,17 +442,30 @@
             $('.btn-check').click(function() {
                 var formData = $('#blogForm').serializeArray();
                 var status = $(this).val();
-                formData.push({ name: 'status', value: status });
+                formData.push({
+                    name: 'status',
+                    value: status
+                });
 
-                sendFormData(formData, 'Your Blog Post Has Been Added.', 'An error occurred while adding the blog post.');
+                sendFormData(formData, 'Your Blog Post Has Been Added.',
+                    'An error occurred while adding the blog post.');
+            });
+
+
+            document.getElementById('chooseFileBtn').addEventListener('click', function() {
+                $('#mediaUploadModal').modal('show');
             });
 
             $('#publishBtn').click(function() {
                 event.preventDefault();
                 var formData = $('#blogForm').serializeArray();
-                formData.push({ name: 'status', value: 'published' });
+                formData.push({
+                    name: 'status',
+                    value: 'published'
+                });
 
-                sendFormData(formData, 'Your Blog Post Has Been Published.', 'An error occurred while publishing the blog post.');
+                sendFormData(formData, 'Your Blog Post Has Been Published.',
+                    'An error occurred while publishing the blog post.');
             });
         });
     </script>

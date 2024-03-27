@@ -1,6 +1,11 @@
+{{-- @extends('layouts.app')
 
-@foreach($blogs as $blog)
+@section('page-title', 'Media')
+@section('content') --}}
 
-{!!$blog->content!!}
 
-@endforeach
+<x-media-modal/>
+{{-- <x-media :files=$files :fileTypes=$fileTypes :dates=$dates/> --}}
+
+{{-- @endsection --}}
+

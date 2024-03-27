@@ -32,6 +32,7 @@ Route::middleware('auth')->group(function () {
         Route::post('check-file', [MediaController::class, 'checkExistingFile'])->name('admin.check-file');
         Route::post('delete-existing-file', [MediaController::class, 'deleteExistingFile'])->name('admin.delete-existing-file');
         Route::get('filter-files', [MediaController::class, 'filterFiles'])->name('admin.filter-file');
+        Route::get('filter-modal-files', [MediaController::class, 'filterModalFiles'])->name('admin.filter-modal-file');
 
         Route::get('profile/{id}', [ProfileController::class, 'show'])->name('profile.show');
         Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
