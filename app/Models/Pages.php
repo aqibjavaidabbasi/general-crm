@@ -25,4 +25,8 @@ class Pages extends Model
         'published_date_time',
         'status',
     ];
+    protected $casts = [
+    'published_date_time' => 'datetime',
+    ];
+
 }

@@ -127,11 +127,11 @@
                     <div class="card card-body mt-5 mt-md-5 col-12">
                         <h4 class="font-16 mb-2">Page status</h4>
                         <div class="form-group row my-2">
-                            <label for="page_parent" class="col-sm-4 font-14 bold black">simple page / home page
+                            <label for="page_parent" class="col-sm-4 font-14 bold black">page publish / page unpublish
                             </label>
                             <div class="col-sm-8">
                                 <div class="form-check form-switch form-switch-right form-switch-md">
-                                    <label for="tables-small-showcode" class="form-label text-muted">home page</label>
+                                    <label for="tables-small-showcode" class="form-label text-muted">page status</label>
                                     <input class="form-check-input code-switcher" type="checkbox" name="make_homepage"
                                         value="1" id="tables-small-showcode">
                                 </div>
@@ -205,9 +205,64 @@
         // for page description
         ClassicEditor
             .create(document.querySelector('#page_description'), {
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'link',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        'indent',
+                        'outdent',
+                        '|',
+                        'imageUpload',
+                        'blockQuote',
+                        'insertTable',
+                        'mediaEmbed',
+                        '|',
+                        'undo',
+                        'redo',
+                        '|',
+                        'alignment',
+                        'textColor',
+                        'backgroundColor',
+                        'highlight',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        'code',
+                        'codeBlock',
+                        'htmlEmbed',
+                        '|',
+                        'removeFormat',
+                        'subscript',
+                        'superscript',
+                        'strikethrough',
+                        '|',
+                        'horizontalLine',
+                        'mathType',
+                        'chemType',
+                        '|',
+                        'selectAll',
+                        'findAndReplace',
+                        'wordCount',
+                        '|',
+                        'specialCharacters',
+                        'undo',
+                        'redo'
+                    ]
+                },
                 ckfinder: {
-                    uploadUrl: '{{ route('editor_img.upload') . '?_token=' . csrf_token() }}'
+                    uploadUrl: '{{ route('editor_img.upload') }}?_token={{ csrf_token() }}'
+                    // Adjusted route and token generation
                 }
+            })
+            .then(editor => {
+                console.log('Editor was initialized', editor);
             })
             .catch(error => {
                 console.error(error);
@@ -215,6 +270,57 @@
         // for content
         ClassicEditor
             .create(document.querySelector('#content'), {
+                toolbar: {
+                    items: [
+                        'heading',
+                        '|',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'link',
+                        '|',
+                        'bulletedList',
+                        'numberedList',
+                        'indent',
+                        'outdent',
+                        '|',
+                        'imageUpload',
+                        'blockQuote',
+                        'insertTable',
+                        'mediaEmbed',
+                        '|',
+                        'undo',
+                        'redo',
+                        '|',
+                        'alignment',
+                        'textColor',
+                        'backgroundColor',
+                        'highlight',
+                        '|',
+                        'fontSize',
+                        'fontFamily',
+                        'code',
+                        'codeBlock',
+                        'htmlEmbed',
+                        '|',
+                        'removeFormat',
+                        'subscript',
+                        'superscript',
+                        'strikethrough',
+                        '|',
+                        'horizontalLine',
+                        'mathType',
+                        'chemType',
+                        '|',
+                        'selectAll',
+                        'findAndReplace',
+                        'wordCount',
+                        '|',
+                        'specialCharacters',
+                        'undo',
+                        'redo'
+                    ]
+                },
                 ckfinder: {
                     uploadUrl: '{{ route('editor_img.upload') . '?_token=' . csrf_token() }}'
                 }

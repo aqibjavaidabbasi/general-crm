@@ -18,6 +18,7 @@ class PagesController extends Controller
     {
         //  Alert::warning('Success Title', 'Success Message');
         //
+        // $pages = Pages::where('status',1)->orderBy("id","desc")->paginate(10);
         $pages = Pages::orderBy("id","desc")->paginate(10);
         // $pages = Pages::get();
         return view("pages/index", compact("pages"));
@@ -39,7 +40,7 @@ class PagesController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        // dd($request->all());
         //
         $data = new Pages();
         $data->category_id = $request->category_id;
@@ -109,11 +110,18 @@ class PagesController extends Controller
     public function trash($id)
     {
         //
-        $pages = Pages::find($id);
+        $data = Pages::find($id);
+        $data->status = 0;
+        $data->save();
+        return redirect()->route('pages.index');
+        // return view('showpage',compact('data'));
     }
     public function destroy(Pages $pages)
     {
-        //
+        $data = Pages::find($id);
+        $data->status = 0;
+        $data->delete();
+        return redirect()->route('pages.index');
     }
     // image upload using CKEditor
     public function uploadimage(Request $request)
@@ -152,23 +160,23 @@ class PagesController extends Controller
         return response()->json(['error' => $e->getMessage()], 500);
         }
     }
-
-
     // --------------update status
     public function update_status(Request $request,$id,$slug = null)
     {
-        // dd("yo zan or bal slug",$id,$slug);
-        if($slug == 'homepage')
-        {
-            $data = Pages::find($id);
-            if($data->make_homepage == 1)
-            {
-                $data->make_homepage = 0;
-            }else{
-                $data->make_homepage = 1;
-            }
-            $data->save();
-        }
-        return redirect()->back()->with('success','Status has been updated');
+
+       $data = Pages::find($id);
+
+       // Determine the new values for make_homepage and published_status based on $slug
+       $new_make_homepage = ($slug == 'homepage') ? !$data->make_homepage : !$data->make_homepage;
+       $new_published_status = 1;
+
+       // Update the properties
+       $data->make_homepage = $new_make_homepage;
+       $data->published_status = $new_published_status;
+
+       // Save the changes
+       $data->save();
+
+       return redirect()->back()->with('success', 'Status has been updated');
     }
 }
