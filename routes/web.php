@@ -64,4 +64,7 @@ Auth::routes(['register' => false]);
 
 Route::resource('pages',PagesController::class);
 Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
-Route::post('upload',[PagesController::class,'update_status'])->name('img.upload');
+
+// upload image
+    Route::post('upload', [PagesController::class,'uploadimage'])->name('editor_img.upload');
+
