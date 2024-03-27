@@ -37,6 +37,9 @@ Route::middleware('auth')->group(function () {
         Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
         Route::prefix('blog')->group(function () {
             Route::resource('add-blog', BlogController::class);
+            Route::post('search-blog', [BlogController::class, 'searchBlogs'])->name('blog.search-blog');
+
+
             Route::resource('blog-category', BlogCategoryController::class);
             Route::post('blog-category/delete', [BlogCategoryController::class, 'massDeleteCategories'])->name('blog.category.mass-delete');
             Route::post('blog-category/update-status', [BlogCategoryController::class, 'updateStatus'])->name('blog.category.update-status');
@@ -61,7 +64,7 @@ Auth::routes(['register' => false]);
 
 Route::resource('pages',PagesController::class);
 Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
+
 // upload image
     Route::post('upload', [PagesController::class,'uploadimage'])->name('editor_img.upload');
 
-//

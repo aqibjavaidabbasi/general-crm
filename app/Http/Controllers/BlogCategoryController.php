@@ -17,7 +17,16 @@ class BlogCategoryController extends Controller
         $categories = BlogCategory::with('parentCategory:id,name')
             ->get(['id', 'name', 'status', 'featured', 'parent_id']);
 
-        return view('blog.category.index', ['categories' => $categories]);
+
+        $allCount = BlogCategory::count();
+        $featuredCount = BlogCategory::where('featured', 1)->count();
+        $stats = [
+            'all_count' => $allCount,
+            'featured_count' => $featuredCount,
+        ];
+        // dd($stats);
+
+        return view('blog.category.index', ['categories' => $categories,'stats' => $stats]);
     }
 
     /**
@@ -125,13 +134,20 @@ class BlogCategoryController extends Controller
 
     public function searchBlogCategories(Request $request)
     {
+        // dd($request->all());
         $searchText = $request->input('searchText');
+        $filter = $request->input('filter');
         $query = BlogCategory::query();
         if (empty($searchText)) {
             $query->with('parentCategory')->get();
         } else {
             $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
         }
+
+        if (!empty($filter)) {
+            if ($filter === 'featured') {
+                $query->where('featured', true);
+        }}
         $categories = $query->get();
 
         return view('blog.category.filtered-blog_categories')->with(['categories' => $categories]);
