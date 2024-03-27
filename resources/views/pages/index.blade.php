@@ -11,7 +11,29 @@
                     <h5 class="card-title mb-0">All Pages</h5>
                 </div>
                 <div class="card-body">
-                    <table id="buttons-datatables" class="display table table-bordered" style="width:100%">
+                    <div class="filter_button">
+
+                        <a href="https://cmslooks.themelooks.us/admin/page-list" class="btn sm btn-dark mx-1 my-2">
+                            All({{ count($pages) }})</a>
+
+                        <a href="https://cmslooks.themelooks.us/admin/page-list?status=mine"
+                            class="btn sm btn-dark sm mx-1 my-2">
+                            Trash ({{ $pages->where('status', 0)->count() }})</a>
+
+                        <a href="https://cmslooks.themelooks.us/admin/page-list?status=publish"
+                            class="btn sm btn-success sm mx-1 my-2">
+                            Published({{ $pages->where('published_status', 1)->count() }})</a>
+
+                        {{-- <a href="https://cmslooks.themelooks.us/admin/page-list?status=schedule"
+                            class="btn sm btn-info mx-1 my-2">
+                            Scheduled({{ $pages->where('published_date_time', '>', now())->count() }})
+                        </a> --}}
+
+
+
+                    </div>
+                    <table id="example" class="table table-bordered dt-responsive nowrap table-striped align-middle"
+                        style="width:100%">
                         <thead>
                             <tr>
                                 <th scope="col" style="width: 10px;">
@@ -22,6 +44,7 @@
                                 <th>SR No.</th>
                                 <th>Title</th>
                                 <th>Parrent</th>
+                                <th>Visibility</th>
                                 <th>Author</th>
                                 <th>Date</th>
                                 <th>HomePage</th>
@@ -41,19 +64,26 @@
                                         <td>{{ $page->id }}</td>
                                         <td>{{ $page->page_title }}—, {{ $page->visibility }}</td>
                                         <td>{{ $page->parent_page }}</td>
+                                        <td>
+                                            @if ($page->published_status == 1)
+                                                <span class="btn sm btn-success sm mx-1 my-2">Publish</span>
+                                            @else
+                                                <span class="btn sm btn-danger mx-1 my-2">Un-Publish</span>
+                                            @endif
+                                        </td>
                                         <td>{{ $page->user_id }} :
                                             {{ $page->user_id ? $page->user_id : 'Admin' }}</td>
                                         <td>{{ $page->created_at }}</td>
                                         <td>
-                                            @if ($page->make_homepage == 1)
+                                            @if ($page->make_homepage == 0)
                                                 <a href="{{ route('pages.update-status', ['id' => $page->id, 'slug' => 'homepage']) }}"
                                                     class="btn btn-info sm ml-2">
-                                                    Make Homepage
+                                                    NormalPage
                                                 </a>
                                             @else
                                                 <a href="{{ route('pages.update-status', ['id' => $page->id, 'slug' => 'page']) }}"
                                                     class="btn btn-info sm ml-2">
-                                                    Homepage
+                                                    Make Homepage
                                                 </a>
                                             @endif
                                         </td>
@@ -66,13 +96,14 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li><a href="{{ route('pages.edit', $page->id) }}"
                                                             class="dropdown-item">
-                                                            Edit {{ $page->id }}</a></li>
-                                                    <li><a class="dropdown-item edit-item-btn">
+                                                            Edit</a></li>
+                                                    <li><a href="{{ route('pages.trash', $page->id) }}"
+                                                            class="dropdown-item edit-item-btn">
                                                             Trash</a>
                                                     </li>
                                                     <li>
-                                                        <a class="dropdown-item remove-item-btn">
-
+                                                        <a href="{{ route('pages.destroy', $page->id) }}"
+                                                            class="dropdown-item remove-item-btn">
                                                             Delete
                                                         </a>
                                                     </li>
