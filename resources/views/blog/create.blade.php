@@ -302,7 +302,7 @@
                 </div><!-- end card header -->
                 <div class="form-group row justify-content-center align-items-center mt-4">
                     <div class="col-sm-4">
-                        <input type="hidden" name="page_image" id="page_image_id" value="">
+                        <input type="hidden" name="blog-media-id" id="page_image_id" value="">
                         <div class="image-box">
                             <div class="d-flex flex-wrap gap-10 mb-3">
                                 <div class="preview-image-wrapper">
@@ -323,9 +323,6 @@
                     </div>
                 </div>
             </div>
-
-
-
 
             <div class="card card-body mt-5 mt-md-5 col-12">
                 <h4 class="font-16 mb-2">Blog Status</h4>

@@ -25,7 +25,8 @@ class Blog extends Model
         'status',
         'protection_password',
         'front_page_blog',
-        'user_id'
+        'user_id',
+        'blog_media_id'
     ];
 
     protected $casts = [

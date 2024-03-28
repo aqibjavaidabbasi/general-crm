@@ -8,10 +8,10 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">{{ isset($blogCategory) ? 'Edit' : 'Add'}} Blog Category</h4>
-                </div> 
+                    <h4 class="card-title mb-0">{{ isset($blogCategory) ? 'Edit' : 'Add' }} Blog Category</h4>
+                </div>
                 <div class="card-body form-steps">
-                    <form
+                    <form id="blogCategoryForm"
                         action="{{ isset($blogCategory) ? route('blog-category.update', ['blog_category' => $blogCategory->id]) : route('blog-category.store') }}"
                         method="POST">
                         @csrf
@@ -98,12 +98,43 @@
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
-                                            <div class="mb-3">
-                                                <label for="formFile" class="form-label">Upload Image</label>
-                                                <input class="form-control" name="meta_media_id" type="file"
-                                                    id="formFile">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h4 class="card-title mb-0">Blog Image</h4>
+                                                </div>
+                                                <div class="card-body">
+                                                    <div
+                                                        class="form-group row justify-content-center align-items-center mt-4">
+                                                        <div class="col-sm-4">
+                                                            <input type="hidden" name="meta_media_id" id="page_image_id"
+                                                                value="{{ $blogCategory->meta_media_id ?? '' }}">
+                                                            <div class="image-box">
+                                                                <div class="d-flex flex-wrap gap-10 mb-3">
+                                                                    <div class="preview-image-wrapper">
+                                                                        <a type="button" title="Remove image"
+                                                                            class="remove-btn style--three black d-none"
+                                                                            id="page_image_remove"
+                                                                            onclick="removeSelection('#page_image_preview')">
+                                                                            <i class="ri-close-circle-fill"></i>
+                                                                        </a>
+                                                                        <img src="{{ isset($blogCategory) && $blogCategory->meta_media_id ? asset('storage/' . $blogCategory->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                                                                            alt="page_image" width="150"
+                                                                            class="preview_image" id="page_image_preview">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="image-box-actions mb-3">
+                                                                    <a type="button" class="btn-link"
+                                                                        id="chooseFileBtn">
+                                                                        Choose File
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -119,6 +150,54 @@
         </div>
         <!-- end col -->
     </div>
+
+    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <x-media />
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#blogCategoryForm').submit(function(e) {
+                e.preventDefault();
+
+                var formData = $(this).serialize();
+
+
+                $.ajax({
+                    url: $(this).attr('action'),
+                    type: $(this).attr('method'),
+                    dataType: 'json',
+                    data: formData,
+                    success: function(response) {
+                        console.log(response)
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href =
+                                    '{{ route('blog-category.index') }}';
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            'Operation failed!',
+                            'error'
+                        );
+                    }
+                });
+            });
+        });
+    </script>
 
     <script>
         var baseURL = '{{ url('blog/category/') }}';
@@ -148,5 +227,22 @@
         });
     </script>
 
+    <script>
+        function removeSelection(selector) {
+            $(selector).attr('src', 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg');
+            $('#page_image_remove').addClass('d-none');
+            $('#page_image_id').val('');
+        }
+
+        $('#chooseFileBtn').on('click', function() {
+            $('#mediaUploadModal').modal('show');
+        });
+
+        if ($('#page_image_id').val()) {
+            $('#page_image_remove').removeClass('d-none');
+        } else {
+            $('#page_image_remove').addClass('d-none');
+        }
+    </script>
 
 @endsection

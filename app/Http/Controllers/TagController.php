@@ -32,13 +32,10 @@ class TagController extends Controller
     public function store(StoreTagRequest $request)
     {
         $validatedData = $request->validated();
-
         if (Tag::create($validatedData)) {
-            session()->flash('alert', ['message' => 'Tag Successfully Created', 'type' => 'success']);
-            return to_route('tag.index');
+            return response()->json(['message' => 'Tag Created Successfully']);
         } else {
-            session()->flash('alert', ['message' => 'Error Occured While Creating Tag!', 'type' => 'error']);
-            return to_route('tag.index');
+            return response()->json(['message' => 'Error Occured While Creating Tag!'],500);
         }
     }
 
@@ -68,11 +65,9 @@ class TagController extends Controller
         $validatedData = $request->validated();
 
         if ($tag->update($validatedData)) {
-            session()->flash('alert', ['message' => 'Tag Updated Successfully', 'type' => 'success']);
-            return to_route('tag.index');
+            return response()->json(['message' => 'Tag Updated Successfully']);
         } else {
-            session()->flash('alert', ['message' => 'Error Occured While Updating Tag!','type' => 'error']);
-            return to_route('tag.index');
+            return response()->json(['message' => 'Error Occured While Creating Tag!'],500);
         }
     }
 
