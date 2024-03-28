@@ -45,13 +45,10 @@ class BlogCategoryController extends Controller
     {
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
-
         if (BlogCategory::create($validatedData)) {
-            session()->flash('alert', ['message' => 'Blog Category Created Successfully!','type' => 'success']);
-            return to_route('blog-category.index');
+            return response()->json(['message' => "Blog Category Created successfully"]);
         } else{
-            session()->flash('alert', ['message' => 'Error Occured While Creating Blog Category!','type' => 'error']);
-            return to_route('blog-category.index');
+            return response()->json(['message' => "Blog Category Not Created successfully"],500);
         }
     }
 
@@ -69,6 +66,7 @@ class BlogCategoryController extends Controller
     public function edit(BlogCategory $blogCategory)
     {
         if (!is_null($blogCategory)) {
+            $blogCategory->load('media');
             $categories = BlogCategory::where('position', 0)->get(['id', 'name']);
             return view('blog.category.create', compact('blogCategory', 'categories'));
         }
@@ -83,11 +81,9 @@ class BlogCategoryController extends Controller
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
         if ($blogCategory->update($validatedData)) {
-            session()->flash('alert', ['message' => 'Blog Category Updated Successfully!','type' => 'success']);
-            return to_route('blog-category.index');
+            return response()->json(['message' => "Blog Category Updated successfully"]);
         } else{
-            session()->flash('alert', ['message' => 'Error Occured While Updating Blog Category!','type' => 'error']);
-            return to_route('blog-category.index');
+            return response()->json(['message' => "Blog Category Not Updated successfully"],500);
         }
     }
 

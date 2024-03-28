@@ -40,7 +40,7 @@ class BlogController extends Controller
     public function store(StoreBlogRequest $request)
     {
         $validatedData = $request->validated();
-        dd($validatedData);
+        // dd($validatedData);
         $content = $validatedData['content'];
 
         if (!is_null($content)) {
@@ -96,9 +96,9 @@ class BlogController extends Controller
             $validatedData['protection_password'] = bcrypt($validatedData['protection-password']);
         }
 
-        // if(is_null($validatedData['status'])){
-        //     $validatedData['status'] = 'published';
-        // }
+        if(!is_null($validatedData['blog-media-id'])){
+            $validatedData['blog_media_id'] = $validatedData['blog-media-id'];
+        }
             // dd($validatedData);
         $validatedData['user_id'] = Auth::user()->id;
         if (Blog::create($validatedData)) {
