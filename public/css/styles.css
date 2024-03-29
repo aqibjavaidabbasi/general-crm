@@ -54,7 +54,7 @@
 }
 
 .btn-link:hover {
-    color: blue;
+    color: #4788FF;
 }
 
 .preview-image-wrapper {
@@ -67,4 +67,9 @@
     right: 5px;
     font-size: 25px;
     color: red;
+}
+
+.img-45 {
+    width: 45px;
+    height: auto;
 }

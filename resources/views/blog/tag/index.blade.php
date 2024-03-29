@@ -81,11 +81,11 @@
                                                 <ul class="dropdown-menu dropdown-menu-end">
                                                     <li>
                                                         <a href="{{ route('tag.edit', $tag->id) }}"
-                                                            class="dropdown-item">Edit</a>
+                                                            class="dropdown-item"> <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
                                                     </li>
                                                     <li>
                                                         <a onclick="deleteCategory('{{ route('tag.destroy', $tag->id) }}')"
-                                                            class="dropdown-item" role="button">Remove</a>
+                                                            class="dropdown-item" role="button"> <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Remove</a>
                                                     </li>
                                                 </ul>
                                             </div>

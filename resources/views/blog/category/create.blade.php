@@ -2,6 +2,7 @@
 
 @section('page-title', 'Blog')
 @section('sub-page-title', 'Categories')
+@section('sub-sub-page-title', 'Create Category')
 @section('content')
 
     <div class="row">

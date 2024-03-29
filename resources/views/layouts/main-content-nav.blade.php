@@ -9,6 +9,9 @@
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ config('app.name') }}</a></li>
                     <li class="breadcrumb-item active">@yield('page-title')</li>
                     <li class="breadcrumb-item active">@yield('sub-page-title')</li>
+                    @if(View::hasSection('sub-sub-page-title'))
+                        <li class="breadcrumb-item active">@yield('sub-sub-page-title')</li>
+                    @endif
                 </ol>
             </div>
         </div>

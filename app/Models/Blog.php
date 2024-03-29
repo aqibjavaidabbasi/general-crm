@@ -34,8 +34,23 @@ class Blog extends Model
         'tag_ids' => 'json'
     ];
 
+    public function categories()
+{
+    if ($this->category_ids !== null) {
+        return BlogCategory::whereIn('id', $this->category_ids)->get();
+    } else {
+        return collect(); // or return an empty array if preferred
+    }
+}
+
     public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function media()
+    {
+        return $this->belongsTo(Media::class, 'blog_media_id');
+    }
+
 }

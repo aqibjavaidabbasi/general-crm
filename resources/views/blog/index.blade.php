@@ -14,15 +14,14 @@
                         <div>
                             <div class="btn-group mt-2" role="group" aria-label="Record Filter">
                                 <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All
-                                    ({{ $categories->count() }})</button>
+                                    ({{ $blogs->count() }})</button>
                                 <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn"
-                                    value="featured">Featured ({{ $categories->where('featured', true)->count() }})</button>
+                                    value="featured">Featured ({{ $blogs->where('featured', true)->count() }})</button>
                             </div>
                         </div>
                         <div class="d-flex align-items-center">
                             <div>
-                                <a class="btn btn-primary add-btn mx-2" href="{{ route('blog-category.create') }}">Add Blog
-                                    Category</a>
+                                <a class="btn btn-primary add-btn mx-2" href="{{ route('add-blog.create') }}">Add Blog</a>
                             </div>
                             <div class="mx-2">
                                 <button class="btn btn-soft-danger" id="bulkDeleteBtn" onClick="deleteMultiple()">
@@ -57,30 +56,44 @@
                             </tr>
                         </thead>
                         <tbody id="categoryTableBody">
-                            @forelse ($categories as $category)
+                            @forelse ($blogs as $blog)
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
                                             <input class="form-check-input mass-action-checkbox" type="checkbox"
-                                                name="chk_child" value="{{ $category->id }}">
+                                                name="chk_child" value="{{ $blog->id }}">
                                         </div>
                                     </th>
-                                    <td data-sort="{{ $category->name }}">{{ $category->name }}</td>
-                                    <td data-sort="{{ $category->parentCategory->name ?? '' }}">
-                                        {{ $category->parentCategory->name ?? '-' }}</td>
                                     <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input feature-toggle" type="checkbox"
-                                                {{ $category->featured ? 'checked' : '' }}
-                                                data-category-id="{{ $category->id }}">
-                                        </div>
+                                        <img src="{{ isset($blog) && $blog->blog_media_id ? asset('storage/' . $blog->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                                            alt="blog_image" class="img-45">
+                                    </td>
+                                    <td >
+                                        <a href="" class="btn-link">{{ $blog->name }}</a>
+                                    </td>
+
+                                    <td>
+                                        {{ $blog->author->name }}
+                                    </td>
+
+                                    <td>
+                                        ToDo
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input status-toggle" type="checkbox"
-                                                {{ $category->status ? 'checked' : '' }}
-                                                data-category-id="{{ $category->id }}">
+                                                {{ $blog->featured ? 'checked' : '' }}
+                                                data-category-id="{{ $blog->id }}">
                                         </div>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class='bx bx-message-rounded-detail fs-22'></i>
+                                            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        
                                     </td>
                                     <td>
                                         <div class="dropdown d-inline-block">
@@ -90,11 +103,11 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a href="{{ route('blog-category.edit', $category->id) }}"
+                                                    <a href="{{ route('blog-category.edit', $blog->id) }}"
                                                         class="dropdown-item">Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a onclick="deleteCategory('{{ route('blog-category.destroy', $category->id) }}')"
+                                                    <a onclick="deleteCategory('{{ route('blog-category.destroy', $blog->id) }}')"
                                                         class="dropdown-item" role="button">Remove</a>
                                                 </li>
                                             </ul>
