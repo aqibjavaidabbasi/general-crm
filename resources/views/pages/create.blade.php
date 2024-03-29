@@ -173,12 +173,11 @@
                                                     class="icofont-close"></i></button>
                                         </div>
                                     </div>
-                                    <div class="image-box-actions">
-                                        <button type="button" class="btn-link" data-toggle="modal"
-                                            data-target="#mediaUploadModal" id="page_image_choose"
-                                            onclick="setDataInsertableIds('#page_image_preview,#page_image_id,#page_image_remove')">
+                                    <input type="hidden" name="meta_media_id" id="page_image_id" value="">
+                                    <div class="image-box-actions mb-3">
+                                        <a type="button" class="btn-link" id="chooseFileBtn">
                                             Choose File
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -198,9 +197,36 @@
             </div>
         </div>
     </form>
-
+    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <x-media />
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    {{-- image modal --}}
+    <script>
+        function removeSelection(selector) {
+            console.log('hello here');
+            $(selector).attr('src', 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg');
+            $('#page_image_remove').addClass('d-none');
+            $('#page_image_id').val('');
+        }
 
+        $('#chooseFileBtn').on('click', function() {
+            $('#mediaUploadModal').modal('show');
+        });
+
+        if ($('#page_image_id').val()) {
+            $('#page_image_remove').removeClass('d-none');
+        } else {
+            $('#page_image_remove').addClass('d-none');
+        }
+    </script>
+    {{-- Editor --}}
     <script>
         // for page description
         ClassicEditor

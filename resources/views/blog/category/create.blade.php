@@ -149,16 +149,17 @@
             <!-- end card -->
         </div>
         <!-- end col -->
-    </div>
-
-    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
-        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <x-media />
+        <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+            aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <x-media />
+                </div>
             </div>
         </div>
     </div>
+
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
