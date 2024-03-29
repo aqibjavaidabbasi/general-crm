@@ -9,6 +9,7 @@ use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreBlogRequest;
+use App\Models\BlogTag;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -41,7 +42,6 @@ class BlogController extends Controller
     public function store(StoreBlogRequest $request)
     {
         $validatedData = $request->validated();
-        // dd($validatedData);
         $content = $validatedData['content'];
 
         if (!is_null($content)) {
@@ -109,12 +109,19 @@ class BlogController extends Controller
                     BlogCategory::create(['category_id' => $category, 'blog_id' => $blog->id]);
                 }
             }
+
+            if(isset($validatedData['tag_ids']) && !is_null($validatedData['tag_ids'])){
+                $tags = $validatedData['tag_ids'];
+                foreach($tags as $tag){
+                    BlogTag::create(['tag_id' => $tag, 'blog_id' => $blog->id]);
+                }
+            }
+
             return response()->json(['message' => 'Blog Created Successfully!'], 200);
+
         }
 
         return response()->json(['message' => 'Error Occurred While Creating Blog!'], 500);
-
-
     }
 
     /**
