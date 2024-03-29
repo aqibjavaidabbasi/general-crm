@@ -36,10 +36,6 @@
             </td>
         </tr>
     @endforeach
-    {{-- <tr>
-        <td colspan="6">{{ $categories->links() }}</td>
-    </tr> --}}
-
 @else
     <tr>
         <td colspan="6">No Category Found.</td>

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\BlogCategory;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreBlogCategoryRequest;
 use App\Http\Requests\UpdateBlogCategoryRequest;
+use App\Models\BlogCategory;
+use Illuminate\Http\Request;
 
 class BlogCategoryController extends Controller
 {
@@ -15,18 +15,19 @@ class BlogCategoryController extends Controller
     public function index()
     {
         $categories = BlogCategory::with('parentCategory:id,name')
-            ->get(['id', 'name', 'status', 'featured', 'parent_id']);
+            ->select(['id', 'name', 'status', 'featured', 'parent_id'])->get();
 
-
-        $allCount = BlogCategory::count();
-        $featuredCount = BlogCategory::where('featured', 1)->count();
-        $stats = [
-            'all_count' => $allCount,
-            'featured_count' => $featuredCount,
-        ];
+        // dd($categories);
+        // $allCount = BlogCategory::count();
+        // $featuredCount = BlogCategory::where('featured', 1)->count();
+        // $stats = [
+        //     'all_count' => $allCount,
+        //     'featured_count' => $featuredCount,
+        // ];
         // dd($stats);
 
-        return view('blog.category.index', ['categories' => $categories,'stats' => $stats]);
+        // return view('blog.category.index', ['categories' => $categories,'stats' => $stats]);
+        return view('blog.category.index', ['categories' => $categories]);
     }
 
     /**
@@ -47,8 +48,8 @@ class BlogCategoryController extends Controller
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
         if (BlogCategory::create($validatedData)) {
             return response()->json(['message' => "Blog Category Created successfully"]);
-        } else{
-            return response()->json(['message' => "Blog Category Not Created successfully"],500);
+        } else {
+            return response()->json(['message' => "Blog Category Not Created successfully"], 500);
         }
     }
 
@@ -82,8 +83,8 @@ class BlogCategoryController extends Controller
 
         if ($blogCategory->update($validatedData)) {
             return response()->json(['message' => "Blog Category Updated successfully"]);
-        } else{
-            return response()->json(['message' => "Blog Category Not Updated successfully"],500);
+        } else {
+            return response()->json(['message' => "Blog Category Not Updated successfully"], 500);
         }
     }
 
@@ -130,7 +131,6 @@ class BlogCategoryController extends Controller
 
     public function searchBlogCategories(Request $request)
     {
-        // dd($request->all());
         $searchText = $request->input('searchText');
         $filter = $request->input('filter');
         $query = BlogCategory::query();
@@ -143,7 +143,8 @@ class BlogCategoryController extends Controller
         if (!empty($filter)) {
             if ($filter === 'featured') {
                 $query->where('featured', true);
-        }}
+            }
+        }
         $categories = $query->get();
 
         return view('blog.category.filtered-blog_categories')->with(['categories' => $categories]);
