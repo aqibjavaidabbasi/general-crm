@@ -422,8 +422,11 @@
                             'Success!',
                             successMessage,
                             'success'
-                        ).then(() => {
-                            location.reload();
+                        ).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href =
+                                    '{{ route('add-blog.index') }}';
+                            }
                         });
                     },
                     error: function(xhr, status, error) {

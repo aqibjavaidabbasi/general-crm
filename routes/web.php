@@ -8,7 +8,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\{BlogCategoryController,PagesController, TagController};
+use App\Http\Controllers\{CategoryController,PagesController, TagController};
 
 /*
 |--------------------------------------------------------------------------
@@ -39,12 +39,13 @@ Route::middleware('auth')->group(function () {
         Route::prefix('blog')->group(function () {
             Route::resource('add-blog', BlogController::class);
             Route::post('search-blog', [BlogController::class, 'searchBlogs'])->name('blog.search-blog');
+            Route::post('update-toggle-status', [BlogController::class, 'updateFeaturedStatus'])->name('blog.update-toggle-status');
 
 
-            Route::resource('blog-category', BlogCategoryController::class);
-            Route::post('blog-category/delete', [BlogCategoryController::class, 'massDeleteCategories'])->name('blog.category.mass-delete');
-            Route::post('blog-category/update-status', [BlogCategoryController::class, 'updateStatus'])->name('blog.category.update-status');
-            Route::post('blog-category/search-blog-categories', [BlogCategoryController::class, 'searchBlogCategories'])->name('blog.category.search-blog-categories');
+            Route::resource('category', CategoryController::class);
+            Route::post('category/delete', [CategoryController::class, 'massDeleteCategories'])->name('blog.category.mass-delete');
+            Route::post('category/update-status', [CategoryController::class, 'updateStatus'])->name('blog.category.update-status');
+            Route::post('category/searchcategories', [CategoryController::class, 'searchBlogCategories'])->name('blog.category.search-blog-categories');
 
             // Tags Routes
 

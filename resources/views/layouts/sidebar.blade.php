@@ -37,8 +37,8 @@
                                 data-key="t-chat"> Add New Blog </a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('blog-category.index') }}"
-                                class="nav-link {{ Request::is('*/blog-category/*') || Request::is('*/blog-category') ? 'active' : '' }}"
+                            <a href="{{ route('category.index') }}"
+                                class="nav-link {{ Request::is('*/category/*') || Request::is('*/category') ? 'active' : '' }}"
                                 data-key="t-chat"> Categories </a>
                         </li>
                         <li class="nav-item">

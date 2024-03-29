@@ -11,8 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('media', function (Blueprint $table) {
-            $table->text('title')->nullable()->after('name');
+        Schema::create('blog_category', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('blog_id')->constrained()->onDelete('cascade');
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
         });
     }
 
@@ -21,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('media', function (Blueprint $table) {
-            $table->dropColumn('title');
-        });
+        Schema::dropIfExists('blog_category');
     }
 };

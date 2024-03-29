@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\BlogCategory;
+use App\Models\Category;
 class CategorySeeder extends Seeder
 {
     /**
@@ -16,6 +16,6 @@ class CategorySeeder extends Seeder
         $category = [
             'name'=>'Tech'
         ];
-        BlogCategory::create($category);
+        Category::create($category);
     }
 }

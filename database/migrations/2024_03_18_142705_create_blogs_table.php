@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('meta_title')->nullable();;
             $table->longText('meta_description')->nullable();
             $table->string('format')->nullable();
-            $table->json('category_ids')->nullable();
             $table->json('tag_ids')->nullable();
             $table->unsignedBigInteger('blog_media_id')->nullable();
             $table->foreign('blog_media_id')->references('id')->on('media');

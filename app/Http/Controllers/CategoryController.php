@@ -2,24 +2,25 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreBlogCategoryRequest;
-use App\Http\Requests\UpdateBlogCategoryRequest;
-use App\Models\BlogCategory;
+use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\StoreCategoryRequest;
+use App\Http\Requests\UpdateCategoryRequest;
+use App\Http\Requests\UpdateBlogCategoryRequest;
 
-class BlogCategoryController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $categories = BlogCategory::with('parentCategory:id,name')
+        $categories = Category::with('parentCategory:id,name')
             ->select(['id', 'name', 'status', 'featured', 'parent_id'])->get();
 
         // dd($categories);
-        // $allCount = BlogCategory::count();
-        // $featuredCount = BlogCategory::where('featured', 1)->count();
+        // $allCount = Category::count();
+        // $featuredCount = Category::where('featured', 1)->count();
         // $stats = [
         //     'all_count' => $allCount,
         //     'featured_count' => $featuredCount,
@@ -35,21 +36,21 @@ class BlogCategoryController extends Controller
      */
     public function create()
     {
-        $categories = BlogCategory::where('position', 0)->get(['id', 'name']);
+        $categories = Category::where('position', 0)->get(['id', 'name']);
         return view('blog.category.create', ['categories' => $categories]);
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreBlogCategoryRequest $request)
+    public function store(StoreCategoryRequest $request)
     {
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
-        if (BlogCategory::create($validatedData)) {
-            return response()->json(['message' => "Blog Category Created successfully"]);
+        if (Category::create($validatedData)) {
+            return response()->json(['message' => "Category Created successfully"]);
         } else {
-            return response()->json(['message' => "Blog Category Not Created successfully"], 500);
+            return response()->json(['message' => "Category Not Created successfully"], 500);
         }
     }
 
@@ -64,25 +65,25 @@ class BlogCategoryController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(BlogCategory $blogCategory)
+    public function edit(Category $category)
     {
-        if (!is_null($blogCategory)) {
-            $blogCategory->load('media');
-            $categories = BlogCategory::where('position', 0)->get(['id', 'name']);
-            return view('blog.category.create', compact('blogCategory', 'categories'));
+        if (!is_null($category)) {
+            $category->load('media');
+            $categories = Category::where('position', 0)->get(['id', 'name']);
+            return view('blog.category.create', compact('category', 'categories'));
         }
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBlogCategoryRequest $request, BlogCategory $blogCategory)
+    public function update(UpdateCategoryRequest $request, Category $category)
     {
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
 
-        if ($blogCategory->update($validatedData)) {
-            return response()->json(['message' => "Blog Category Updated successfully"]);
+        if ($category->update($validatedData)) {
+            return response()->json(['message' => "Category Updated successfully"]);
         } else {
             return response()->json(['message' => "Blog Category Not Updated successfully"], 500);
         }
@@ -91,20 +92,20 @@ class BlogCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(BlogCategory $blog_category)
+    public function destroy(Category $category)
     {
-        if ($blog_category) {
-            $blog_category->delete();
-            return response()->json(['message' => "Blog Category Deleted"], 200);
+        if (!is_null($category)) {
+            if($category->delete()){
+                return response()->json(['message' => "Blog Category Deleted"], 200);
+            }
         }
-
         return response()->json(['message' => "Blog Category Not Found"], 404);
     }
 
     public function massDeleteCategories(Request $request)
     {
         $ids = $request->ids;
-        $categories = BlogCategory::findOrfail($ids);
+        $categories = Category::findOrfail($ids);
 
         foreach ($categories as $category) {
             $category->delete();
@@ -115,7 +116,7 @@ class BlogCategoryController extends Controller
     public function updateStatus(Request $request)
     {
         $categoryId = $request->id;
-        $category = BlogCategory::findOrFail($categoryId);
+        $category = Category::findOrFail($categoryId);
 
         if (!is_null($category)) {
             if ($request->has('status')) {
@@ -133,7 +134,7 @@ class BlogCategoryController extends Controller
     {
         $searchText = $request->input('searchText');
         $filter = $request->input('filter');
-        $query = BlogCategory::query();
+        $query = Category::query();
         if (empty($searchText)) {
             $query->with('parentCategory')->get();
         } else {

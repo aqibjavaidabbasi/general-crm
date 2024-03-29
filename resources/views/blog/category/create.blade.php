@@ -9,14 +9,14 @@
         <div class="col">
             <div class="card">
                 <div class="card-header">
-                    <h4 class="card-title mb-0">{{ isset($blogCategory) ? 'Edit' : 'Add' }} Blog Category</h4>
+                    <h4 class="card-title mb-0">{{ isset($category) ? 'Edit' : 'Add' }} Category</h4>
                 </div>
                 <div class="card-body form-steps">
                     <form id="blogCategoryForm"
-                        action="{{ isset($blogCategory) ? route('blog-category.update', ['blog_category' => $blogCategory->id]) : route('blog-category.store') }}"
+                        action="{{ isset($category) ? route('category.update', ['category' => $category->id]) : route('category.store') }}"
                         method="POST">
                         @csrf
-                        @if (isset($blogCategory))
+                        @if (isset($category))
                             @method('PUT')
                         @endif
                         <div class="tab-content">
@@ -30,7 +30,7 @@
                                                         class="text-danger">*</span> </label>
                                                 <input type="text" class="form-control" id="gen-info-email-input"
                                                     placeholder="Enter Name" name="name" required
-                                                    value="{{ isset($blogCategory) ? $blogCategory->name : '' }}">
+                                                    value="{{ isset($category) ? $category->name : '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12" id="permalink-section" style="display: none;">
@@ -48,7 +48,7 @@
                                                     <div class="mt-2">
                                                         <input type="text" class="form-control" id="slug"
                                                             name="slug"
-                                                            value="{{ isset($blogCategory) ? $blogCategory->slug : '' }}">
+                                                            value="{{ isset($category) ? $category->slug : '' }}">
                                                         <div class="mt-2">
                                                             <button class="btn btn-secondary" type="button"
                                                                 data-bs-toggle="collapse" data-bs-target="#editSlugCollapse"
@@ -69,7 +69,7 @@
                                                     <option value="" selected diabled>Select Parent Category</option>
                                                     @foreach ($categories as $cat)
                                                         <option value="{{ $cat->id }}"
-                                                            {{ isset($blogCategory) && $blogCategory->parent_id == $cat->id ? 'selected' : '' }}>
+                                                            {{ isset($category) && $category->parent_id == $cat->id ? 'selected' : '' }}>
                                                             {{ $cat->name }}</option>
                                                     @endforeach
                                                 </select>
@@ -79,7 +79,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="gen-info-password-input">Short
                                                     Description</label>
-                                                <textarea class="form-control" name="description" id="summernote" rows="3" placeholder="Enter Short Description">{{ isset($blogCategory) ? $blogCategory->description : '' }}</textarea>
+                                                <textarea class="form-control" name="description" id="summernote" rows="3" placeholder="Enter Short Description">{{ isset($category) ? $category->description : '' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -87,7 +87,7 @@
                                                 <label class="form-label" for="gen-info-email-input">Meta Title </label>
                                                 <input type="text" name="meta_title" class="form-control"
                                                     id="gen-info-email-input" placeholder="Enter Name"
-                                                    value="{{ isset($blogCategory) ? $blogCategory->meta_title : '' }}">
+                                                    value="{{ isset($category) ? $category->meta_title : '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -95,7 +95,7 @@
                                                 <label class="form-label" for="gen-info-username-input">Meta
                                                     Description</label>
                                                 <textarea class="form-control" name="meta_description" id="exampleFormControlTextarea5" rows="3"
-                                                    placeholder="Enter Short Description">{{ isset($blogCategory) ? $blogCategory->meta_description : '' }}</textarea>
+                                                    placeholder="Enter Short Description">{{ isset($category) ? $category->meta_description : '' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -108,7 +108,7 @@
                                                         class="form-group row justify-content-center align-items-center mt-4">
                                                         <div class="col-sm-4">
                                                             <input type="hidden" name="meta_media_id" id="page_image_id"
-                                                                value="{{ $blogCategory->meta_media_id ?? '' }}">
+                                                                value="{{ $category->meta_media_id ?? '' }}">
                                                             <div class="image-box">
                                                                 <div class="d-flex flex-wrap gap-10 mb-3">
                                                                     <div class="preview-image-wrapper">
@@ -118,7 +118,7 @@
                                                                             onclick="removeSelection('#page_image_preview')">
                                                                             <i class="ri-close-circle-fill"></i>
                                                                         </a>
-                                                                        <img src="{{ isset($blogCategory) && $blogCategory->meta_media_id ? asset('storage/' . $blogCategory->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                                                                        <img src="{{ isset($category) && $category->meta_media_id ? asset('storage/' . $category->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
                                                                             alt="page_image" width="150"
                                                                             class="preview_image" id="page_image_preview">
                                                                     </div>
@@ -141,7 +141,7 @@
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">
-                            {{ isset($blogCategory) ? 'Update' : 'Save' }}
+                            {{ isset($category) ? 'Update' : 'Save' }}
                         </button>
                     </form>
                 </div>
@@ -150,12 +150,12 @@
             <!-- end card -->
         </div>
         <!-- end col -->
-        <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
-            aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <x-media />
-                </div>
+    </div>
+    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <x-media />
             </div>
         </div>
     </div>
@@ -185,7 +185,7 @@
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 window.location.href =
-                                    '{{ route('blog-category.index') }}';
+                                    '{{ route('category.index') }}';
                             }
                         });
                     },

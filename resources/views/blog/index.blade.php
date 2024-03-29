@@ -68,7 +68,7 @@
                                         <img src="{{ isset($blog) && $blog->blog_media_id ? asset('storage/' . $blog->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
                                             alt="blog_image" class="img-45">
                                     </td>
-                                    <td >
+                                    <td>
                                         <a href="" class="btn-link">{{ $blog->name }}</a>
                                     </td>
 
@@ -77,23 +77,48 @@
                                     </td>
 
                                     <td>
-                                        ToDo
+                                        @forelse ($blog->categories as $category)
+                                        @if($loop->last)
+                                            {{ $category->name }}
+                                        @else
+                                            {{ $category->name }} , <br>
+                                        @endif
+                                        @empty
+                                            -
+                                        @endforelse
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input status-toggle" type="checkbox"
+                                            <input class="form-check-input feature-toggle" type="checkbox"
                                                 {{ $blog->featured ? 'checked' : '' }}
-                                                data-category-id="{{ $blog->id }}">
+                                                data-blog-id="{{ $blog->id }}">
                                         </div>
                                     </td>
                                     <td>
-                                        <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle" id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <button type="button"
+                                            class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
+                                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
                                             <i class='bx bx-message-rounded-detail fs-22'></i>
-                                            <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span class="visually-hidden">unread messages</span></span>
+                                            <span
+                                                class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span
+                                                    class="visually-hidden">unread messages</span></span>
                                         </button>
                                     </td>
                                     <td>
-                                        
+                                        <div class="d-flex flex-column align-items-center">
+                                            <span class="badge
+                                                @if ($blog->status == 'published') badge-soft-success text-uppercase
+                                                @elseif($blog->status == 'pending')
+                                                    badge-soft-warning text-uppercase
+                                                @elseif($blog->status == 'draft')
+                                                    badge-soft-primary text-uppercase @endif rounded-pill">
+                                                    {{ $blog->status }}
+                                            </span>
+                                            <span class="text-muted text-xs mt-1">
+                                                {{ Carbon\Carbon::parse($blog->created_at)->format('d-m-Y h:i A') }}
+                                            </span>
+                                        </div>
                                     </td>
                                     <td>
                                         <div class="dropdown d-inline-block">
@@ -103,12 +128,16 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a href="{{ route('blog-category.edit', $blog->id) }}"
-                                                        class="dropdown-item">Edit</a>
+                                                    <a href="{{ route('add-blog.edit', $blog->id) }}"
+                                                        class="dropdown-item"> <i
+                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                        Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a onclick="deleteCategory('{{ route('blog-category.destroy', $blog->id) }}')"
-                                                        class="dropdown-item" role="button">Remove</a>
+                                                    <a onclick="deleteBlog('{{ route('add-blog.destroy', $blog->id) }}')"
+                                                        class="dropdown-item" role="button"> <i
+                                                            class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                                        Remove</a>
                                                 </li>
                                             </ul>
                                         </div>
@@ -233,51 +262,15 @@
             });
         }
 
-        $('.status-toggle').change(function() {
-            var categoryId = $(this).data('category-id');
-            var newStatus = $(this).prop('checked') ? 1 : 0;
-
-            $.ajax({
-                url: '{{ route('blog.category.update-status') }}',
-                method: 'POST',
-                data: {
-                    id: categoryId,
-                    status: newStatus
-                },
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    Swal.fire(
-                        'Updated!',
-                        'Status has been updated.',
-                        'success'
-                    ).then(function() {
-                        window.location.reload();
-                    });
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire(
-                        'Error!',
-                        'Failed to update status. Please try again later.',
-                        'error'
-                    ).then(() => {
-                        location.reload();
-                    });
-                }
-            });
-        });
-
         $('.feature-toggle').change(function() {
-            var categoryId = $(this).data('category-id');
+            var blogId = $(this).data('blog-id');
             var newToggleStatus = $(this).prop('checked') ? 1 : 0;
-            console.log(newToggleStatus, categoryId)
 
             $.ajax({
-                url: '{{ route('blog.category.update-status') }}',
+                url: '{{ route('blog.update-toggle-status') }}',
                 method: 'POST',
                 data: {
-                    id: categoryId,
+                    id: blogId,
                     toggleStatus: newToggleStatus
                 },
                 headers: {
@@ -406,7 +399,8 @@
             });
         }
 
-        function deleteCategory(categorySlug) {
+        function deleteBlog(blogSlug) {
+            console.log(blogSlug)
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You will not be able to recover deleted items!',
@@ -426,7 +420,7 @@
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                'Your items have been deleted.',
+                                'Blog Have Been Deleted.',
                                 'success'
                             ).then(() => {
                                 location.reload();
