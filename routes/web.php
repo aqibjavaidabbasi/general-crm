@@ -47,7 +47,6 @@ Route::middleware('auth')->group(function () {
             Route::post('blog-category/search-blog-categories', [BlogCategoryController::class, 'searchBlogCategories'])->name('blog.category.search-blog-categories');
 
             // Tags Routes
-
             Route::resource('tag',TagController::class);
             Route::post('tag/search-tags', [TagController::class, 'searchTags'])->name('blog.tag.search-tags');
             Route::post('tag/delete', [TagController::class, 'massDeleteTags'])->name('blog.tag.mass-delete');
@@ -62,13 +61,16 @@ Route::middleware('auth')->group(function () {
 
 Auth::routes(['register' => false]);
 
+// Route::resource('pages',PagesController::class);
+Route::get('pages/{slug?}',[PagesController::class,'index'])->name('pages.index');
+Route::get('pages/create',[PagesController::class,'create'])->name('pages.create');
 
-Route::resource('pages',PagesController::class);
+Route::get('pages/{id?}',[PagesController::class,'index'])->name('pages.edit');
 Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
 
 Route::get('pages/trash/{id}',[PagesController::class,'trash'])->name('pages.trash');
+Route::get('pages/destroy/{id}',[PagesController::class,'destroy'])->name('pages.destroy');
 
 
 // upload image
-    Route::post('upload', [PagesController::class,'uploadimage'])->name('editor_img.upload');
-
+Route::post('upload', [PagesController::class,'uploadimage'])->name('editor_img.upload');

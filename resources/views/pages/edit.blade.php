@@ -93,28 +93,22 @@
                             </label>
                             <div class="py-6">
                                 <label>
-                                    @if ($data->visibility == 'public')
-                                        <input type="radio" name="visibility" value="public" checked>
-                                    @else
-                                        <input type="radio" name="visibility" value="public">
-                                    @endif
-                                    Public
+                                    <input type="radio" name="visibility" value="public"
+                                        {{ $data->visibility == 'public' ? 'checked' : '' }}> Public
                                 </label>
                                 <label>
-                                    @if ($data->visibility == 'private')
-                                        <input type="radio" name="visibility" value="private" checked>
-                                    @else
-                                        <input type="radio" name="visibility" value="private">
-                                    @endif
-
-                                    Private
+                                    <input type="radio" name="visibility" value="private"
+                                        {{ $data->visibility == 'private' ? 'checked' : '' }}> Private
                                 </label>
+
                             </div>
                             <div class="row my-2 mx-1">
                                 <i class="icofont-ui-calendar icofont-1x mt-2"></i>
-                                <span class="font-14 black ml-1 mt-2">Publish :</span>
+                                <span class="font-14 black ml-1 mt-2">Publish date-time:</span>
                                 <input type="datetime-local" name="published_date_time"
-                                    class="theme-input-style w-75 ml-2 py-0" value="">
+                                    class="theme-input-style w-75 ml-2 py-0"
+                                    value="{{ $data->published_date_time ? date('Y-m-d\TH:i', strtotime($data->published_date_time)) : '' }}">
+
                             </div>
                         </div>
                     </div>
@@ -126,9 +120,14 @@
                             </label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="category_id">
-                                    <option value="">select category</option>
-                                    <option value="1">1</option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $data->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->id }}
+                                        </option>
+                                    @endforeach
                                 </select>
+
                             </div>
                         </div>
                     </div>
@@ -169,25 +168,27 @@
                         <h4 class="font-16">Featured Image</h4>
                         <div class="form-group row justify-content-center align-items-center mt-4">
                             <div class="col-sm-4">
-                                <input type="hidden" name="page_image" id="page_image_id" value="">
+
                                 <div class="image-box">
+                                    <input type="hidden" name="featured_image_id" id="page_image_id"
+                                        value="{{ $data->featured_image_id ?? '' }}">
                                     <div class="d-flex flex-wrap gap-10 mb-3">
                                         <div class="preview-image-wrapper">
-                                            <img src="https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg"
+                                            <a type="button" title="Remove image"
+                                                class="remove-btn style--three black d-none" id="page_image_remove"
+                                                onclick="removeSelection('#page_image_preview')">
+                                                <i class="ri-close-circle-fill"></i>
+                                            </a>
+
+                                            <img src="{{ isset($data) && $data->featured_image_id ? asset('storage/' . $data->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
                                                 alt="page_image" width="150" class="preview_image"
                                                 id="page_image_preview">
-                                            <button type="button" title="Remove image"
-                                                class="remove-btn style--three black d-none" id="page_image_remove"
-                                                onclick="removeSelection('#page_image_preview,#page_image_id,#page_image_remove')"><i
-                                                    class="icofont-close"></i></button>
                                         </div>
                                     </div>
-                                    <div class="image-box-actions">
-                                        <button type="button" class="btn-link" data-toggle="modal"
-                                            data-target="#mediaUploadModal" id="page_image_choose"
-                                            onclick="setDataInsertableIds('#page_image_preview,#page_image_id,#page_image_remove')">
-                                            Choose File
-                                        </button>
+                                    <div class="image-box-actions mb-3">
+                                        <a type="button" class="btn-link" id="chooseFileBtn">
+                                            Choose File da ho
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -206,12 +207,36 @@
                 </div>
             </div>
         </div>
-
-
     </form>
-
+    <div class="modal fade modal-xl" id="mediaUploadModal" tabindex="-1" role="dialog"
+        aria-labelledby="mediaUploadModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <x-media />
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    {{-- image modal --}}
+    <script>
+        function removeSelection(selector) {
+            console.log('hello here');
+            $(selector).attr('src', 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg');
+            $('#page_image_remove').addClass('d-none');
+            $('#page_image_id').val('');
+        }
 
+        $('#chooseFileBtn').on('click', function() {
+            $('#mediaUploadModal').modal('show');
+        });
+
+        if ($('#page_image_id').val()) {
+            $('#page_image_remove').removeClass('d-none');
+        } else {
+            $('#page_image_remove').addClass('d-none');
+        }
+    </script>
     <script>
         // for page description
         ClassicEditor

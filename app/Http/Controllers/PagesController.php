@@ -3,26 +3,36 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pages;
+use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Auth;
 use RealRashid\SweetAlert\Facades\Alert;
-
 use Session;
 class PagesController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //  Alert::warning('Success Title', 'Success Message');
-        //
-        // $pages = Pages::where('status',1)->orderBy("id","desc")->paginate(10);
-        $pages = Pages::orderBy("id","desc")->paginate(10);
-        // $pages = Pages::get();
-        return view("pages/index", compact("pages"));
-    }
+  public function index($status = null)
+  {
+
+        switch ($status) {
+        case 'trash':
+                $pages = Pages::where('status', 0)->orderBy('id', 'desc')->paginate(10);
+                break;
+        case 'published':
+                $pages = Pages::where('published_status', 1)->orderBy('id', 'desc')->paginate(10);
+                break;
+        default:
+                $pages = Pages::orderBy('id', 'desc')->paginate(10);
+                break;
+        }
+        $totalpages = Pages::orderBy('id', 'desc')->paginate(10);
+        return view('pages.index', compact('pages','totalpages'));
+  }
+
+
 
 
     /**
@@ -30,9 +40,9 @@ class PagesController extends Controller
      */
     public function create()
     {
-
+        $categories = BlogCategory::all();
         //
-         return view("pages/create");
+         return view("pages/create",compact('categories'));
     }
 
     /**
@@ -53,17 +63,17 @@ class PagesController extends Controller
         $data->meta_description = $request->meta_description;
         $data->togle_status = '1';
         $data->published_status = '1';
-        $data->featured_image_link = $request->featured_image_link;
+        $data->featured_image_id = $request->featured_image_id;
         $data->make_homepage = '1';
         $data->visibility = $request->visibility;
         $data->published_date_time = $request->published_date_time;
           $data->status = $request->category_id;
         $data->save();
 
-        Alert::success('Success', 'Page inserted successfully');
-        $pages = Pages::get();
-        return view("pages/index", compact("pages"));
-
+        // Alert::success('Success', 'Page inserted successfully');
+        // $pages = Pages::get();
+        // return view("pages/index", compact("pages"));
+        return redirect()->route('pages.index');
     }
 
     /**
@@ -71,9 +81,9 @@ class PagesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $categories = BlogCategory::all();
         $data = Pages::find($id);
-        return view("pages/edit", compact("data"));
+        return view("pages/edit", compact("data",'categories'));
     }
 
     /**
@@ -81,6 +91,7 @@ class PagesController extends Controller
      */
     public function update(Request $request,$id)
     {
+
         //
         $data = Pages::find($id);
         $data->category_id = $request->category_id;
@@ -93,15 +104,14 @@ class PagesController extends Controller
         $data->meta_description = $request->meta_description;
         $data->togle_status = '1';
         $data->published_status = '1';
-        $data->featured_image_link = $request->featured_image_link;
+        $data->featured_image_id = $request->featured_image_id;
         $data->make_homepage = '1';
         $data->visibility = $request->visibility;
         $data->published_date_time = $request->published_date_time;
         $data->status = $request->category_id;
         $data->save();
-        Alert::success('Success', 'Page updated  successfully');
-        $pages = Pages::get();
-        return view("pages/index", compact("pages"));
+
+        return redirect()->route('pages.index');
     }
 
     /**

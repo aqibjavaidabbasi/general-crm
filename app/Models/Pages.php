@@ -18,7 +18,7 @@ class Pages extends Model
         'meta_title',
         'meta_description',
         'togle_status',
-        'featured_image_link',
+        'featured_image_id',
         'published_status',
         'make_homepage',
         'visibility',
@@ -28,5 +28,8 @@ class Pages extends Model
     protected $casts = [
     'published_date_time' => 'datetime',
     ];
-
+  public function media()
+  {
+  return $this->belongsTo(Media::class, 'featured_image_id', 'id');
+  }
 }

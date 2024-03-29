@@ -13,16 +13,18 @@
                 <div class="card-body">
                     <div class="filter_button">
 
-                        <a href="https://cmslooks.themelooks.us/admin/page-list" class="btn sm btn-dark mx-1 my-2">
-                            All({{ count($pages) }})</a>
+                        <a href="{{ route('pages.index') }}" class="btn btn-dark mx-1 my-2">
+                            All ({{ count($totalpages) }})
+                        </a>
 
-                        <a href="https://cmslooks.themelooks.us/admin/page-list?status=mine"
-                            class="btn sm btn-dark sm mx-1 my-2">
-                            Trash ({{ $pages->where('status', 0)->count() }})</a>
+                        <a href="{{ route('pages.index', 'trash') }}" class="btn sm btn-danger mx-1 my-2">
+                            Trash ({{ $totalpages->where('status', 0)->count() }})
+                        </a>
 
-                        <a href="https://cmslooks.themelooks.us/admin/page-list?status=publish"
-                            class="btn sm btn-success sm mx-1 my-2">
-                            Published({{ $pages->where('published_status', 1)->count() }})</a>
+                        <a href="{{ route('pages.index', 'published') }}" class="btn btn-success mx-1 my-2">
+                            Published ({{ $totalpages->where('published_status', 1)->count() }})
+                        </a>
+
 
                         {{-- <a href="https://cmslooks.themelooks.us/admin/page-list?status=schedule"
                             class="btn sm btn-info mx-1 my-2">
@@ -44,7 +46,7 @@
                                 <th>SR No.</th>
                                 <th>Title</th>
                                 <th>Parrent</th>
-                                <th>Visibility</th>
+
                                 <th>Author</th>
                                 <th>Date</th>
                                 <th>HomePage</th>
@@ -64,16 +66,21 @@
                                         <td>{{ $page->id }}</td>
                                         <td>{{ $page->page_title }}—, {{ $page->visibility }}</td>
                                         <td>{{ $page->parent_page }}</td>
-                                        <td>
-                                            @if ($page->published_status == 1)
-                                                <span class="btn sm btn-success sm mx-1 my-2">Publish</span>
-                                            @else
-                                                <span class="btn sm btn-danger mx-1 my-2">Un-Publish</span>
-                                            @endif
-                                        </td>
                                         <td>{{ $page->user_id }} :
                                             {{ $page->user_id ? $page->user_id : 'Admin' }}</td>
-                                        <td>{{ $page->created_at }}</td>
+                                        <td>
+                                            @if ($page->published_status == 1)
+                                                <span style="padding: 0.1rem 0.5rem; font-size: 0.8rem; line-height: 1.5;"
+                                                    class="btn btn-success mb-2">Published</span>
+                                            @else
+                                                <span style="padding: 0.1rem 0.5rem; font-size: 0.8rem; line-height: 1.5;"
+                                                    class="btn btn-info mb-2">Un-Publish</span>
+                                            @endif
+
+                                            <br>
+                                            <span>{{ $page->created_at }}</span>
+                                            <br>
+                                        </td>
                                         <td>
                                             @if ($page->make_homepage == 0)
                                                 <a href="{{ route('pages.update-status', ['id' => $page->id, 'slug' => 'homepage']) }}"
@@ -131,6 +138,5 @@
 
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
 
 @endsection

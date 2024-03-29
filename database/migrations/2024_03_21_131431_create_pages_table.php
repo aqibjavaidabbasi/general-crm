@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->string('togle_status')->default(1)->comment("1 for normale page./0 for conent only");
-            $table->string('featured_image_link')->nullable();
+            $table->unsignedBigInteger('featured_image_id')->nullable();
             $table->string('published_status')->default(1)->comment("1 for published/0 for unpublished");
             $table->string('make_homepage')->default(1)->comment("1 for normale page/0 for Home-page");
             $table->string('visibility')->nullable()->comment("private/public/password protected");
