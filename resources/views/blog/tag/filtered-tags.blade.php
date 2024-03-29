@@ -65,7 +65,9 @@
                     'Updated!',
                     'Publish Status has been updated.',
                     'success'
-                );
+                ).then(function() {
+                        window.location.reload();
+                    });
             },
             error: function(xhr, status, error) {
                 Swal.fire(

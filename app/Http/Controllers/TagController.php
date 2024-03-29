@@ -14,8 +14,9 @@ class TagController extends Controller
      */
     public function index()
     {
-        $tags = Tag::all();
-        return view('blog.tag.index',compact('tags'));
+        $tags = Tag::get();
+        // return view('blog.tag.index',compact('tags'));
+        return view('blog.tag.index',['tags' => $tags]);
     }
 
     /**
@@ -86,11 +87,18 @@ class TagController extends Controller
     public function searchTags(Request $request)
     {
         $searchText = $request->input('searchText');
+        $filter = $request->input('filter');
+        // dd($request->all());
         $query = Tag::query();
         if (empty($searchText)) {
             $query->get();
         } else {
             $query->whereAny(['name', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
+        }
+        if (!empty($filter)) {
+            if ($filter === 'published') {
+                $query->where('published', true);
+            }
         }
         $tags = $query->get();
 

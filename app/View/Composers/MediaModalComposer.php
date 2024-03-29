@@ -8,14 +8,6 @@ use App\Repositories\UserRepository;
 
 class MediaModalComposer
 {
-    /**
-     * Create a new profile composer.
-     */
-
-
-    /**
-     * Bind data to the view.
-     */
     public function compose(View $view): void
     {
         $files = Media::with('user:id,name')->get();
