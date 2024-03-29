@@ -117,8 +117,11 @@
                             </label>
                             <div class="col-sm-8">
                                 <select class="form-control" name="category_id">
-                                    <option value="">select category</option>
-                                    <option value="1">1</option>
+                                    @foreach ($categories as $category)
+                                        <option value="">
+                                            {{ $category->id }}
+                                        </option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -160,26 +163,48 @@
                         <h4 class="font-16">Featured Image</h4>
                         <div class="form-group row justify-content-center align-items-center mt-4">
                             <div class="col-sm-4">
-                                <input type="hidden" name="page_image" id="page_image_id" value="">
+                                {{-- here image modal --}}
                                 <div class="image-box">
+                                    <input type="hidden" name="featured_image_id" id="page_image_id" value="">
                                     <div class="d-flex flex-wrap gap-10 mb-3">
                                         <div class="preview-image-wrapper">
+                                            <a type="button" title="Remove image"
+                                                class="remove-btn style--three black d-none" id="page_image_remove"
+                                                onclick="removeSelection('#page_image_preview')">
+                                                <i class="ri-close-circle-fill"></i>
+                                            </a>
                                             <img src="https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg"
                                                 alt="page_image" width="150" class="preview_image"
                                                 id="page_image_preview">
-                                            <button type="button" title="Remove image"
-                                                class="remove-btn style--three black d-none" id="page_image_remove"
-                                                onclick="removeSelection('#page_image_preview,#page_image_id,#page_image_remove')"><i
-                                                    class="icofont-close"></i></button>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="meta_media_id" id="page_image_id" value="">
                                     <div class="image-box-actions mb-3">
                                         <a type="button" class="btn-link" id="chooseFileBtn">
                                             Choose File
                                         </a>
                                     </div>
                                 </div>
+                                {{-- end modal --}}
+                                {{-- <div class="image-box">
+                                    <div class="d-flex flex-wrap gap-10 mb-3">
+                                        <div class="preview-image-wrapper">
+                                            <img src="https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg"
+                                                alt="page_image" width="150" class="preview_image"
+                                                id="page_image_preview">
+                                            <i class="ri-close-circle-fill"></i>
+                                            <button type="button" title="Remove image"
+                                                class="remove-btn style--three black d-none" id="page_image_remove"
+                                                onclick="removeSelection('#page_image_preview,#page_image_id,#page_image_remove')"><i
+                                                    class="icofont-close"></i></button>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="featured_image_id" id="page_image_id" value="">
+                                    <div class="image-box-actions mb-3">
+                                        <a type="button" class="btn-link" id="chooseFileBtn">
+                                            Choose File
+                                        </a>
+                                    </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>
