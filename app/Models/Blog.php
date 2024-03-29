@@ -19,7 +19,6 @@ class Blog extends Model
         'visibilityOption',
         'published_date_time',
         'format',
-        'category_ids',
         'tag_ids',
         'featured',
         'status',
@@ -30,18 +29,13 @@ class Blog extends Model
     ];
 
     protected $casts = [
-        'category_ids' => 'json',
         'tag_ids' => 'json'
     ];
 
     public function categories()
-{
-    if ($this->category_ids !== null) {
-        return BlogCategory::whereIn('id', $this->category_ids)->get();
-    } else {
-        return collect(); // or return an empty array if preferred
+    {
+        return $this->belongsToMany(Category::class);
     }
-}
 
     public function author()
     {

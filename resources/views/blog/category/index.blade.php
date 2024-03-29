@@ -21,7 +21,7 @@
                         </div>
                         <div class="d-flex align-items-center">
                             <div>
-                                <a class="btn btn-primary add-btn mx-2" href="{{ route('blog-category.create') }}">Add Blog
+                                <a class="btn btn-primary add-btn mx-2" href="{{ route('category.create') }}">Add Blog
                                     Category</a>
                             </div>
                             <div class="mx-2">
@@ -88,11 +88,11 @@
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
 
-                                                    <a href="{{ route('blog-category.edit', $category->id) }}"
+                                                    <a href="{{ route('category.edit', $category->id) }}"
                                                         class="dropdown-item"> <i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a onclick="deleteCategory('{{ route('blog-category.destroy', $category->id) }}')"
+                                                    <a onclick="deleteCategory('{{ route('category.destroy', $category->id) }}')"
                                                         class="dropdown-item" role="button"> <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i> Remove</a>
                                                 </li>
                                             </ul>

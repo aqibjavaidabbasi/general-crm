@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use App\Models\Blog;
+use App\Models\Category;
 use App\Models\BlogCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,11 +18,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::with('media:id,url','author:id,name')->get();
-        // $blogs = Blog::with('media')->get();
-        // dd($blogs);
+        $blogs = Blog::with('media:id,url','author:id,name','categories')->get();
+
         return view('blog.index', ['blogs' => $blogs]);
-        // return view('blog.detail', ['blogs' => $blogs]);
     }
 
     /**
@@ -29,8 +28,8 @@ class BlogController extends Controller
      */
     public function create()
     {
-        $categories = BlogCategory::where('status', 1)->get(['id', 'name']);
-        $parentCategories = BlogCategory::where('position', 0)
+        $categories = Category::where('status', 1)->get(['id', 'name']);
+        $parentCategories = Category::where('position', 0)
             ->where('status', 1)->get(['id', 'name']);
         $tags = Tag::where('published', 1)->get(['id', 'name']);
         return view('blog.create', compact('categories', 'parentCategories', 'tags'));
@@ -101,9 +100,15 @@ class BlogController extends Controller
         if(!is_null($validatedData['blog-media-id'])){
             $validatedData['blog_media_id'] = $validatedData['blog-media-id'];
         }
-            // dd($validatedData);
         $validatedData['user_id'] = Auth::user()->id;
-        if (Blog::create($validatedData)) {
+        $blog = Blog::create($validatedData);
+        if (!is_null($blog)) {
+            if(isset($validatedData['category_ids']) && !is_null($validatedData['category_ids'])){
+                $categories = $validatedData['category_ids'];
+                foreach($categories as $category){
+                    BlogCategory::create(['category_id' => $category, 'blog_id' => $blog->id]);
+                }
+            }
             return response()->json(['message' => 'Blog Created Successfully!'], 200);
         }
 
@@ -139,9 +144,15 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Blog $blog)
     {
-        //
+        dd($blog);
+        if (!is_null($blog)) {
+            if($blog->delete()){
+                return response()->json(['message' => "Blog Deleted Successfilly"], 200);
+            }
+        }
+        return response()->json(['message' => "Blog Not Found"], 404);
     }
 
     public function getBlogByCategory($slug)
@@ -174,5 +185,20 @@ class BlogController extends Controller
         dd($blogs);
 
         return view('blog.filtered-blog')->with(['blogs' => $blogs]);
+    }
+
+    public function updateFeaturedStatus(Request $request)
+    {
+        $blogId = $request->id;
+        $blog = Blog::findOrFail($blogId);
+
+        if (!is_null($blog)) {
+            if ($request->has('toggleStatus')) {
+                $blog->update(['featured' => $request->boolean('toggleStatus')]);
+            }
+
+            return response()->json(['message' => 'Status Updated Successfully'], 200);
+        }
+
     }
 }
