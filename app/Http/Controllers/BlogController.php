@@ -17,8 +17,9 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::all();
-        dd($blogs);
+        $blogs = Blog::with('media:id,url','author:id,name')->get();
+        // $blogs = Blog::with('media')->get();
+        // dd($blogs);
         return view('blog.index', ['blogs' => $blogs]);
         // return view('blog.detail', ['blogs' => $blogs]);
     }
