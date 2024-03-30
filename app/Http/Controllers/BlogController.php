@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
+use App\Http\Requests\StoreBlogRequest;
 use App\Models\Blog;
-use App\Models\Category;
 use App\Models\BlogCategory;
+use App\Models\BlogTag;
+use App\Models\Category;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreBlogRequest;
-use App\Models\BlogTag;
 use Illuminate\Support\Facades\Storage;
 
 class BlogController extends Controller
@@ -19,7 +19,7 @@ class BlogController extends Controller
      */
     public function index()
     {
-        $blogs = Blog::with('media:id,url','author:id,name','categories')->get();
+        $blogs = Blog::with('media:id,url', 'author:id,name', 'categories')->get();
 
         return view('blog.index', ['blogs' => $blogs]);
     }
@@ -79,40 +79,40 @@ class BlogController extends Controller
             $validatedData['content'] = $dom->saveHTML();
         }
 
-        if(is_null($validatedData['published_date_time'])){
+        if (is_null($validatedData['published_date_time'])) {
             $validatedData['published_date_time'] = now();
         }
 
-        if(is_null($validatedData['protection-password'])) {
-            if($validatedData['visibility'] == 'Public') {
-                if(isset($validatedData['front-page-blog']) && $validatedData['front-page-blog'] == 'on'){
+        if (is_null($validatedData['protection-password'])) {
+            if ($validatedData['visibility'] == 'Public') {
+                if (isset($validatedData['front-page-blog']) && $validatedData['front-page-blog'] == 'on') {
                     $validatedData['front_page_blog'] = true;
                 }
                 $validatedData['visibility'] = 'public';
-            } else if($validatedData['visibility'] == 'Private'){
+            } else if ($validatedData['visibility'] == 'Private') {
                 $validatedData['visibility'] = 'private';
             }
-        } else if($validatedData['visibility'] == 'Password Protected' && !is_null($validatedData['protection-password']) ){
+        } else if ($validatedData['visibility'] == 'Password Protected' && !is_null($validatedData['protection-password'])) {
             $validatedData['visibility'] = 'password-protected';
             $validatedData['protection_password'] = bcrypt($validatedData['protection-password']);
         }
 
-        if(!is_null($validatedData['blog-media-id'])){
+        if (!is_null($validatedData['blog-media-id'])) {
             $validatedData['blog_media_id'] = $validatedData['blog-media-id'];
         }
         $validatedData['user_id'] = Auth::user()->id;
         $blog = Blog::create($validatedData);
         if (!is_null($blog)) {
-            if(isset($validatedData['category_ids']) && !is_null($validatedData['category_ids'])){
+            if (isset($validatedData['category_ids']) && !is_null($validatedData['category_ids'])) {
                 $categories = $validatedData['category_ids'];
-                foreach($categories as $category){
+                foreach ($categories as $category) {
                     BlogCategory::create(['category_id' => $category, 'blog_id' => $blog->id]);
                 }
             }
 
-            if(isset($validatedData['tag_ids']) && !is_null($validatedData['tag_ids'])){
+            if (isset($validatedData['tag_ids']) && !is_null($validatedData['tag_ids'])) {
                 $tags = $validatedData['tag_ids'];
-                foreach($tags as $tag){
+                foreach ($tags as $tag) {
                     BlogTag::create(['tag_id' => $tag, 'blog_id' => $blog->id]);
                 }
             }
@@ -135,9 +135,18 @@ class BlogController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Blog $addBlog)
     {
-        //
+        if (!is_null($addBlog)){
+
+            $addBlog->load(['media:id,url', 'author:id,name', 'categories']);
+            $categories = Category::where('status', 1)->get(['id', 'name']);
+            $parentCategories = Category::where('position', 0)
+            ->where('status', 1)->get(['id', 'name']);
+            $tags = Tag::where('published', 1)->get(['id', 'name']);
+
+            return view('blog.create',compact('addBlog', 'categories', 'parentCategories', 'tags'));
+        }
     }
 
     /**
@@ -151,11 +160,10 @@ class BlogController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Blog $blog)
+    public function destroy(Blog $addBlog)
     {
-        dd($blog);
-        if (!is_null($blog)) {
-            if($blog->delete()){
+        if (!is_null($addBlog)) {
+            if ($addBlog->delete()) {
                 return response()->json(['message' => "Blog Deleted Successfilly"], 200);
             }
         }
@@ -187,7 +195,8 @@ class BlogController extends Controller
         if (!empty($filter)) {
             if ($filter === 'featured') {
                 $query->where('featured', true);
-        }}
+            }
+        }
         $blogs = $query->with('author')->get();
         dd($blogs);
 

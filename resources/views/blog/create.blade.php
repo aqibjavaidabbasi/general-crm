@@ -7,8 +7,12 @@
 
     <div class="row">
         <div class="col-xl-8">
-            <form action="{{ route('add-blog.store') }}" method="POST" id="blogForm">
+            <form action="{{ isset($addBlog) ? route('add-blog.update', $addBlog->id) : route('add-blog.store') }}" method="POST" id="blogForm">
                 @csrf
+                @if (isset($addBlog))
+                    @method('PUT')
+                @endif
+
                 <div class="card">
                     <div class="card-header">
                         <h4 class="card-title mb-0">Add Blog</h4>
@@ -22,29 +26,25 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="name">Name <span
-                                                        class="text-danger">*</span> </label>
-                                                <input type="text" class="form-control" name="name"
-                                                    placeholder="Enter Name" id="name" required>
+                                                <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="name" placeholder="Enter Name" id="name" required value="{{ $addBlog->name ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-username-input">Short
-                                                    Description</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="3"
-                                                    placeholder="Enter Short Description"></textarea>
+                                                <label class="form-label" for="gen-info-username-input">Short Description</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="3" placeholder="Enter Short Description">{{ $addBlog->description ?? '' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-password-input">Content <span
-                                                        class="text-danger">*</span> </label>
-                                                <textarea class="form-control" id="summernote" name="content" rows="3" placeholder="Enter Short Description"></textarea>
+                                                <label class="form-label" for="gen-info-password-input">Content <span class="text-danger">*</span></label>
+                                                <textarea class="form-control" id="summernote" name="content" rows="3" placeholder="Enter Short Description"> {{ $addBlog->content ?? '' }} </textarea>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <!-- end tab pane -->
                         </div>
@@ -69,7 +69,7 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="gen-info-email-input">Meta Title </label>
                                                 <input type="text" class="form-control" name="meta_title"
-                                                    id="gen-info-email-input" placeholder="Enter Name">
+                                                    id="gen-info-email-input" placeholder="Enter Name" value="{{ $addBlog->meta_title ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -77,7 +77,7 @@
                                                 <label class="form-label" for="meta_description">Meta
                                                     Description</label>
                                                 <textarea class="form-control" name="meta_description" id="meta_description" rows="3"
-                                                    placeholder="Enter Short Description"></textarea>
+                                                    placeholder="Enter Short Description">{{ $addBlog->meta_description ?? '' }}</textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -208,37 +208,33 @@
                     <h4 class="card-title mb-0">Format</h4>
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
-
-
                     <div class="form-check mb-2">
-                        <input checked class="form-check-input" type="radio" name="format" id="format-standard"
-                            value="standard">
+                        <input class="form-check-input" type="radio" name="format" id="format-standard" value="standard" {{ $addBlog->format === 'standard' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-standard">
                             Standard
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="format" id="format-audio" value="audio">
+                        <input class="form-check-input" type="radio" name="format" id="format-audio" value="audio" {{ $addBlog->format === 'audio' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-audio">
                             Audio
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="format" id="format-video" value="video">
+                        <input class="form-check-input" type="radio" name="format" id="format-video" value="video" {{ $addBlog->format === 'video' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-video">
                             Video
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="format" id="format-gallery"
-                            value="gallery">
+                        <input class="form-check-input" type="radio" name="format" id="format-gallery" value="gallery" {{ $addBlog->format === 'gallery' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-gallery">
                             Gallery
                         </label>
                     </div>
                 </div>
-
             </div>
+{{-- @dd($addBlog) --}}
             <!-- end card body -->
             <div class="card">
                 <div class="card-header">
@@ -248,13 +244,21 @@
                     <p class="mb-1">Only Active Categories</p>
 
 
-                    <select class="js-example-basic-multiple mt-2" name="category_ids[]" multiple="multiple"
+                    {{-- <select class="js-example-basic-multiple mt-2" name="category_ids[]" multiple="multiple"
                         data-placeholder="Select Categories...">
                         @foreach ($categories as $category)
                             <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
 
+                    </select> --}}
+                    <select class="js-example-basic-multiple mt-2" name="category_ids[]" multiple="multiple" data-placeholder="Select Categories...">
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}" {{ $addBlog->categories->contains($category->id) ? 'selected' : '' }}>
+                                {{ $category->name }}
+                            </option>
+                        @endforeach
                     </select>
+
                     <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#categoryFields"
                         aria-expanded="false" aria-controls="categoryFields">Add New Category</a>
 
