@@ -7,8 +7,11 @@
 
     <div class="row">
         <div class="col-xl-8">
-            <form action="{{ isset($addBlog) ? route('add-blog.update', $addBlog->id) : route('add-blog.store') }}" method="POST" id="blogForm">
+            <form id="blogForm"
+                action="{{ isset($addBlog) ? route('add-blog.update', ['add_blog' => $addBlog->id]) : route('add-blog.store') }}"
+                method="POST">
                 @csrf
+
                 @if (isset($addBlog))
                     @method('PUT')
                 @endif
@@ -26,19 +29,25 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="name">Name <span class="text-danger">*</span></label>
-                                                <input type="text" class="form-control" name="name" placeholder="Enter Name" id="name" required value="{{ $addBlog->name ?? '' }}">
+                                                <label class="form-label" for="name">Name <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="text" class="form-control" name="name"
+                                                    placeholder="Enter Name" id="name" required
+                                                    value="{{ $addBlog->name ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-username-input">Short Description</label>
-                                                <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="3" placeholder="Enter Short Description">{{ $addBlog->description ?? '' }}</textarea>
+                                                <label class="form-label" for="gen-info-username-input">Short
+                                                    Description</label>
+                                                <textarea class="form-control" id="exampleFormControlTextarea5" name="description" rows="3"
+                                                    placeholder="Enter Short Description">{{ $addBlog->description ?? '' }}</textarea>
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-password-input">Content <span class="text-danger">*</span></label>
+                                                <label class="form-label" for="gen-info-password-input">Content <span
+                                                        class="text-danger">*</span></label>
                                                 <textarea class="form-control" id="summernote" name="content" rows="3" placeholder="Enter Short Description"> {{ $addBlog->content ?? '' }} </textarea>
                                             </div>
                                         </div>
@@ -69,7 +78,8 @@
                                             <div class="mb-3">
                                                 <label class="form-label" for="gen-info-email-input">Meta Title </label>
                                                 <input type="text" class="form-control" name="meta_title"
-                                                    id="gen-info-email-input" placeholder="Enter Name" value="{{ $addBlog->meta_title ?? '' }}">
+                                                    id="gen-info-email-input" placeholder="Enter Name"
+                                                    value="{{ $addBlog->meta_title ?? '' }}">
                                             </div>
                                         </div>
                                         <div class="col-lg-12">
@@ -189,8 +199,8 @@
                                 <label class="form-label mb-0">
                                     <i class=" ri-calendar-line" for="publish-date"></i>
                                     Publish</label>
-                                <input type="text" id="datepicker" class="form-control" data-enable-time="true"
-                                    data-date-format="d.m.y H:i" name="published_date_time"
+                                <input type="text" id="datepicker" class="form-control " data-enable-time="true"
+                                    data-date-format="Y-m-d H:i:S" name="published_date_time"
                                     placeholder="Select date and time">
                             </div>
                         </div>
@@ -209,32 +219,36 @@
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="format" id="format-standard" value="standard" {{ $addBlog->format === 'standard' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="format" id="format-standard"
+                            value="standard" {{ isset($addBlog) && $addBlog->format === 'standard' ? 'checked' : '' }}
+                            checked>
                         <label class="form-check-label" for="format-standard">
                             Standard
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="format" id="format-audio" value="audio" {{ $addBlog->format === 'audio' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="format" id="format-audio" value="audio"
+                            {{ isset($addBlog) && $addBlog->format === 'audio' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-audio">
                             Audio
                         </label>
                     </div>
                     <div class="form-check mb-2">
-                        <input class="form-check-input" type="radio" name="format" id="format-video" value="video" {{ $addBlog->format === 'video' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="format" id="format-video" value="video"
+                            {{ isset($addBlog) && $addBlog->format === 'video' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-video">
                             Video
                         </label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="format" id="format-gallery" value="gallery" {{ $addBlog->format === 'gallery' ? 'checked' : '' }}>
+                        <input class="form-check-input" type="radio" name="format" id="format-gallery"
+                            value="gallery" {{ isset($addBlog) && $addBlog->format === 'gallery' ? 'checked' : '' }}>
                         <label class="form-check-label" for="format-gallery">
                             Gallery
                         </label>
                     </div>
                 </div>
             </div>
-{{-- @dd($addBlog) --}}
             <!-- end card body -->
             <div class="card">
                 <div class="card-header">
@@ -243,17 +257,11 @@
                 <div class="card-body form-steps">
                     <p class="mb-1">Only Active Categories</p>
 
-
-                    {{-- <select class="js-example-basic-multiple mt-2" name="category_ids[]" multiple="multiple"
-                        data-placeholder="Select Categories...">
+                    <select class="js-example-basic-multiple mt-2" id="categorySelect2" name="category_ids[]"
+                        multiple="multiple" data-placeholder="Select Categories...">
                         @foreach ($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                        @endforeach
-
-                    </select> --}}
-                    <select class="js-example-basic-multiple mt-2" name="category_ids[]" multiple="multiple" data-placeholder="Select Categories...">
-                        @foreach ($categories as $category)
-                            <option value="{{ $category->id }}" {{ $addBlog->categories->contains($category->id) ? 'selected' : '' }}>
+                            <option value="{{ $category->id }}"
+                                {{ isset($addBlog) && $addBlog->categories->contains($category->id) ? 'selected' : '' }}>
                                 {{ $category->name }}
                             </option>
                         @endforeach
@@ -264,14 +272,16 @@
 
                     <div class="collapse mt-2" id="categoryFields">
                         <div class="form-check mb-1">
-                            <input type="text" class="form-control mt-2" placeholder="Enter Category">
-                            <select name="" class="form-control mt-2" id="">
+                            <input type="text" class="form-control mt-2" id="categoryNameInput"
+                                placeholder="Enter Category">
+                            <input type="hidden" class="form-control" id="categorySlug" name="categorySlug">
+                            <select name="parent_id" class="form-control mt-2" id="parentCategorySelect">
                                 <option value="" selected disabled>Select Parent Category</option>
                                 @foreach ($parentCategories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
-                            <button class="btn btn-primary mt-2">Add</button>
+                            <button class="btn btn-primary mt-2" id="addCategoryBtn">Add</button>
                         </div>
                     </div>
 
@@ -283,45 +293,56 @@
                     <h4 class="card-title mb-0">Tags</h4>
                 </div><!-- end card header -->
                 <div class="card-body form-steps">
-                    <select class="js-example-basic-multiple mt-2" name="tag_ids[]" multiple="multiple"
+                    <select class="js-example-basic-multiple mt-2" id="tagsSelect2" name="tag_ids[]" multiple="multiple"
                         data-placeholder="Select Tags...">
                         @foreach ($tags as $tag)
-                            <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                            <option value="{{ $tag->id }}"
+                                {{ isset($addBlog) && $addBlog->tags->contains($tag->id) ? 'selected' : '' }}>
+                                {{ $tag->name }}</option>
                         @endforeach
                     </select>
                     <a class="btn btn-primary rounded-pill mt-3" data-bs-toggle="collapse" href="#addTag"
                         aria-expanded="false" aria-controls="categoryFields">Add New Tag</a>
                     <div class="collapse mt-2" id="addTag">
                         <div class="form-check mb-1">
-                            <input type="text" class="form-control mt-2" placeholder="Enter Category">
-                            <button class="btn btn-primary mt-2">Add</button>
+                            <input type="text" class="form-control mt-2" id="tagNameInput" placeholder="Enter Tag">
+                            <input type="hidden" class="form-control mt-2" id="tagSlug">
+                            <button class="btn btn-primary mt-2" id="addTagBtn">Add</button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-header">
-                    <h4 class="card-title mb-0">Blog Image</h4>
-                </div><!-- end card header -->
-                <div class="form-group row justify-content-center align-items-center mt-4">
-                    <div class="col-sm-4">
-                        <input type="hidden" name="blog-media-id" id="page_image_id" value="">
-                        <div class="image-box">
-                            <div class="d-flex flex-wrap gap-10 mb-3">
-                                <div class="preview-image-wrapper">
-                                    <a type="button" title="Remove image" class="remove-btn style--three black d-none"
-                                        id="page_image_remove" onclick="removeSelection('#page_image_preview')">
-                                        <i class="ri-close-circle-fill"></i>
-                                    </a>
-                                    <img src="https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg"
-                                        alt="page_image" width="150" class="preview_image" id="page_image_preview">
+
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title mb-0">Blog Image</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row justify-content-center align-items-center mt-4">
+                            <div class="col-sm-4">
+                                <input type="hidden" name="blog_media_id" id="page_image_id"
+                                    value="{{ $addBlog->blog_media_id ?? '' }}">
+                                <div class="image-box">
+                                    <div class="d-flex flex-wrap gap-10 mb-3">
+                                        <div class="preview-image-wrapper">
+                                            <a type="button" title="Remove image"
+                                                class="remove-btn style--three black d-none" id="page_image_remove"
+                                                onclick="removeSelection('#page_image_preview')">
+                                                <i class="ri-close-circle-fill"></i>
+                                            </a>
+                                            <img src="{{ isset($addBlog) && $addBlog->blog_media_id ? asset('storage/' . $addBlog->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                                                alt="page_image" width="150" class="preview_image"
+                                                id="page_image_preview">
+                                        </div>
+                                    </div>
+                                    <div class="image-box-actions mb-3">
+                                        <a type="button" class="btn-link" id="chooseFileBtn">
+                                            Choose File
+                                        </a>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="image-box-actions mb-3">
-                                <a type="button" class="btn-link" id="chooseFileBtn">
-                                    Choose File
-                                </a>
                             </div>
                         </div>
                     </div>
@@ -331,16 +352,18 @@
             <div class="card card-body mt-5 mt-md-5 col-12">
                 <h4 class="font-16 mb-2">Blog Status</h4>
                 <div class="form-group row my-2">
-                    <label for="page_parent" class="col-sm-4 font-14 bold black">Featured Status
-                    </label>
+                    <label for="page_parent" class="col-sm-4 font-14 bold black">Featured Status</label>
                     <div class="col-sm-8">
                         <div class="form-check form-switch form-switch-right form-switch-md">
+                            <input type="hidden" name="featured" value="0">
+                            <!-- Hidden field to ensure a value is always submitted -->
                             <input class="form-check-input code-switcher" type="checkbox" name="featured" value="1"
-                                id="tables-small-showcode">
+                                {{ isset($addBlog) && $addBlog->featured ? 'checked' : '' }} id="tables-small-showcode">
                         </div>
                     </div>
                 </div>
             </div>
+
 
             </form>
             <!-- end card body -->
@@ -366,6 +389,16 @@
             $('#page_image_remove').addClass('d-none');
             $('#page_image_id').val('');
         }
+
+        $('#chooseFileBtn').on('click', function() {
+            $('#mediaUploadModal').modal('show');
+        });
+
+        if ($('#page_image_id').val()) {
+            $('#page_image_remove').removeClass('d-none');
+        } else {
+            $('#page_image_remove').addClass('d-none');
+        }
     </script>
 
     <script>
@@ -379,6 +412,124 @@
 
             $('.js-example-basic-multiple').select2();
             $("#datepicker").flatpickr();
+
+            var baseURL = '{{ url('blog/category/') }}';
+            var categoryNameInput = $('#categoryNameInput');
+            var categorySlugInput = $('#categorySlug');
+
+            categoryNameInput.blur(function() {
+                var name = categoryNameInput.val().trim();
+                if (name !== '') {
+                    var slug = name.toLowerCase().replace(/\s+/g, '-');
+                    var fullURL = baseURL + '/' + slug;
+                    categorySlugInput.val(slug);
+                }
+            });
+
+            $('#addCategoryBtn').click(function(event) {
+                event.preventDefault();
+                var categoryName = categoryNameInput.val();
+                var parentId = $('#parentCategorySelect').val();
+                var slug = categorySlugInput.val();
+
+                $.ajax({
+                    url: '{{ route('category.store') }}',
+                    method: 'POST',
+                    data: {
+                        name: categoryName,
+                        parent_id: parentId,
+                        slug: slug
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+
+                        $('#categoryNameInput').val('');
+                        $('#parentCategorySelect').val('');
+                        $('#categorySlug').val('');
+
+                        var option = $('<option>', {
+                            value: response.category.id,
+                            text: response.category.name
+                        });
+                        $('#categorySelect2').append(option);
+                        $('#categorySelect2').select2('destroy').select2();
+
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            'Operation failed!',
+                            'error'
+                        );
+                    }
+                });
+
+            });
+
+            var tagNameInput = $('#tagNameInput');
+            var tagSlugInput = $('#tagSlug');
+
+            tagNameInput.blur(function() {
+                var name = tagNameInput.val().trim();
+                if (name !== '') {
+                    var slug = name.toLowerCase().replace(/\s+/g, '-');
+                    var fullURL = baseURL + '/' + slug;
+                    tagSlugInput.val(slug);
+                }
+            });
+
+            $('#addTagBtn').click(function(event) {
+                event.preventDefault();
+                var tagName = tagNameInput.val();
+                var slug = tagSlugInput.val();
+
+                $.ajax({
+                    url: '{{ route('tag.store') }}',
+                    method: 'POST',
+                    data: {
+                        name: tagName,
+                        slug: slug
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        $('#tagNameInput').val('');
+                        $('#tagSlug').val('');
+
+                        var option = $('<option>', {
+                            value: response.tag.id,
+                            text: response.tag.name
+                        });
+                        $('#tagsSelect2').append(option);
+                        $('#tagsSelect2').select2('destroy').select2();
+
+                        Swal.fire({
+                            title: 'Success!',
+                            text: response.message,
+                            icon: 'success',
+                            confirmButtonText: 'OK'
+                        })
+
+                    },
+                    error: function(xhr, status, error) {
+                        Swal.fire(
+                            'Error!',
+                            'Operation failed!',
+                            'error'
+                        );
+                    }
+                });
+            });
         });
     </script>
 
@@ -415,10 +566,40 @@
             var initialValue = $('input[name="visibility"]:checked').val();
             updateVisibility(initialValue);
 
-            function sendFormData(formData, successMessage, errorMessage) {
+            // function sendFormData(formData, successMessage, errorMessage) {
+            //     console.log($(this).attr('action'))
+            //     $.ajax({
+            //         url: $(this).attr('action'),
+            //         var method = $(this).find('input[name="_method"]').length > 0 ? 'PUT' : 'POST';
+            //         console.log(type, url)
+            //         dataType: 'json',
+            //         data: formData,
+            //         success: function(response) {
+            //             Swal.fire(
+            //                 'Success!',
+            //                 successMessage,
+            //                 'success'
+            //             ).then((result) => {
+            //                 if (result.isConfirmed) {
+            //                     window.location.href =
+            //                         '{{ route('add-blog.index') }}';
+            //                 }
+            //             });
+            //         },
+            //         error: function(xhr, status, error) {
+            //             Swal.fire(
+            //                 'Error!',
+            //                 errorMessage,
+            //                 'error'
+            //             );
+            //         }
+            //     });
+            // }
+
+            function sendFormData(url, method, formData, successMessage, errorMessage) {
                 $.ajax({
-                    url: '{{ route('add-blog.store') }}',
-                    type: 'POST',
+                    url: url,
+                    method: method, // Assign the method here
                     dataType: 'json',
                     data: formData,
                     success: function(response) {
@@ -444,6 +625,7 @@
             }
 
             $('.btn-check').click(function() {
+                console.log("rtyuiop")
                 var formData = $('#blogForm').serializeArray();
                 var status = $(this).val();
                 formData.push({
@@ -451,7 +633,10 @@
                     value: status
                 });
 
-                sendFormData(formData, 'Your Blog Post Has Been Added.',
+                var method = $('#blogForm').find('input[name="_method"]').length > 0 ? 'PUT' : 'POST';
+                var url = $('#blogForm').attr('action');
+
+                sendFormData(url, method, formData, 'Your Blog Post Has Been Added.',
                     'An error occurred while adding the blog post.');
             });
 
@@ -460,15 +645,35 @@
                 $('#mediaUploadModal').modal('show');
             });
 
+            // $('#publishBtn').click(function() {
+            //     event.preventDefault();
+            //     var formData = $('#blogForm').serializeArray();
+            //     formData.push({
+            //         name: 'status',
+            //         value: 'published'
+            //     });
+
+            //     sendFormData(formData, 'Your Blog Post Has Been Published.',
+            //         'An error occurred while publishing the blog post.');
+            // });
+
             $('#publishBtn').click(function() {
                 event.preventDefault();
                 var formData = $('#blogForm').serializeArray();
+                var datePickerValue = $('#datepicker').val();
+
+                var statusValue = datePickerValue ? 'scheduled' : 'published';
+
                 formData.push({
                     name: 'status',
-                    value: 'published'
+                    value: statusValue
                 });
 
-                sendFormData(formData, 'Your Blog Post Has Been Published.',
+                var method = $('#blogForm').find('input[name="_method"]').length > 0 ? 'PUT' : 'POST';
+
+                var url = $('#blogForm').attr('action');
+
+                sendFormData(url, method, formData, 'Your Blog Post Has Been Published.',
                     'An error occurred while publishing the blog post.');
             });
         });

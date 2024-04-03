@@ -1,14 +1,15 @@
 <?php
 
-
 use App\Http\Controllers\BlogController;
+
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MediaController;
+
+use App\Http\Controllers\PagesController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\{CategoryController,PagesController, TagController};
+
+use App\Http\Controllers\TagController;use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,7 @@ Route::middleware('auth')->group(function () {
             Route::resource('add-blog', BlogController::class);
             Route::post('search-blog', [BlogController::class, 'searchBlogs'])->name('blog.search-blog');
             Route::post('update-toggle-status', [BlogController::class, 'updateFeaturedStatus'])->name('blog.update-toggle-status');
-
+            Route::post('blog/delete', [BlogController::class, 'massDeleteBlogs'])->name('blog.mass-delete');
 
             Route::resource('category', CategoryController::class);
             Route::post('category/delete', [CategoryController::class, 'massDeleteCategories'])->name('blog.category.mass-delete');
@@ -48,30 +49,29 @@ Route::middleware('auth')->group(function () {
             Route::post('category/searchcategories', [CategoryController::class, 'searchBlogCategories'])->name('blog.category.search-blog-categories');
 
             // Tags Routes
-            Route::resource('tag',TagController::class);
+            Route::resource('tag', TagController::class);
             Route::post('tag/search-tags', [TagController::class, 'searchTags'])->name('blog.tag.search-tags');
             Route::post('tag/delete', [TagController::class, 'massDeleteTags'])->name('blog.tag.mass-delete');
             Route::post('tag/update-status', [TagController::class, 'updateStatus'])->name('blog.tag.update-status');
 
         });
         Route::post('save-theme-preference', [ProfileController::class, 'saveTheme'])->name('theme.save');
-        Route::get('blog/category/{slug}',[BlogController::class,'getBlogByCategory'])->name('blog-by-category');
-        Route::get('blog/tag/{slug}',[BlogController::class,'getBlogByCategory'])->name('blog-by-tag');
+        Route::get('blog/category/{slug}', [BlogController::class, 'getBlogByCategory'])->name('blog-by-category');
+        Route::get('blog/tag/{slug}', [BlogController::class, 'getBlogByCategory'])->name('blog-by-tag');
     });
 });
 
 Auth::routes(['register' => false]);
 
 // Route::resource('pages',PagesController::class);
-Route::get('pages/{slug?}',[PagesController::class,'index'])->name('pages.index');
-Route::get('pages/create',[PagesController::class,'create'])->name('pages.create');
+Route::get('pages/{slug?}', [PagesController::class, 'index'])->name('pages.index');
+Route::get('pages/create', [PagesController::class, 'create'])->name('pages.create');
 
-Route::get('pages/{id?}',[PagesController::class,'index'])->name('pages.edit');
-Route::get('pages/makehomepage/{id}/{slug?}',[PagesController::class,'update_status'])->name('pages.update-status');
+Route::get('pages/{id?}', [PagesController::class, 'index'])->name('pages.edit');
+Route::get('pages/makehomepage/{id}/{slug?}', [PagesController::class, 'update_status'])->name('pages.update-status');
 
-Route::get('pages/trash/{id}',[PagesController::class,'trash'])->name('pages.trash');
-Route::get('pages/destroy/{id}',[PagesController::class,'destroy'])->name('pages.destroy');
-
+Route::get('pages/trash/{id}', [PagesController::class, 'trash'])->name('pages.trash');
+Route::get('pages/destroy/{id}', [PagesController::class, 'destroy'])->name('pages.destroy');
 
 // upload image
-Route::post('upload', [PagesController::class,'uploadimage'])->name('editor_img.upload');
+Route::post('upload', [PagesController::class, 'uploadimage'])->name('editor_img.upload');

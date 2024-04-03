@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('slug');
             $table->boolean('published')->default(true);
-            $table->string('meta_title')->nullable();;
+            $table->string('meta_title')->nullable();
             $table->longText('meta_description')->nullable();
             $table->unsignedBigInteger('meta_media_id')->nullable();
             $table->foreign('meta_media_id')->references('id')->on('media');

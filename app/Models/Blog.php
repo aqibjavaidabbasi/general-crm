@@ -19,22 +19,22 @@ class Blog extends Model
         'visibilityOption',
         'published_date_time',
         'format',
-        'tag_ids',
         'featured',
         'status',
         'protection_password',
         'front_page_blog',
         'user_id',
-        'blog_media_id'
-    ];
-
-    protected $casts = [
-        'tag_ids' => 'json'
+        'blog_media_id',
     ];
 
     public function categories()
     {
         return $this->belongsToMany(Category::class);
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
     }
 
     public function author()
