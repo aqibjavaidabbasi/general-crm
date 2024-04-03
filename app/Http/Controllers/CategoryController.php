@@ -47,8 +47,9 @@ class CategoryController extends Controller
     {
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
+        $category = Category::create($validatedData);
         if (Category::create($validatedData)) {
-            return response()->json(['message' => "Category Created successfully"]);
+            return response()->json(['message' => "Category Created successfully", 'category' => $category]);
         } else {
             return response()->json(['message' => "Category Not Created successfully"], 500);
         }
@@ -132,15 +133,9 @@ class CategoryController extends Controller
 
     public function searchBlogCategories(Request $request)
     {
-        $searchText = $request->input('searchText');
         $filter = $request->input('filter');
         $query = Category::query();
-        if (empty($searchText)) {
-            $query->with('parentCategory')->get();
-        } else {
-            $query->whereAny(['name', 'description', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
-        }
-
+        
         if (!empty($filter)) {
             if ($filter === 'featured') {
                 $query->where('featured', true);

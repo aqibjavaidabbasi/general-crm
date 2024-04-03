@@ -117,8 +117,7 @@
 
         <!--end col-->
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" ></script>
 
     {{-- <script>
         $(document).ready(function() {
@@ -305,8 +304,7 @@
             $('.filter-btn').click(function() {
                 var filter = $(this).val();
                 console.log(filter);
-                var searchText = $('#search-options').val();
-                fetchData(searchText, filter);
+                fetchData(filter);
             });
 
             $(document).on('click', '#pagination-container a', function(e) {
@@ -318,21 +316,16 @@
                 fetchData(searchText, filter);
             });
 
-            function fetchData(searchText, filter) {
+            function fetchData(filter) {
                 $.ajax({
                     type: "POST",
                     url: "{{ route('blog.category.search-blog-categories') }}",
                     data: {
-                        searchText: searchText,
                         filter: filter,
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
                     success: function(response) {
-
                         $('#categoryTableBody').html(response);
-
-
-
                     },
                     error: function(xhr, status, error) {
                         console.error(xhr.responseText);

@@ -33,8 +33,9 @@ class TagController extends Controller
     public function store(StoreTagRequest $request)
     {
         $validatedData = $request->validated();
-        if (Tag::create($validatedData)) {
-            return response()->json(['message' => 'Tag Created Successfully']);
+        $tag = Tag::create($validatedData);
+        if ($tag) {
+            return response()->json(['message' => 'Tag Created Successfully','tag' => $tag]);
         } else {
             return response()->json(['message' => 'Error Occured While Creating Tag!'],500);
         }

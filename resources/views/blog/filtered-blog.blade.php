@@ -1,51 +1,93 @@
-@if ($blogs->isNotEmpty())
-    @foreach ($blogs as $blog)
-        <tr>
-            <th scope="row">
-                <div class="form-check">
-                    <input class="form-check-input mass-action-checkbox" type="checkbox" name="chk_child"
-                        value="{{ $blog->id }}">
-                </div>
-            </th>
-            <td>Pending</td>
-            <td data-sort="{{ $blog->name }}">{{ $blog->name }}</td>
-            <td data-sort="{{ $blog->name }}">{{ $blog->author->name ?? '-' }}</td>
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input feature-toggle" type="checkbox"
-                        {{ $blog->featured ? 'checked' : '' }} data-category-id="{{ $blog->id }}">
-                </div>
-            </td>
-            <td>
-                <div class="form-check form-switch">
-                    <input class="form-check-input status-toggle" type="checkbox"
-                        {{ $blog->status ? 'checked' : '' }} data-category-id="{{ $blog->id }}">
-                </div>
-            </td>
-
-            <td>
-                <div class="d-flex gap-2">
-                    <div class="edit">
-                        <a href="{{ route('blog-category.edit', $blog->id) }}"
-                            class="btn btn-sm btn-primary edit-item-btn">Edit</a>
-                    </div>
-                    <div class="remove">
-                        <button class="btn btn-sm btn-danger remove-item-btn"
-                            onclick="deleteCategory('{{ route('blog-category.destroy', $blog->id) }}')">Remove</button>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    @endforeach
-    {{-- <tr>
-        <td colspan="6">{{ $blogs->links() }}</td>
-    </tr> --}}
-
-@else
+@forelse ($blogs as $blog)
     <tr>
-        <td colspan="6">No Category Found.</td>
+        <th scope="row">
+            <div class="form-check">
+                <input class="form-check-input mass-action-checkbox" type="checkbox" name="chk_child"
+                    value="{{ $blog->id }}">
+            </div>
+        </th>
+        <td>
+            <img src="{{ isset($blog) && $blog->blog_media_id ? asset('storage/' . $blog->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                alt="blog_image" class="img-45">
+        </td>
+        <td>
+            <a href="" class="btn-link">{{ $blog->name }}</a>
+        </td>
+
+        <td>
+            {{ $blog->author->name }}
+        </td>
+
+        <td>
+            @forelse ($blog->categories as $category)
+                @if ($loop->last)
+                    {{ $category->name }}
+                @else
+                    {{ $category->name }} , <br>
+                @endif
+            @empty
+                -
+            @endforelse
+        </td>
+        <td>
+            <div class="form-check form-switch">
+                <input class="form-check-input feature-toggle" type="checkbox" {{ $blog->featured ? 'checked' : '' }}
+                    data-blog-id="{{ $blog->id }}">
+            </div>
+        </td>
+        <td>
+            <button type="button" class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
+                id="page-header-notifications-dropdown" data-bs-toggle="dropdown" aria-haspopup="true"
+                aria-expanded="false">
+                <i class='bx bx-message-rounded-detail fs-22'></i>
+                <span class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span
+                        class="visually-hidden">unread messages</span></span>
+            </button>
+        </td>
+        <td>
+            <div class="d-flex flex-column align-items-center">
+                <span
+                    class="badge
+                                                @if ($blog->status == 'published') badge-soft-success text-uppercase
+                                                    @elseif($blog->status == 'pending')
+                                                        badge-soft-warning text-uppercase
+                                                    @elseif($blog->status == 'draft')
+                                                        badge-soft-primary text-uppercase
+                                                    @elseif($blog->status == 'scheduled')
+                                                        badge-soft-info text-uppercase @endif rounded-pill">
+                    {{ $blog->status }}
+                </span>
+                <span class="text-muted text-xs mt-1">
+                    {{ Carbon\Carbon::parse($blog->created_at)->format('d-m-Y h:i A') }}
+                </span>
+            </div>
+        </td>
+        <td>
+            <div class="dropdown d-inline-block">
+                <button class="btn btn-soft-primary btn-sm dropdown" type="button" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    <i class="ri-more-fill align-middle"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end">
+                    <li>
+                        <a href="{{ route('add-blog.edit', $blog->id) }}" class="dropdown-item"> <i
+                                class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                            Edit</a>
+                    </li>
+                    <li>
+                        <a onclick="deleteBlog('{{ route('add-blog.destroy', $blog->id) }}')" class="dropdown-item"
+                            role="button"> <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                            Remove</a>
+                    </li>
+                </ul>
+            </div>
+        </td>
     </tr>
-@endif
+@empty
+    <tr>
+        <td colspan="9">No Blog Found.</td>
+    </tr>
+@endforelse
 
 
 <script>

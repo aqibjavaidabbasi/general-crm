@@ -15,7 +15,20 @@
                             <div class="btn-group mt-2" role="group" aria-label="Record Filter">
                                 <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All
                                     ({{ $blogs->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-light mx-2 filter-btn"
+                                    value="mine">Mine
+                                    ({{ $blogs->where('user_id', auth()->user()->id)->count() }})</button>
                                 <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn"
+                                    value="published">Published
+                                    ({{ $blogs->where('status', 'published')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-info mx-2 filter-btn"
+                                    value="scheduled">Scheduled
+                                    ({{ $blogs->where('status', 'scheduled')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn"
+                                    value="draft">Drafts ({{ $blogs->where('status', 'draft')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-warning mx-2 filter-btn"
+                                    value="pending">Pending ({{ $blogs->where('status', 'pending')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-dark mx-2 filter-btn"
                                     value="featured">Featured ({{ $blogs->where('featured', true)->count() }})</button>
                             </div>
                         </div>
@@ -78,11 +91,11 @@
 
                                     <td>
                                         @forelse ($blog->categories as $category)
-                                        @if($loop->last)
-                                            {{ $category->name }}
-                                        @else
-                                            {{ $category->name }} , <br>
-                                        @endif
+                                            @if ($loop->last)
+                                                {{ $category->name }}
+                                            @else
+                                                {{ $category->name }} , <br>
+                                            @endif
                                         @empty
                                             -
                                         @endforelse
@@ -90,8 +103,7 @@
                                     <td>
                                         <div class="form-check form-switch">
                                             <input class="form-check-input feature-toggle" type="checkbox"
-                                                {{ $blog->featured ? 'checked' : '' }}
-                                                data-blog-id="{{ $blog->id }}">
+                                                {{ $blog->featured ? 'checked' : '' }} data-blog-id="{{ $blog->id }}">
                                         </div>
                                     </td>
                                     <td>
@@ -107,16 +119,21 @@
                                     </td>
                                     <td>
                                         <div class="d-flex flex-column align-items-center">
-                                            <span class="badge
+                                            <span
+                                                class="badge
                                                 @if ($blog->status == 'published') badge-soft-success text-uppercase
-                                                @elseif($blog->status == 'pending')
-                                                    badge-soft-warning text-uppercase
-                                                @elseif($blog->status == 'draft')
-                                                    badge-soft-primary text-uppercase @endif rounded-pill">
-                                                    {{ $blog->status }}
+                                                    @elseif($blog->status == 'pending')
+                                                        badge-soft-warning text-uppercase
+                                                    @elseif($blog->status == 'draft')
+                                                        badge-soft-primary text-uppercase
+                                                    @elseif($blog->status == 'scheduled')
+                                                        badge-soft-info text-uppercase @endif rounded-pill">
+                                                {{ $blog->status }}
                                             </span>
                                             <span class="text-muted text-xs mt-1">
-                                                {{ Carbon\Carbon::parse($blog->created_at)->format('d-m-Y h:i A') }}
+                                                {{ Carbon\Carbon::parse($blog->published_date_time)->format('d-m-Y h:i A') }}
+                                                {{-- {{ \Carbon\Carbon::createFromFormat('y.m.d H:i', $blog->published_date_time)->format('d-m-Y h:i A') --}}
+                                                {{-- }} --}}
                                             </span>
                                         </div>
                                     </td>
@@ -145,7 +162,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9">No Category Found.</td>
+                                    <td colspan="9">No Blog Found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -161,96 +178,7 @@
 
         <!--end col-->
     </div>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-
-    {{-- <script>
-        $(document).ready(function() {
-
-            // $('#categoriesTable').DataTable();
-
-            var searchDelayTimer;
-
-            $('#search-options').on('input', function() {
-                clearTimeout(searchDelayTimer);
-                var searchText = $(this).val();
-                searchDelayTimer = setTimeout(function() {
-                    fetchData(searchText);
-                }, 1000);
-            });
-
-
-
-            function fetchData(searchText, filter) {
-                $.ajax({
-                    type: "POST",
-                    url: "{{ route('blog.category.search-blog-categories') }}",
-                    data: {
-                        searchText: searchText,
-                        filter: filter,
-                        _token: $('meta[name="csrf-token"]').attr('content'),
-                    },
-                    success: function(response) {
-                        $('#filteredCategoriesContent').html(response);
-                    },
-                    error: function(xhr, status, error) {
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
-
-
-
-            function handleInputChange(searchText) {
-                if (searchText.trim() === '') {
-                    fetchData(null, $('#filterBtn').val());
-                } else {
-                    clearTimeout(searchDelayTimer);
-                    searchDelayTimer = setTimeout(function() {
-                        fetchData(searchText, $('#filterBtn').val());
-                    }, 1000);
-                }
-            }
-
-            $('#search-options').on('input', function() {
-                var searchText = $(this).val();
-                handleInputChange(searchText);
-            });
-
-            $(window).on('load', function() {
-                var searchText = $('#search-options').val();
-                handleInputChange(searchText);
-            });
-
-            document.getElementById('search-options').addEventListener('input', function() {
-                var searchText = this.value.trim();
-                var searchCloseIcon = document.getElementById('search-close-options');
-                if (searchText !== '') {
-                    searchCloseIcon.classList.remove('d-none');
-                } else {
-                    searchCloseIcon.classList.add('d-none');
-                }
-            });
-
-            document.getElementById('search-close-options').addEventListener('click', function() {
-                var searchInput = document.getElementById('search-options');
-                searchInput.value = '';
-                searchInput.dispatchEvent(new Event('input'));
-                this.classList.add('d-none');
-            });
-
-
-
-            $(document).on('click', '#pagination-container a', function(e) {
-                e.preventDefault();
-
-                var url = $(this).attr('href');
-                var pageNumber = url.substring(url.indexOf('page=') + 5);
-
-                fetchData(searchText, filter);
-            });
-        });
-    </script> --}}
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
         var checkedIds = [];
@@ -299,7 +227,6 @@
         });
         $(document).ready(function() {
 
-
             $('.mass-action-checkbox').change(function() {
                 updateCheckedIds();
             });
@@ -313,25 +240,16 @@
             $('.filter-btn').click(function() {
                 var filter = $(this).val();
                 console.log(filter);
-                var searchText = $('#search-options').val();
-                fetchData(searchText, filter);
+                fetchData(filter);
             });
 
-            $(document).on('click', '#pagination-container a', function(e) {
-                e.preventDefault();
 
-                var url = $(this).attr('href');
-                var pageNumber = url.substring(url.indexOf('page=') + 5);
 
-                fetchData(searchText, filter);
-            });
-
-            function fetchData(searchText, filter) {
+            function fetchData(filter) {
                 $.ajax({
                     type: "POST",
-                    url: "{{ route('blog.category.search-blog-categories') }}",
+                    url: "{{ route('blog.search-blog') }}",
                     data: {
-                        searchText: searchText,
                         filter: filter,
                         _token: $('meta[name="csrf-token"]').attr('content'),
                     },
@@ -370,7 +288,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ route('blog.category.mass-delete') }}',
+                        url: '{{ route('blog.mass-delete') }}',
                         method: 'POST',
                         data: {
                             ids: checkedIds
@@ -412,7 +330,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: categorySlug,
+                        url: blogSlug,
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
