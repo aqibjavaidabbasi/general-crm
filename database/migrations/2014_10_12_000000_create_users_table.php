@@ -17,6 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->boolean('active')->default(true);
+            $table->integer('profile_media_id')->nullable();
             $table->rememberToken();
             $table->enum('theme_preference',['light', 'dark'])->default('dark');
             $table->timestamps();

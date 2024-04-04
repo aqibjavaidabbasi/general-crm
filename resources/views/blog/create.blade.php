@@ -46,8 +46,7 @@
                                         </div>
                                         <div class="col-lg-12">
                                             <div class="mb-3">
-                                                <label class="form-label" for="gen-info-password-input">Content <span
-                                                        class="text-danger">*</span></label>
+                                                <label class="form-label" for="gen-info-password-input">Content</label>
                                                 <textarea class="form-control" id="summernote" name="content" rows="3" placeholder="Enter Short Description"> {{ $addBlog->content ?? '' }} </textarea>
                                             </div>
                                         </div>
