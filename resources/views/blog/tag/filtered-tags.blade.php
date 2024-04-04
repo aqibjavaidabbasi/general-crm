@@ -10,21 +10,28 @@
             <td data-sort="{{ $tag->name }}">{{ $tag->name }}</td>
             <td>
                 <div class="form-check form-switch">
-                    <input class="form-check-input publish-toggle" type="checkbox"
-                        {{ $tag->published ? 'checked' : '' }} data-tag-id="{{ $tag->id }}">
+                    <input class="form-check-input publish-toggle" type="checkbox" {{ $tag->published ? 'checked' : '' }}
+                        data-tag-id="{{ $tag->id }}">
                 </div>
             </td>
 
             <td>
-                <div class="d-flex gap-2">
-                    <div class="edit">
-                        <a href="{{ route('tag.edit', $tag->id) }}"
-                            class="btn btn-sm btn-primary edit-item-btn">Edit</a>
-                    </div>
-                    <div class="remove">
-                        <button class="btn btn-sm btn-danger remove-item-btn"
-                            onclick="deleteCategory('{{ route('tag.destroy', $tag->id) }}')">Remove</button>
-                    </div>
+                <div class="dropdown d-inline-block">
+                    <button class="btn btn-soft-primary btn-sm dropdown" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false">
+                        <i class="ri-more-fill align-middle"></i>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <a href="{{ route('tag.edit', $tag->id) }}" class="dropdown-item"> <i
+                                    class="ri-pencil-fill align-bottom me-2 text-muted"></i> Edit</a>
+                        </li>
+                        <li>
+                            <a onclick="deleteCategory('{{ route('tag.destroy', $tag->id) }}')" class="dropdown-item"
+                                role="button"> <i class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
+                                Remove</a>
+                        </li>
+                    </ul>
                 </div>
             </td>
         </tr>
@@ -66,8 +73,8 @@
                     'Publish Status has been updated.',
                     'success'
                 ).then(function() {
-                        window.location.reload();
-                    });
+                    window.location.reload();
+                });
             },
             error: function(xhr, status, error) {
                 Swal.fire(

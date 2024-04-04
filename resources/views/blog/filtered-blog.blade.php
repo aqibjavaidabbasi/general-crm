@@ -136,15 +136,14 @@
     });
 
     $('.feature-toggle').change(function() {
-        var categoryId = $(this).data('category-id');
+        var blogId = $(this).data('blog-id');
         var newToggleStatus = $(this).prop('checked') ? 1 : 0;
-        console.log(newToggleStatus, categoryId)
 
         $.ajax({
-            url: '{{ route('blog.category.update-status') }}',
+            url: '{{ route('blog.update-toggle-status') }}',
             method: 'POST',
             data: {
-                id: categoryId,
+                id: blogId,
                 toggleStatus: newToggleStatus
             },
             headers: {
@@ -155,8 +154,8 @@
                     'Updated!',
                     'Featured Status has been updated.',
                     'success'
-                ).then(() => {
-                    location.reload();
+                ).then(function() {
+                    window.location.reload();
                 });
             },
             error: function(xhr, status, error) {
@@ -206,7 +205,7 @@
         }).then((result) => {
             if (result.isConfirmed) {
                 $.ajax({
-                    url: '{{ route('blog.category.mass-delete') }}',
+                    url: '{{ route('blog.mass-delete') }}',
                     method: 'POST',
                     data: {
                         ids: checkedIds
