@@ -104,7 +104,7 @@
                     data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
                     <i data-feather="users"></i> <span data-key="t-apps">Users</span>
                 </a>
-                <div class="collapse menu-dropdown {{ request()->is('*/users/*') || request()->is('*/users') ? 'show' : '' }}"
+                <div class="collapse menu-dropdown {{ request()->is('*/users/*') || request()->is('*/users') || request()->is('*/roles/*') || request()->is('*/roles') || request()->is('*/permissions') ? 'show' : '' }}"
                     id="users">
                     <ul class="nav nav-sm flex-column">
                         <li class="nav-item">
@@ -113,17 +113,21 @@
                                 data-key="t-calendar">Users</a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link" data-key="t-calendar">Roles
+                            <a href="{{ route('roles.index') }}"
+                                class="nav-link {{ Request::is('*/roles/*') || Request::is('*/roles') ? 'active' : '' }}"
+                                data-key="t-calendar">Roles
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a href="" class="nav-link" data-key="t-calendar">Permissions
+                            <a href="{{ route('permissions.index') }}"
+                                class="nav-link {{ Request::is('*/permissions') ? 'active' : '' }}"
+                                data-key="t-calendar">Permissions
                             </a>
                         </li>
                     </ul>
                 </div>
 
-
+            </li>
         </ul>
     </div>
     <!-- Sidebar -->

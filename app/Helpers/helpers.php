@@ -42,3 +42,18 @@ function deleteFiles($file)
         File::deleteDirectory(public_path('storage/' . $folderPath));
     }
 }
+
+if(!function_exists('checkPermission')){
+
+    function checkPermission($permissions, $operation)
+    {
+        foreach ($permissions as $permission) {
+            if (strpos($permission->name, $operation) !== false) {
+                return true;
+            }
+        }
+        return false;
+    }
+}
+
+
