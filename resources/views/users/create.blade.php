@@ -64,17 +64,17 @@
                                         </div>
 
                                         <div class="card card-body my-5 col-lg-12">
-                                            <h4 class="font-16 mb-2">Active Status</h4>
+                                            <h4 class="font-16 mb-2">Status</h4>
                                             <div class="form-group row my-2">
-                                                <label for="page_parent" class="col-sm-4 font-14 bold black">Active
+                                                <label for="active" class="col-sm-4 font-14 bold black">Active
                                                     Status</label>
                                                 <div class="col-sm-8">
                                                     <div class="form-check form-switch form-switch-right form-switch-md">
-                                                        <input type="hidden" name="active" value="off">
+                                                        <input type="hidden" id="active" name="active" value="off">
                                                         <input class="form-check-input code-switcher" type="checkbox"
                                                             name="active"
-                                                            {{ isset($user) && $user->active ? 'checked' : '' }}
-                                                            id="tables-small-showcode" checked>
+                                                            {{ isset($user) && $user->active == true ? 'checked' : '' }}
+                                                            id="tables-small-showcode" {{ !isset($user) ? 'checked' : '' }}>
                                                     </div>
                                                 </div>
                                             </div>

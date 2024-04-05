@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('page-title', 'Users')
+@section('page-title', 'Roles')
 @section('content')
 
 
@@ -11,7 +11,7 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-end">
                         <div>
-                            <a class="btn btn-primary add-btn mx-2" href="{{ route('users.create') }}">Add User</a>
+                            <a class="btn btn-primary add-btn mx-2" href="{{ route('roles.create') }}">Add Role</a>
                         </div>
                         <div class="mx-2">
                             <button class="btn btn-soft-danger" id="bulkDeleteBtn" onClick="deleteMultiple()">
@@ -35,53 +35,23 @@
                                         <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                     </div>
                                 </th>
-                                <th scope="col">Image</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Roles</th>
-                                <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="categoryTableBody">
-                            @forelse ($users as $user)
+                            @forelse ($roles as $role)
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
                                             <input class="form-check-input mass-action-checkbox" type="checkbox"
-                                                name="chk_child" value="{{ $user->id }}">
+                                                name="chk_child" value="{{ $role->id }}">
                                         </div>
                                     </th>
                                     <td>
-
-                                        <img src="{{ isset($user) && $user->profile_media_id && isset($user->media->url) ? asset('storage/' . $user->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
-                                            alt="blog_image" class="img-45">
-                                    </td>
-                                    <td>
-                                        <a href="" class="btn-link">{{ $user->name }}</a>
+                                        <a href="" class="btn-link">{{ $role->name }}</a>
                                     </td>
 
-                                    <td>
-                                        {{ $user->email }}
-                                    </td>
-
-                                    <td> Roles
-                                        {{-- @forelse ($user->categories as $category)
-                                            @if ($loop->last)
-                                                {{ $category->name }}
-                                            @else
-                                                {{ $category->name }} , <br>
-                                            @endif
-                                        @empty
-                                            -
-                                        @endforelse --}}
-                                    </td>
-                                    <td>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input status-toggle" type="checkbox"
-                                                {{ $user->active ? 'checked' : '' }} data-user-id="{{ $user->id }}">
-                                        </div>
-                                    </td>
                                     <td>
                                         <div class="dropdown d-inline-block">
                                             <button class="btn btn-soft-primary btn-sm dropdown" type="button"
@@ -90,12 +60,12 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a href="{{ route('users.edit', $user->id) }}" class="dropdown-item">
+                                                    <a href="{{ route('roles.edit', $role->id) }}" class="dropdown-item">
                                                         <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                         Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a onclick="deleteUser('{{ route('users.destroy', $user->id) }}')"
+                                                    <a onclick="deleteRole('{{ route('roles.destroy', $role->id) }}')"
                                                         class="dropdown-item" role="button"> <i
                                                             class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                         Remove</a>
@@ -106,7 +76,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9">No User Found.</td>
+                                    <td colspan="9">No Role Found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -134,39 +104,7 @@
             });
         }
 
-        $('.status-toggle').change(function() {
-            var userId = $(this).data('user-id');
-            var newActiveStatus = $(this).prop('checked') ? 1 : 0;
 
-            $.ajax({
-                url: '{{ route('users.update-active-status') }}',
-                method: 'POST',
-                data: {
-                    id: userId,
-                    activeStatus: newActiveStatus
-                },
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                },
-                success: function(response) {
-                    Swal.fire(
-                        'Updated!',
-                        response.message,
-                        'success'
-                    );
-                },
-                error: function(xhr, status, error) {
-                    Swal.fire(
-                        'Error!',
-                        'Failed To Update Active Status.',
-                        'error'
-                    ).then(() => {
-                        location.reload();
-                    });
-                }
-            });
-
-        });
         $(document).ready(function() {
 
             $('.mass-action-checkbox').change(function() {
@@ -229,7 +167,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ route('user.mass-delete') }}',
+                        url: '{{ route('role.mass-delete') }}',
                         method: 'POST',
                         data: {
                             ids: checkedIds
@@ -258,7 +196,7 @@
             });
         }
 
-        function deleteUser(slug) {
+        function deleteRole(slug) {
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You will not be able to recover deleted items!',
