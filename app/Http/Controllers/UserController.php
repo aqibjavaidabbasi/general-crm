@@ -34,10 +34,14 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validatedData = $request->validated();
-        dd($validatedData);
         $validatedData['active'] = $validatedData['active'] === 'on' ? true : false;
         $user = User::create($validatedData);
         if (!is_null($user)) {
+            if (isset($validatedData['roles']) && is_array($validatedData['roles'])) {
+                $roleIds = $validatedData['roles'];
+                $roles = Role::findOrFail($roleIds);
+                $user->syncRoles($roles);
+            }
             return response()->json(['message' => "User Created Successfully!"], 200);
         }
 
@@ -75,6 +79,12 @@ class UserController extends Controller
 
         if ($validatedData['password'] == null) {
             unset($validatedData['password']);
+        }
+
+        if (isset($validatedData['roles']) && is_array($validatedData['roles'])) {
+            $roleIds = $validatedData['roles'];
+            $roles = Role::findOrFail($roleIds);
+            $user->syncRoles($roles);
         }
 
         if ($user->update($validatedData)) {

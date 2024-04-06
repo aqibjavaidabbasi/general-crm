@@ -290,7 +290,7 @@
             <div class="card">
                 <div class="card-header">
                     <h4 class="card-title mb-0">Tags</h4>
-                </div><!-- end card header -->
+                </div>
                 <div class="card-body form-steps">
                     <select class="js-example-basic-multiple mt-2" id="tagsSelect2" name="tag_ids[]" multiple="multiple"
                         data-placeholder="Select Tags...">

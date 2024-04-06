@@ -29,7 +29,7 @@ class StoreUserRequest extends FormRequest
             'active' => 'required |in:on,off',
             'profile_media_id' => 'sometimes',
             'roles' => 'required',
-            'roles.*' => 'array',
+            // 'roles.*' => 'array',
         ];
     }
 

@@ -14,68 +14,74 @@
                 </a>
             </li>
 
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->is('*/media/*') ? 'active' : '' }}"
-                    href="{{ route('media.create') }}">
-                    <i class="ri-video-upload-fill"></i> <span data-key="t-media">Media</span>
-                </a>
-            </li>
+            @canany(['create_media', 'edit_media', 'delete_media', 'show_media'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('*/media/*') ? 'active' : '' }}"
+                        href="{{ route('media.create') }}">
+                        <i class="ri-video-upload-fill"></i> <span data-key="t-media">Media</span>
+                    </a>
+                </li>
+            @endcanany
 
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->is('*/blog/*') ? 'active' : '' }}" href="#sidebarApps"
-                    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
-                    <i class="ri-bold"></i> <span data-key="t-apps">Blog</span>
-                </a>
-                <div class="collapse menu-dropdown {{ request()->is('*/blog/*') ? 'show' : '' }}" id="sidebarApps">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{ route('add-blog.index') }}"
-                                class="nav-link {{ Request::is('*/add-blog') ? 'active' : '' }}" data-key="t-calendar">
-                                All Blogs </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('add-blog.create') }}"
-                                class="nav-link {{ Request::is('*/blog/add-blog/*') ? 'active' : '' }}"
-                                data-key="t-chat"> Add New Blog </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('category.index') }}"
-                                class="nav-link {{ Request::is('*/category/*') || Request::is('*/category') ? 'active' : '' }}"
-                                data-key="t-chat"> Categories </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('tag.index') }}"
-                                class="nav-link {{ Request::is('*/tag/*') || Request::is('*/tag') ? 'active' : '' }}"
-                                data-key="t-chat"> Tags </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" data-key="t-chat"> Comments </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="apps-chat.html" class="nav-link" data-key="t-chat"> CSV Import & Export </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button"
-                                aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">
-                                Settings
-                            </a>
-                            <div class="collapse menu-dropdown" id="sidebarEmail">
-                                <ul class="nav nav-sm flex-column">
-                                    <li class="nav-item">
-                                        <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Blog Share
-                                            Settings </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Comment
-                                            Settings </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+            @canany(['create_blog', 'edit_blog', 'delete_blog', 'show_blog'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('*/blog/*') ? 'active' : '' }}" href="#sidebarApps"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
+                        <i class="ri-bold"></i> <span data-key="t-apps">Blog</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->is('*/blog/*') ? 'show' : '' }}" id="sidebarApps">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('add-blog.index') }}"
+                                    class="nav-link {{ Request::is('*/add-blog') ? 'active' : '' }}" data-key="t-calendar">
+                                    All Blogs </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('add-blog.create') }}"
+                                    class="nav-link {{ Request::is('*/blog/add-blog/*') ? 'active' : '' }}"
+                                    data-key="t-chat"> Add New Blog </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('category.index') }}"
+                                    class="nav-link {{ Request::is('*/category/*') || Request::is('*/category') ? 'active' : '' }}"
+                                    data-key="t-chat"> Categories </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('tag.index') }}"
+                                    class="nav-link {{ Request::is('*/tag/*') || Request::is('*/tag') ? 'active' : '' }}"
+                                    data-key="t-chat"> Tags </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" data-key="t-chat"> Comments </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="apps-chat.html" class="nav-link" data-key="t-chat"> CSV Import & Export </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button"
+                                    aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">
+                                    Settings
+                                </a>
+                                <div class="collapse menu-dropdown" id="sidebarEmail">
+                                    <ul class="nav nav-sm flex-column">
+                                        <li class="nav-item">
+                                            <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Blog Share
+                                                Settings </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Comment
+                                                Settings </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
+
+
             {{-- Pages --}}
             <li class="nav-item">
                 <a class="nav-link menu-link {{ request()->is('*/pages/*') ? 'active' : '' }}" href="#pages"
