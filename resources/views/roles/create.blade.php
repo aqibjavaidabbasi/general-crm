@@ -27,9 +27,6 @@
                                 aria-labelledby="pills-gen-info-tab">
                                 <div>
                                     <div class="row">
-
-
-
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="name">Name <span
@@ -41,8 +38,8 @@
 
 
 
-                                        <div class="card card-body my-5 col-lg-12">
-                                            <h4 class="font-16 mb-2">Permissions</h4>
+
+                                            <label class="font-16 mb-2">Permissions <span class="text-danger">*</span> </label>
                                             <div class="table-responsive">
                                                 <table class="table table-bordered table-hover mb-0">
                                                     <thead>
@@ -57,12 +54,14 @@
                                                     <tbody>
                                                         @foreach ($permissions as $index => $permissionGroup)
                                                             <tr>
-                                                                <td>{{ ucfirst($index) }}</td>
+                                                                <td class="text-center">{{ implode(' ', array_map('ucfirst', explode('_', $index))) }}</td>
+
                                                                 <td>
                                                                     @if (checkPermission($permissionGroup, 'create_' . strtolower($index)))
                                                                         <div class="form-check text-center">
                                                                             <input class="form-check-input" type="checkbox"
-                                                                                name="permissions[create_{{ strtolower($index) }}]">
+                                                                                name="permissions[create_{{ strtolower($index) }}]"
+                                                                                {{ isset($role) && $role->hasPermissionTo('create_' . strtolower($index)) ? 'checked' : '' }}>
                                                                         </div>
                                                                     @else
                                                                         <div class="form-check text-center">-</div>
@@ -72,7 +71,8 @@
                                                                     @if (checkPermission($permissionGroup, 'show_' . strtolower($index)))
                                                                         <div class="form-check text-center">
                                                                             <input class="form-check-input" type="checkbox"
-                                                                                name="permissions[show_{{ strtolower($index) }}]">
+                                                                                name="permissions[show_{{ strtolower($index) }}]"
+                                                                                {{ isset($role) && $role->hasPermissionTo('show_' . strtolower($index)) ? 'checked' : '' }}>
                                                                         </div>
                                                                     @else
                                                                         <div class="form-check text-center">-</div>
@@ -82,7 +82,8 @@
                                                                     @if (checkPermission($permissionGroup, 'edit_' . strtolower($index)))
                                                                         <div class="form-check text-center">
                                                                             <input class="form-check-input" type="checkbox"
-                                                                                name="permissions[edit_{{ strtolower($index) }}]">
+                                                                                name="permissions[edit_{{ strtolower($index) }}]"
+                                                                                {{ isset($role) && $role->hasPermissionTo('edit_' . strtolower($index)) ? 'checked' : '' }}>
                                                                         </div>
                                                                     @else
                                                                         <div class="form-check text-center">-</div>
@@ -92,7 +93,8 @@
                                                                     @if (checkPermission($permissionGroup, 'delete_' . strtolower($index)))
                                                                         <div class="form-check text-center">
                                                                             <input class="form-check-input" type="checkbox"
-                                                                                name="permissions[delete_{{ strtolower($index) }}]">
+                                                                                name="permissions[delete_{{ strtolower($index) }}]"
+                                                                                {{ isset($role) && $role->hasPermissionTo('delete_' . strtolower($index)) ? 'checked' : '' }}>
                                                                         </div>
                                                                     @else
                                                                         <div class="form-check text-center">-</div>
@@ -104,7 +106,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                        </div>
+
 
 
                                     </div>
@@ -114,7 +116,7 @@
                             <!-- end tab pane -->
                         </div>
                         <!-- end tab content -->
-                        <button type="submit" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary my-2">
                             {{ isset($role) ? 'Update' : 'Save' }}
                         </button>
             </form>

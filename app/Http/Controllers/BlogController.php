@@ -18,6 +18,15 @@ class BlogController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    public function __construct()
+    {
+        $this->middleware('permission:show_media', ['only' => ['index']]);
+        $this->middleware('permission:create_media', ['only' => ['store', 'create']]);
+        $this->middleware('permission:edit_media', ['only' => ['edit', 'update', 'updateFeaturedStatus']]);
+        $this->middleware('permission:delete_media', ['only' => ['destroy', 'massDeleteBlogs']]);
+    }
+
     public function index()
     {
         $blogs = Blog::with('media:id,url', 'author:id,name', 'categories')->get();

@@ -56,7 +56,7 @@
                                                 multiple="multiple" data-placeholder="Select Role...">
                                                 @foreach ($roles as $role)
                                                     <option value="{{ $role->id }}"
-                                                        {{ isset($user) && $user->categories->contains($role->id) ? 'selected' : '' }}>
+                                                        {{ isset($user) && $user->hasRole($role) ? 'selected' : '' }}>
                                                         {{ $role->name }}
                                                     </option>
                                                 @endforeach

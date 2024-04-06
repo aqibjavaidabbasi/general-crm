@@ -30,6 +30,7 @@ class UpdateUserRequest extends FormRequest
             'name' => 'required',
             'active' => 'required |in:on,off',
             'profile_media_id' => 'sometimes',
+            'roles' => 'required',
         ];
     }
 
@@ -44,6 +45,7 @@ class UpdateUserRequest extends FormRequest
             'password.confirmed' => 'The Password confirmation does not match.',
             'active.required' => 'Please Enter Active.',
             'active.boolean' => 'The Active field must be a boolean value.',
+            'roles.required' => 'Please Select a Role.',
         ];
     }
 }

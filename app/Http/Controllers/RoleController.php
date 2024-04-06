@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreRoleRequest;
+use App\Http\Requests\UpdateRoleRequest;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -66,8 +67,15 @@ class RoleController extends Controller
     public function edit(Role $role)
     {
         if (!is_null($role)) {
-            $roles = Role::get(['id', 'name']);
-            return view('roles.create', compact('roles', 'role'));
+            $permissions = Permission::all();
+
+            $groupedPermissions = [];
+
+            foreach ($permissions as $permission) {
+                $resource = substr($permission->name, strpos($permission->name, '_') + 1);
+                $groupedPermissions[$resource][] = $permission;
+            }
+            return view('roles.create', ['permissions' => $groupedPermissions, 'role' => $role]);
         }
 
         return response()->json(['message' => "User Not Found"], 404);
@@ -76,9 +84,16 @@ class RoleController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateRoleRequest $request, Role $role)
     {
-        //
+        $validatedData = $request->validated();
+        $role->update(['name' => $validatedData['name']]);
+        $permissions = $validatedData['permissions'];
+        $permissionValues = array_keys($permissions);
+        if ($role->syncPermissions($permissionValues)) {
+            return response()->json(['message' => "Role Updated Successfully!"]);
+        }
+        return response()->json(['message' => "Some Error Occurred While Updating Role!"], 500);
     }
 
     /**

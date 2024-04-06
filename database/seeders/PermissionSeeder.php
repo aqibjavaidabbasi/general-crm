@@ -13,7 +13,7 @@ class PermissionSeeder extends Seeder
      */
     public function run(): void
     {
-        $modules = ['media', 'blog', 'pages', 'users', 'roles', 'permissions'];
+        $modules = ['media', 'blog', 'categories_blog', 'tags_blog', 'comments_blog', 'pages', 'users', 'roles', 'permissions'];
         $operations = ['create', 'edit', 'delete', 'show'];
 
         foreach ($modules as $module) {
