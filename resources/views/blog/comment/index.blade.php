@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
-@section('page-title', 'Users')
+@section('page-title', 'Blog')
+@section('sub-page-title', 'Comments')
 @section('content')
 
 
@@ -9,17 +10,39 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-between">
                         <div>
-                            <a class="btn btn-primary add-btn mx-2" href="{{ route('users.create') }}">Add User</a>
+                            <div class="btn-group mt-2" role="group" aria-label="Record Filter">
+                                <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn" value="all">All
+                                    ({{ $blogs->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-light mx-2 filter-btn"
+                                    value="mine">Mine
+                                    ({{ $blogs->where('user_id', auth()->user()->id)->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-success mx-2 filter-btn"
+                                    value="published">Published
+                                    ({{ $blogs->where('status', 'published')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-info mx-2 filter-btn"
+                                    value="scheduled">Scheduled
+                                    ({{ $blogs->where('status', 'scheduled')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-primary mx-2 filter-btn"
+                                    value="draft">Drafts ({{ $blogs->where('status', 'draft')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-warning mx-2 filter-btn"
+                                    value="pending">Pending ({{ $blogs->where('status', 'pending')->count() }})</button>
+                                <button type="button" class="btn rounded-pill btn-dark mx-2 filter-btn"
+                                    value="featured">Featured ({{ $blogs->where('featured', true)->count() }})</button>
+                            </div>
                         </div>
-                        <div class="mx-2">
-                            <button class="btn btn-soft-danger" id="bulkDeleteBtn" onClick="deleteMultiple()">
-                                <i class="ri-delete-bin-2-line"></i>
-                            </button>
+                        <div class="d-flex align-items-center">
+                            <div>
+                                <a class="btn btn-primary add-btn mx-2" href="{{ route('add-blog.create') }}">Add Blog</a>
+                            </div>
+                            <div class="mx-2">
+                                <button class="btn btn-soft-danger" id="bulkDeleteBtn" onClick="deleteMultiple()">
+                                    <i class="ri-delete-bin-2-line"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -31,46 +54,47 @@
                         <thead>
                             <tr>
                                 <th scope="col" style="width: 50px;">
-                                    <div class="orm-check">
+                                    <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="checkAll" value="option">
                                     </div>
                                 </th>
                                 <th scope="col">Image</th>
                                 <th scope="col">Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Roles</th>
+                                <th scope="col">Author</th>
+                                <th scope="col">Category</th>
+                                <th scope="col">Featured</th>
+                                <th scope="col">Comment</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="categoryTableBody">
-                            @forelse ($users as $user)
+                            @forelse ($blogs as $blog)
                                 <tr>
                                     <th scope="row">
                                         <div class="form-check">
                                             <input class="form-check-input mass-action-checkbox" type="checkbox"
-                                                name="chk_child" value="{{ $user->id }}">
+                                                name="chk_child" value="{{ $blog->id }}">
                                         </div>
                                     </th>
                                     <td>
-
-                                        <img src="{{ isset($user) && $user->profile_media_id && isset($user->media->url) ? asset('storage/' . $user->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
+                                        <img src="{{ isset($blog) && $blog->blog_media_id ? asset('storage/' . $blog->media->url) : 'https://cmslooks.themelooks.us/public/storage/all_files/2023/Feb/img-demo (1).jpg' }}"
                                             alt="blog_image" class="img-45">
                                     </td>
                                     <td>
-                                        <a href="" class="btn-link">{{ $user->name }}</a>
+                                        <a href="" class="btn-link">{{ $blog->name }}</a>
                                     </td>
 
                                     <td>
-                                        {{ $user->email }}
+                                        {{ $blog->author->name }}
                                     </td>
 
                                     <td>
-                                        @forelse ($user->roles as $role)
+                                        @forelse ($blog->categories as $category)
                                             @if ($loop->last)
-                                                {{ $role->name }}
+                                                {{ $category->name }}
                                             @else
-                                                {{ $role->name }} ,
+                                                {{ $category->name }} , <br>
                                             @endif
                                         @empty
                                             -
@@ -78,8 +102,39 @@
                                     </td>
                                     <td>
                                         <div class="form-check form-switch">
-                                            <input class="form-check-input status-toggle" type="checkbox"
-                                                {{ $user->active ? 'checked' : '' }} data-user-id="{{ $user->id }}">
+                                            <input class="form-check-input feature-toggle" type="checkbox"
+                                                {{ $blog->featured ? 'checked' : '' }} data-blog-id="{{ $blog->id }}">
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button type="button"
+                                            class="btn btn-icon btn-topbar btn-ghost-secondary rounded-circle"
+                                            id="page-header-notifications-dropdown" data-bs-toggle="dropdown"
+                                            aria-haspopup="true" aria-expanded="false">
+                                            <i class='bx bx-message-rounded-detail fs-22'></i>
+                                            <span
+                                                class="position-absolute topbar-badge fs-10 translate-middle badge rounded-pill bg-danger">3<span
+                                                    class="visually-hidden">unread messages</span></span>
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div class="d-flex flex-column align-items-center">
+                                            <span
+                                                class="badge
+                                                @if ($blog->status == 'published') badge-soft-success text-uppercase
+                                                    @elseif($blog->status == 'pending')
+                                                        badge-soft-warning text-uppercase
+                                                    @elseif($blog->status == 'draft')
+                                                        badge-soft-primary text-uppercase
+                                                    @elseif($blog->status == 'scheduled')
+                                                        badge-soft-info text-uppercase @endif rounded-pill">
+                                                {{ $blog->status }}
+                                            </span>
+                                            <span class="text-muted text-xs mt-1">
+                                                {{ Carbon\Carbon::parse($blog->published_date_time)->format('d-m-Y h:i A') }}
+                                                {{-- {{ \Carbon\Carbon::createFromFormat('y.m.d H:i', $blog->published_date_time)->format('d-m-Y h:i A') --}}
+                                                {{-- }} --}}
+                                            </span>
                                         </div>
                                     </td>
                                     <td>
@@ -90,12 +145,13 @@
                                             </button>
                                             <ul class="dropdown-menu dropdown-menu-end">
                                                 <li>
-                                                    <a href="{{ route('users.edit', $user->id) }}" class="dropdown-item">
-                                                        <i class="ri-pencil-fill align-bottom me-2 text-muted"></i>
+                                                    <a href="{{ route('add-blog.edit', $blog->id) }}"
+                                                        class="dropdown-item"> <i
+                                                            class="ri-pencil-fill align-bottom me-2 text-muted"></i>
                                                         Edit</a>
                                                 </li>
                                                 <li>
-                                                    <a onclick="deleteUser('{{ route('users.destroy', $user->id) }}')"
+                                                    <a onclick="deleteBlog('{{ route('add-blog.destroy', $blog->id) }}')"
                                                         class="dropdown-item" role="button"> <i
                                                             class="ri-delete-bin-fill align-bottom me-2 text-muted"></i>
                                                         Remove</a>
@@ -106,7 +162,7 @@
                                 </tr>
                             @empty
                                 <tr>
-                                    <td colspan="9">No User Found.</td>
+                                    <td colspan="9">No Blog Found.</td>
                                 </tr>
                             @endforelse
                         </tbody>
@@ -116,7 +172,11 @@
 
                 </div>
             </div>
+            <!--end card-->
         </div>
+        <!--end col-->
+
+        <!--end col-->
     </div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
@@ -130,16 +190,16 @@
             });
         }
 
-        $('.status-toggle').change(function() {
-            var userId = $(this).data('user-id');
-            var newActiveStatus = $(this).prop('checked') ? 1 : 0;
+        $('.feature-toggle').change(function() {
+            var blogId = $(this).data('blog-id');
+            var newToggleStatus = $(this).prop('checked') ? 1 : 0;
 
             $.ajax({
-                url: '{{ route('users.update-active-status') }}',
+                url: '{{ route('blog.update-toggle-status') }}',
                 method: 'POST',
                 data: {
-                    id: userId,
-                    activeStatus: newActiveStatus
+                    id: blogId,
+                    toggleStatus: newToggleStatus
                 },
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -147,14 +207,16 @@
                 success: function(response) {
                     Swal.fire(
                         'Updated!',
-                        response.message,
+                        'Featured Status has been updated.',
                         'success'
-                    );
+                    ).then(function() {
+                        window.location.reload();
+                    });
                 },
                 error: function(xhr, status, error) {
                     Swal.fire(
                         'Error!',
-                        'Failed To Update Active Status.',
+                        'Failed to update featured status. Please try again later.',
                         'error'
                     ).then(() => {
                         location.reload();
@@ -225,7 +287,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: '{{ route('user.mass-delete') }}',
+                        url: '{{ route('blog.mass-delete') }}',
                         method: 'POST',
                         data: {
                             ids: checkedIds
@@ -254,7 +316,8 @@
             });
         }
 
-        function deleteUser(slug) {
+        function deleteBlog(blogSlug) {
+            console.log(blogSlug)
             Swal.fire({
                 title: 'Are you sure?',
                 text: 'You will not be able to recover deleted items!',
@@ -266,7 +329,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
-                        url: slug,
+                        url: blogSlug,
                         method: 'DELETE',
                         headers: {
                             'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -274,7 +337,7 @@
                         success: function(response) {
                             Swal.fire(
                                 'Deleted!',
-                                response.message,
+                                'Blog Have Been Deleted.',
                                 'success'
                             ).then(() => {
                                 location.reload();
@@ -283,7 +346,7 @@
                         error: function(xhr, status, error) {
                             Swal.fire(
                                 'Error!',
-                                xhr.responseJSON.message,
+                                'Failed to delete items. Please try again later.',
                                 'error'
                             );
                         }

@@ -46,7 +46,7 @@ class CategoryController extends Controller
         $validatedData = $request->validated();
         $validatedData['position'] = $validatedData['parent_id'] == null ? 0 : 1;
         $category = Category::create($validatedData);
-        if (!is_null($category)){
+        if (!is_null($category)) {
             return response()->json(['message' => "Category Created successfully", 'category' => $category]);
         } else {
             return response()->json(['message' => "Category Not Created successfully"], 500);

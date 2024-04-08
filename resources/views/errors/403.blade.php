@@ -1,10 +1,11 @@
 <!doctype html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg"
+    data-sidebar-image="none" data-layout-mode="dark" data-body-image="img-1" data-preloader="disable">
 
 <head>
 
     <meta charset="utf-8" />
-    <title>404 Error Cover | Velzon - Admin & Dashboard Template</title>
+    <title>403 Error | {{ config('app.name') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
@@ -37,11 +38,13 @@
                         <div class="card overflow-hidden card-bg-fill">
                             <div class="card-body p-4">
                                 <div class="text-center">
-                                    <lord-icon class="avatar-xl" src="https://cdn.lordicon.com/ofbvmdiz.json" trigger="loop" colors="primary:#8c68cd,secondary:#4788ff"></lord-icon>
+                                    <lord-icon class="avatar-xl" src="https://cdn.lordicon.com/ofbvmdiz.json"
+                                        trigger="loop" colors="primary:#8c68cd,secondary:#4788ff"></lord-icon>
                                     <h1 class="text-danger mb-4">Forbidden !</h1>
                                     <h4 class="text-uppercase">Sorry, Access Denied 😔</h4>
                                     <p class="text-muted mb-4">You don't have permission to access this page.</p>
-                                    <a href="{{ route('home') }}" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>
+                                    <a href="{{ route('home') }}" class="btn btn-success"><i
+                                            class="mdi mdi-home me-1"></i>Back to home</a>
                                 </div>
                             </div>
                         </div>

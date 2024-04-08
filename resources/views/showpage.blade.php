@@ -14,22 +14,17 @@
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
     </script>
     <style>
-        /* Adjust margins and paddings as needed */
+
         .container-fluid {
             margin-top: 20px;
         }
 
         .image-style-side {
-            /* Add styles to match the editor's image layout */
-            /* For example: */
             float: left;
             margin-right: 15px;
         }
 
-        /* Adjust inline styles applied to the image */
         .image-style-side img {
-            /* Add styles to match the editor's image layout */
-            /* For example: */
             max-width: 100%;
             height: auto;
         }

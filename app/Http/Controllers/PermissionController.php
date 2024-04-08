@@ -7,6 +7,12 @@ use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:show_permissions', ['only' => ['index']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

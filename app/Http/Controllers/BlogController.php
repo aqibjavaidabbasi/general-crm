@@ -21,9 +21,9 @@ class BlogController extends Controller
 
     public function __construct()
     {
-        $this->middleware('permission:show_media', ['only' => ['index']]);
-        $this->middleware('permission:create_media', ['only' => ['store', 'create']]);
-        $this->middleware('permission:edit_media', ['only' => ['edit', 'update', 'updateFeaturedStatus']]);
+        $this->middleware('permission:show_blog', ['only' => ['index', 'searchBlogs']]);
+        $this->middleware('permission:create_blog', ['only' => ['store', 'create']]);
+        $this->middleware('permission:edit_blog', ['only' => ['edit', 'update', 'updateFeaturedStatus']]);
         $this->middleware('permission:delete_media', ['only' => ['destroy', 'massDeleteBlogs']]);
     }
 

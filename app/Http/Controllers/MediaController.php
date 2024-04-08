@@ -14,6 +14,15 @@ use Intervention\Image\ImageManager;
 
 class MediaController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:show_media', ['only' => ['create', 'filterModalFiles', 'filterFiles']]);
+        $this->middleware('permission:create_media', ['only' => ['store', 'checkExistingFile']]);
+        $this->middleware('permission:edit_media', ['only' => ['update', 'updateFeaturedStatus']]);
+        $this->middleware('permission:delete_media', ['only' => ['destroy', 'checkExistingFile', 'deleteExistingFile', 'deleteMediaFiles']]);
+    }
+
     /**
      * Display a listing of the resource.
      */

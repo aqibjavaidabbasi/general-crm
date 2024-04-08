@@ -2,21 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Tag;
-use Illuminate\Http\Request;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
+use App\Models\Tag;
+use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:show_tags_blog', ['only' => ['index', 'searchTags']]);
+        $this->middleware('permission:create_tags_blog', ['only' => ['store', 'create', 'uploadimage']]);
+        $this->middleware('permission:edit_tags_blog', ['only' => ['update', 'edit', 'updateStatus']]);
+        $this->middleware('permission:delete_tags_blog', ['only' => ['destroy', 'massDeleteTags']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $tags = Tag::get();
-        // return view('blog.tag.index',compact('tags'));
-        return view('blog.tag.index',['tags' => $tags]);
+        return view('blog.tag.index', ['tags' => $tags]);
     }
 
     /**
@@ -35,9 +43,9 @@ class TagController extends Controller
         $validatedData = $request->validated();
         $tag = Tag::create($validatedData);
         if ($tag) {
-            return response()->json(['message' => 'Tag Created Successfully','tag' => $tag]);
+            return response()->json(['message' => 'Tag Created Successfully', 'tag' => $tag]);
         } else {
-            return response()->json(['message' => 'Error Occured While Creating Tag!'],500);
+            return response()->json(['message' => 'Error Occured While Creating Tag!'], 500);
         }
     }
 
@@ -54,8 +62,8 @@ class TagController extends Controller
      */
     public function edit(Tag $tag)
     {
-        if(!is_null($tag)){
-            return view('blog.tag.create',compact('tag'));
+        if (!is_null($tag)) {
+            return view('blog.tag.create', compact('tag'));
         }
     }
 
@@ -69,7 +77,7 @@ class TagController extends Controller
         if ($tag->update($validatedData)) {
             return response()->json(['message' => 'Tag Updated Successfully']);
         } else {
-            return response()->json(['message' => 'Error Occured While Creating Tag!'],500);
+            return response()->json(['message' => 'Error Occured While Creating Tag!'], 500);
         }
     }
 
@@ -78,8 +86,8 @@ class TagController extends Controller
      */
     public function destroy(Tag $tag)
     {
-        if(!is_null($tag)){
-            if($tag->delete()){
+        if (!is_null($tag)) {
+            if ($tag->delete()) {
                 return response()->json(['message' => "Tag has been Deleted"], 200);
             }
         }
@@ -89,7 +97,6 @@ class TagController extends Controller
     {
         $searchText = $request->input('searchText');
         $filter = $request->input('filter');
-        // dd($request->all());
         $query = Tag::query();
         if (empty($searchText)) {
             $query->get();
