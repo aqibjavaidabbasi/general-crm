@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Inertia\Inertia;
+use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Requests\ProfileUpdateRequest;
 
 class ProfileController extends Controller
 {
@@ -25,7 +24,7 @@ class ProfileController extends Controller
             'email' => $request->email,
         ]);
 
-        session()->flash('alert', ['message' => 'Post successfully created','type' => 'success']);
+        session()->flash('alert', ['message' => 'Post successfully created', 'type' => 'success']);
         return redirect()->back();
     }
 

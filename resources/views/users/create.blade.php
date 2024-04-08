@@ -27,9 +27,6 @@
                                 aria-labelledby="pills-gen-info-tab">
                                 <div>
                                     <div class="row">
-
-
-
                                         <div class="col-lg-12">
                                             <div class="mb-3">
                                                 <label class="form-label" for="name">Name <span

@@ -7,7 +7,6 @@
             <li class="menu-title"><span data-key="t-menu">Menu</span></li>
 
             <li class="nav-item">
-                {{-- <a class="nav-link menu-link" href="widgets.html"> --}}
                 <a class="nav-link menu-link {{ request()->is('*/dashboard') ? 'active' : '' }}"
                     href="{{ route('home') }}">
                     <i class="ri-home-7-fill"></i> <span data-key="t-dashboard">Dashboard</span>
@@ -23,7 +22,10 @@
                 </li>
             @endcanany
 
-            @canany(['create_blog', 'edit_blog', 'delete_blog', 'show_blog'])
+            @canany(['create_blog', 'edit_blog', 'delete_blog', 'show_blog', 'show_categories_blog',
+                'create_categories_blog', 'edit_categories_blog', 'delete_categories_blog', 'show_tags_blog',
+                'create_tags_blog', 'edit_tags_blog', 'delete_tags_blog', 'show_comments_blog', 'create_comments_blog',
+                'edit_comments_blog', 'delete_comments_blog'])
                 <li class="nav-item">
                     <a class="nav-link menu-link {{ request()->is('*/blog/*') ? 'active' : '' }}" href="#sidebarApps"
                         data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="sidebarApps">
@@ -41,16 +43,21 @@
                                     class="nav-link {{ Request::is('*/blog/add-blog/*') ? 'active' : '' }}"
                                     data-key="t-chat"> Add New Blog </a>
                             </li>
+
+
                             <li class="nav-item">
                                 <a href="{{ route('category.index') }}"
                                     class="nav-link {{ Request::is('*/category/*') || Request::is('*/category') ? 'active' : '' }}"
                                     data-key="t-chat"> Categories </a>
                             </li>
+
+
                             <li class="nav-item">
                                 <a href="{{ route('tag.index') }}"
                                     class="nav-link {{ Request::is('*/tag/*') || Request::is('*/tag') ? 'active' : '' }}"
                                     data-key="t-chat"> Tags </a>
                             </li>
+
                             <li class="nav-item">
                                 <a class="nav-link" data-key="t-chat"> Comments </a>
                             </li>
@@ -81,59 +88,63 @@
                 </li>
             @endcanany
 
-
             {{-- Pages --}}
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->is('*/pages/*') ? 'active' : '' }}" href="#pages"
-                    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="pages">
-                    <i class="ri-pages-line"></i> <span data-key="t-apps">Pages</span>
-                </a>
-                <div class="collapse menu-dropdown {{ request()->is('*/pages/*') ? 'pages' : '' }}" id="pages">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{ route('pages.index') }}" class="nav-link" data-key="t-calendar"> All Pages </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('pages.create') }}" class="nav-link" data-key="t-calendar"> Add New Pages
-                            </a>
-                        </li>
+            @canany(['show_pages', 'create_pages', 'edit_pages', 'delete_pages'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('*/pages/*') ? 'active' : '' }}" href="#pages"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="pages">
+                        <i class="ri-pages-line"></i> <span data-key="t-apps">Pages</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->is('*/pages/*') ? 'pages' : '' }}" id="pages">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('pages.index') }}" class="nav-link" data-key="t-calendar"> All Pages </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('pages.create') }}" class="nav-link" data-key="t-calendar"> Add New Pages
+                                </a>
+                            </li>
 
 
-                    </ul>
-                </div>
-            </li>
+                        </ul>
+                    </div>
+                </li>
+            @endcanany
 
             {{-- users --}}
+            @canany(['show_users', 'create_users', 'edit_users', 'delete_users', 'create_roles', 'show_roles',
+                'edit_roles', 'delete_roles', 'create_permissions', 'show_permissions', 'edit_permissions',
+                'delete_permissions'])
+                <li class="nav-item">
+                    <a class="nav-link menu-link {{ request()->is('*/users/*') ? 'active' : '' }}" href="#users"
+                        data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
+                        <i data-feather="users"></i> <span data-key="t-apps">Users</span>
+                    </a>
+                    <div class="collapse menu-dropdown {{ request()->is('*/users/*') || request()->is('*/users') || request()->is('*/roles/*') || request()->is('*/roles') || request()->is('*/permissions') ? 'show' : '' }}"
+                        id="users">
+                        <ul class="nav nav-sm flex-column">
+                            <li class="nav-item">
+                                <a href="{{ route('users.index') }}"
+                                    class="nav-link {{ Request::is('*/users') || request()->is('*/users/*') ? 'active' : '' }}"
+                                    data-key="t-calendar">Users</a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('roles.index') }}"
+                                    class="nav-link {{ Request::is('*/roles/*') || Request::is('*/roles') ? 'active' : '' }}"
+                                    data-key="t-calendar">Roles
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="{{ route('permissions.index') }}"
+                                    class="nav-link {{ Request::is('*/permissions') ? 'active' : '' }}"
+                                    data-key="t-calendar">Permissions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
 
-            <li class="nav-item">
-                <a class="nav-link menu-link {{ request()->is('*/users/*') ? 'active' : '' }}" href="#users"
-                    data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="users">
-                    <i data-feather="users"></i> <span data-key="t-apps">Users</span>
-                </a>
-                <div class="collapse menu-dropdown {{ request()->is('*/users/*') || request()->is('*/users') || request()->is('*/roles/*') || request()->is('*/roles') || request()->is('*/permissions') ? 'show' : '' }}"
-                    id="users">
-                    <ul class="nav nav-sm flex-column">
-                        <li class="nav-item">
-                            <a href="{{ route('users.index') }}"
-                                class="nav-link {{ Request::is('*/users') || request()->is('*/users/*') ? 'active' : '' }}"
-                                data-key="t-calendar">Users</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('roles.index') }}"
-                                class="nav-link {{ Request::is('*/roles/*') || Request::is('*/roles') ? 'active' : '' }}"
-                                data-key="t-calendar">Roles
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('permissions.index') }}"
-                                class="nav-link {{ Request::is('*/permissions') ? 'active' : '' }}"
-                                data-key="t-calendar">Permissions
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
-            </li>
+                </li>
+            @endcanany
         </ul>
     </div>
     <!-- Sidebar -->

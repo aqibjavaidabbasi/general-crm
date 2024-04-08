@@ -2,38 +2,42 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pages;
 use App\Models\BlogCategory;
+use App\Models\Pages;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
-use Auth;
-use RealRashid\SweetAlert\Facades\Alert;
-use Session;
+use Log;
+
 class PagesController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('permission:show_pages', ['only' => ['index']]);
+        $this->middleware('permission:create_pages', ['only' => ['store', 'create', 'uploadimage']]);
+        $this->middleware('permission:edit_pages', ['only' => ['update', 'edit', 'update_status']]);
+        $this->middleware('permission:delete_pages', ['only' => ['destroy', 'trash', 'deleteExistingFile', 'deleteMediaFiles']]);
+    }
+
     /**
      * Display a listing of the resource.
      */
-  public function index($status = null)
-  {
+    public function index($status = null)
+    {
 
         switch ($status) {
-        case 'trash':
+            case 'trash':
                 $pages = Pages::where('status', 0)->orderBy('id', 'desc')->paginate(10);
                 break;
-        case 'published':
+            case 'published':
                 $pages = Pages::where('published_status', 1)->orderBy('id', 'desc')->paginate(10);
                 break;
-        default:
+            default:
                 $pages = Pages::orderBy('id', 'desc')->paginate(10);
                 break;
         }
         $totalpages = Pages::orderBy('id', 'desc')->paginate(10);
-        return view('pages.index', compact('pages','totalpages'));
-  }
-
-
-
+        return view('pages.index', compact('pages', 'totalpages'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -41,8 +45,7 @@ class PagesController extends Controller
     public function create()
     {
         $categories = BlogCategory::all();
-        //
-         return view("pages/create",compact('categories'));
+        return view("pages/create", compact('categories'));
     }
 
     /**
@@ -67,7 +70,7 @@ class PagesController extends Controller
         $data->make_homepage = '1';
         $data->visibility = $request->visibility;
         $data->published_date_time = $request->published_date_time;
-          $data->status = $request->category_id;
+        $data->status = $request->category_id;
         $data->save();
 
         // Alert::success('Success', 'Page inserted successfully');
@@ -83,13 +86,13 @@ class PagesController extends Controller
     {
         $categories = BlogCategory::all();
         $data = Pages::find($id);
-        return view("pages/edit", compact("data",'categories'));
+        return view("pages/edit", compact("data", 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
 
         //
@@ -138,55 +141,55 @@ class PagesController extends Controller
     {
 
         try {
-        if (!$request->hasFile('upload')) {
-        throw new \Exception('No file uploaded.');
-        }
+            if (!$request->hasFile('upload')) {
+                throw new \Exception('No file uploaded.');
+            }
 
-        $uploadedFile = $request->file('upload');
+            $uploadedFile = $request->file('upload');
 
-        if (!$uploadedFile->isValid()) {
-        throw new \Exception('Invalid file.');
-        }
+            if (!$uploadedFile->isValid()) {
+                throw new \Exception('Invalid file.');
+            }
 
-        // Generate a unique file name
-        $fileName = \Illuminate\Support\Str::random(20) . '_' . time() . '.' . $uploadedFile->getClientOriginalExtension();
+            // Generate a unique file name
+            $fileName = \Illuminate\Support\Str::random(20) . '_' . time() . '.' . $uploadedFile->getClientOriginalExtension();
 
-        // Move the uploaded file to the 'media' directory
-        $uploadedFile->move(public_path('media'), $fileName);
+            // Move the uploaded file to the 'media' directory
+            $uploadedFile->move(public_path('media'), $fileName);
 
-        // Generate the URL for the uploaded file
-        $url = asset('media/' . $fileName);
+            // Generate the URL for the uploaded file
+            $url = asset('media/' . $fileName);
 
-        // Log success message
-        \Log::info('File uploaded successfully: ' . $url);
+            // Log success message
+            Log::info('File uploaded successfully: ' . $url);
 
-        // Return a JSON response with the file information
-        return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
+            // Return a JSON response with the file information
+            return response()->json(['fileName' => $fileName, 'uploaded' => 1, 'url' => $url]);
         } catch (\Exception $e) {
-        // Log exception message
-        \Log::error('Exception: ' . $e->getMessage());
+            // Log exception message
+            \Log::error('Exception: ' . $e->getMessage());
 
-        // Return a JSON response with the error message
-        return response()->json(['error' => $e->getMessage()], 500);
+            // Return a JSON response with the error message
+            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
     // --------------update status
-    public function update_status(Request $request,$id,$slug = null)
+    public function update_status(Request $request, $id, $slug = null)
     {
 
-       $data = Pages::find($id);
+        $data = Pages::find($id);
 
-       // Determine the new values for make_homepage and published_status based on $slug
-       $new_make_homepage = ($slug == 'homepage') ? !$data->make_homepage : !$data->make_homepage;
-       $new_published_status = 1;
+        // Determine the new values for make_homepage and published_status based on $slug
+        $new_make_homepage = ($slug == 'homepage') ? !$data->make_homepage : !$data->make_homepage;
+        $new_published_status = 1;
 
-       // Update the properties
-       $data->make_homepage = $new_make_homepage;
-       $data->published_status = $new_published_status;
+        // Update the properties
+        $data->make_homepage = $new_make_homepage;
+        $data->published_status = $new_published_status;
 
-       // Save the changes
-       $data->save();
+        // Save the changes
+        $data->save();
 
-       return redirect()->back()->with('success', 'Status has been updated');
+        return redirect()->back()->with('success', 'Status has been updated');
     }
 }
