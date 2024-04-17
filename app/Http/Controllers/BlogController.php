@@ -274,7 +274,7 @@ class BlogController extends Controller
             }
 
         }
-        $blogs = $query->with('author')->get();
+        $blogs = $query->with('author')->paginate(10);
 
         return view('blog.filtered-blog')->with(['blogs' => $blogs]);
     }
