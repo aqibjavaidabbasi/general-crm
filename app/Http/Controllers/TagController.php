@@ -99,7 +99,7 @@ class TagController extends Controller
         $filter = $request->input('filter');
         $query = Tag::query();
         if (empty($searchText)) {
-            $query->get();
+            $query->paginate(10);
         } else {
             $query->whereAny(['name', 'meta_description', 'meta_title'], 'LIKE', '%' . $searchText . '%');
         }

@@ -139,7 +139,7 @@ class CategoryController extends Controller
                 $query->where('featured', true);
             }
         }
-        $categories = $query->get();
+        $categories = $query->paginate(10);
 
         return view('blog.category.filtered-blog_categories')->with(['categories' => $categories]);
     }

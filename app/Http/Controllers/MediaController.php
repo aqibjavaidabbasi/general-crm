@@ -177,7 +177,7 @@ class MediaController extends Controller
             $query->whereAny(['name', 'type', 'size', 'extension', 'title', 'alt', 'caption', 'description'], 'LIKE', '%' . $request->searchText . '%');
         }
 
-        $files = $query->get();
+        $files = $query->paginate(10);
 
         return view('media.filtered-files')->with('files', $files);
     }
