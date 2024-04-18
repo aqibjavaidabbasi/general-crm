@@ -12,7 +12,8 @@
                     <h4 class="card-title mb-0">Comment Setting</h4>
                 </div>
                 <div class="card-body form-steps">
-                    <form id="commentSettingsForm" action="{{ route('comment-setting.update', $settings->id) }}" method="post">
+                    <form id="commentSettingsForm" action="{{ route('comment-setting.update', $settings->id) }}"
+                        method="post">
                         @csrf
                         @method('PUT')
 
@@ -252,67 +253,76 @@
                                             logo or a generated one based on their email address.
                                         </p>
                                         <!--Mystery Avatar -->
+                                        <!-- Mystery Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="mystery"
-                                                value="mystery" checked="">
+                                                value="mystery"
+                                                {{ $settings->default_avatar === 'mystery' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/mystery.png"
                                                 alt="">
                                             <label for="mystery" class="black">Mystery Person</label><br>
                                         </div>
 
-                                        <!--Blank Avatar -->
+                                        <!-- Blank Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="blank"
-                                                value="blank">
+                                                value="blank"
+                                                {{ $settings->default_avatar === 'blank' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/blank.png"
                                                 alt="">
                                             <label for="blank" class="black">Blank</label><br>
                                         </div>
 
-                                        <!--Gravatar Avatar -->
+                                        <!-- Gravatar Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="gravatar"
-                                                value="gravatar">
+                                                value="gravatar"
+                                                {{ $settings->default_avatar === 'gravatar' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/gravatar.png"
                                                 alt="">
                                             <label for="gravatar" class="black">Gravatar Logo</label><br>
                                         </div>
 
-                                        <!--Identicon Avatar -->
+                                        <!-- Identicon Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="identicon"
-                                                value="identicon">
+                                                value="identicon"
+                                                {{ $settings->default_avatar === 'identicon' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/identicon.png"
                                                 alt="">
                                             <label for="identicon" class="black">Identicon (Generated)</label><br>
                                         </div>
 
-                                        <!--Wavatar Avatar -->
+                                        <!-- Wavatar Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="wavatar"
-                                                value="wavatar">
+                                                value="wavatar"
+                                                {{ $settings->default_avatar === 'wavatar' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/wavatar.png"
                                                 alt="">
                                             <label for="wavatar" class="black">Wavatar (Generated)</label><br>
                                         </div>
 
-                                        <!--MonsterId Avatar -->
+                                        <!-- MonsterId Avatar -->
                                         <div class="mb-2">
                                             <input type="radio" class="mb-3" name="default_avatar" id="monsterid"
-                                                value="monsterid">
+                                                value="monsterid"
+                                                {{ $settings->default_avatar === 'monsterid' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/monsterid.png"
                                                 alt="">
                                             <label for="monsterid" class="black">MonsterID (Generated)</label><br>
                                         </div>
 
-                                        <!--Retro Avatar -->
+                                        <!-- Retro Avatar -->
                                         <div class="">
                                             <input type="radio" class="mb-3" name="default_avatar" id="retro"
-                                                value="retro">
+                                                value="retro"
+                                                {{ $settings->default_avatar === 'retro' ? 'checked' : '' }}>
                                             <img src="https://cmslooks.themelooks.us/public/comment-author-image/retro.png"
                                                 alt="">
                                             <label for="retro" class="black">Retro (Generated)</label><br>
                                         </div>
+
                                     </div>
                                     <div class="col-md-12 row ">
                                         <div class="col-md-3">
@@ -368,20 +378,20 @@
                         });
                     },
                     error: function(xhr, status, error) {
-                            const errors = xhr.responseJSON.errors;
-                            let errorMessage = '';
-                            for (let field in errors) {
-                                if (errors.hasOwnProperty(field)) {
-                                    errorMessage += `${errors[field].join('\n')}\n`;
-                                }
+                        const errors = xhr.responseJSON.errors;
+                        let errorMessage = '';
+                        for (let field in errors) {
+                            if (errors.hasOwnProperty(field)) {
+                                errorMessage += `${errors[field].join('\n')}\n`;
                             }
-
-                            Swal.fire(
-                                'Error!',
-                                errorMessage + '\n',
-                                'error'
-                            );
                         }
+
+                        Swal.fire(
+                            'Error!',
+                            errorMessage + '\n',
+                            'error'
+                        );
+                    }
                 });
             });
         });

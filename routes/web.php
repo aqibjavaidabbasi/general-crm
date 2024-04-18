@@ -57,6 +57,9 @@ Route::middleware('auth')->group(function () {
             Route::post('tag/delete', [TagController::class, 'massDeleteTags'])->name('blog.tag.mass-delete');
             Route::post('tag/update-status', [TagController::class, 'updateStatus'])->name('blog.tag.update-status');
 
+            // Settings
+
+            Route::resource('comment-setting', CommentSettingController::class);
         });
 
         Route::resource('users', UserController::class);
@@ -68,9 +71,6 @@ Route::middleware('auth')->group(function () {
 
         Route::resource('permissions', PermissionController::class);
 
-        // Settings
-
-        Route::resource('comment-setting', CommentSettingController::class);
 
         Route::post('save-theme-preference', [ProfileController::class, 'saveTheme'])->name('theme.save');
         Route::get('blog/category/{slug}', [BlogController::class, 'getBlogByCategory'])->name('blog-by-category');

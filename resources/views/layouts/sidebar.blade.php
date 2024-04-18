@@ -78,18 +78,18 @@
                                 <a href="apps-chat.html" class="nav-link" data-key="t-chat"> CSV Import & Export </a>
                             </li>
                             <li class="nav-item">
-                                <a href="#sidebarEmail" class="nav-link" data-bs-toggle="collapse" role="button"
+                                <a href="#sidebarEmail" class="nav-link {{ Request::is('*/comment-setting') || Request::is('*/blog-share-options') ? 'active' : ''}}" data-bs-toggle="collapse" role="button"
                                     aria-expanded="false" aria-controls="sidebarEmail" data-key="t-email">
                                     Settings
                                 </a>
-                                <div class="collapse menu-dropdown" id="sidebarEmail">
+                                <div class="collapse menu-dropdown {{ Request::is('*/comment-setting') || Request::is('*/blog-share-options') ? 'show' : ''}}" id="sidebarEmail">
                                     <ul class="nav nav-sm flex-column">
                                         <li class="nav-item">
-                                            <a href="apps-mailbox.html" class="nav-link" data-key="t-mailbox"> Blog Share
+                                            <a href="apps-mailbox.html" class="nav-link " data-key="t-mailbox"> Blog Share
                                                 Settings </a>
                                         </li>
                                         <li class="nav-item">
-                                            <a href="{{ route('comment-setting.index') }}" class="nav-link" data-key="t-mailbox"> Comment
+                                            <a href="{{ route('comment-setting.index') }}" class="nav-link {{ Request::is('*/comment-setting') ? 'active' : '' }}" data-key="t-mailbox"> Comment
                                                 Settings </a>
                                         </li>
                                     </ul>
