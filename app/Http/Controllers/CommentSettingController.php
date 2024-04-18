@@ -14,7 +14,7 @@ class CommentSettingController extends Controller
     public function index()
     {
         $settings = CommentSetting::first();
-        return view('settings.comment-settings.index', ['settings' => $settings]);
+        return view('blog.settings.comment-settings.index', ['settings' => $settings]);
     }
 
     /**
@@ -61,6 +61,7 @@ class CommentSettingController extends Controller
             'allow_comments',
             'require_name_email',
             'require_registration',
+            'close_comments_for_old_blogs',
             'email_on_comment',
             'moderation',
             'manual_approval',
@@ -73,7 +74,7 @@ class CommentSettingController extends Controller
                 $data[$checkbox] = 0;
             }
         }
-        // dd($data);
+
         if ($commentSetting->update($data)) {
             return response()->json(['message' => 'Settings Updated Successfully', 'settings' => $commentSetting]);
         } else {

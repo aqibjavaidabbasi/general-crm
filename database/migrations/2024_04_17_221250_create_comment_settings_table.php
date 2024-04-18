@@ -20,7 +20,8 @@ return new class extends Migration
             // Other comment settings
             $table->boolean('require_name_email')->default(true);
             $table->boolean('require_registration')->default(false);
-            $table->integer('close_days')->nullable();
+            $table->boolean('close_comments_for_old_blogs')->default(false);
+            $table->integer('close_comments_days_old')->nullable();
             $table->integer('nested_levels')->default(2);
             $table->integer('per_page')->default(8);
             $table->enum('order', ['newer', 'older'])->default('newer');

@@ -1,17 +1,17 @@
 <?php
 
-use App\Models\CommentSetting;
-use App\Http\Controllers\TagController;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CommentSettingController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UserController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PagesController;
-use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PermissionController;
-use App\Http\Controllers\CommentSettingController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ShareOptionController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;use Illuminate\Support\Facades\Route;
 
 /*
@@ -57,6 +57,10 @@ Route::middleware('auth')->group(function () {
             Route::post('tag/delete', [TagController::class, 'massDeleteTags'])->name('blog.tag.mass-delete');
             Route::post('tag/update-status', [TagController::class, 'updateStatus'])->name('blog.tag.update-status');
 
+            // Settings
+
+            Route::resource('comment-setting', CommentSettingController::class);
+            Route::resource('blog-share-options', ShareOptionController::class);
         });
 
         Route::resource('users', UserController::class);
@@ -67,10 +71,6 @@ Route::middleware('auth')->group(function () {
         Route::post('role/delete', [RoleController::class, 'massDeleteRoles'])->name('role.mass-delete');
 
         Route::resource('permissions', PermissionController::class);
-
-        // Settings
-
-        Route::resource('comment-setting', CommentSettingController::class);
 
         Route::post('save-theme-preference', [ProfileController::class, 'saveTheme'])->name('theme.save');
         Route::get('blog/category/{slug}', [BlogController::class, 'getBlogByCategory'])->name('blog-by-category');
