@@ -14,7 +14,6 @@
         integrity="sha384-oesi62hOLfzrys4LxRF63OJCXdXDipiYWBnvTl9Y9/TRlw5xlKIEHpNyvvDShgf/" crossorigin="anonymous">
     </script>
     <style>
-
         .container-fluid {
             margin-top: 20px;
         }

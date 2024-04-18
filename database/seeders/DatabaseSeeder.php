@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             PageSeeder::class,
             TagSeeder::class,
-            CommentSettingSeeder::class
+            CommentSettingSeeder::class,
+            ShareOptionSeeder::class
         ]);
     }
 }
